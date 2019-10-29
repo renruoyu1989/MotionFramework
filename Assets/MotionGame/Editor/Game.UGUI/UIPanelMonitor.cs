@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
+
+#if UNITY_2018_4_OR_NEWER
 using UnityEditor.Experimental.SceneManagement;
+#endif
 
 public class UIPanelMonitor : Editor
 {
@@ -16,10 +19,13 @@ public class UIPanelMonitor : Editor
 				manifest.Refresh();
 		};
 
+#if UNITY_2018_4_OR_NEWER
 		// 监听新的Prefab系统
 		PrefabStage.prefabSaving += OnPrefabSaving;
+#endif
 	}
 
+#if UNITY_2018_4_OR_NEWER
 	static void OnPrefabSaving(GameObject go)
 	{
 		PrefabStage stage = PrefabStageUtility.GetCurrentPrefabStage();
@@ -30,6 +36,7 @@ public class UIPanelMonitor : Editor
 				manifest.Refresh();
 		}
 	}
+#endif
 }
 
 /*
