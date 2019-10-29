@@ -27,7 +27,11 @@ namespace MotionEngine.Res
 			LoadState = EWebLoadState.Loading;
 
 			// 下载文件
+#if UNITY_2017_4
+			CacheRequest = UnityWebRequest.GetAssetBundle(URL);
+#else
 			CacheRequest = UnityWebRequestAssetBundle.GetAssetBundle(URL);
+#endif
 			CacheRequest.disposeDownloadHandlerOnDispose = true;
 			CacheRequest.timeout = ResDefine.WebRequestTimeout;
 			yield return CacheRequest.SendWebRequest();

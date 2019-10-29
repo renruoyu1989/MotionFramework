@@ -100,8 +100,7 @@ public static class EditorTools
 		{
 			GameObject findObject = findObjects[i];
 
-			/*
-			// Unity2017过时代码
+#if UNITY_2017_4
 			// 判断对象是否为一个预制体的引用
 			if (PrefabUtility.GetPrefabType(findObject) == PrefabType.PrefabInstance)
 			{
@@ -110,8 +109,7 @@ public static class EditorTools
 				if (source.GetInstanceID() == sourcePrefab.GetInstanceID())
 					return findObject;
 			}
-			*/
-
+#else
 			// 判断对象是否为一个预制体的引用
 			if (PrefabUtility.GetPrefabInstanceStatus(findObject) == PrefabInstanceStatus.Connected)
 			{
@@ -120,6 +118,7 @@ public static class EditorTools
 				if (source.GetInstanceID() == sourcePrefab.GetInstanceID())
 					return findObject;
 			}
+#endif
 		}
 
 		return null; //没有找到合适的对象
@@ -137,22 +136,21 @@ public static class EditorTools
 		{
 			GameObject findObject = findObjects[j];
 
-			/*
-			// Unity2017过时代码
+#if UNITY_2017_4
 			// 如果Prefab匹配
 			if (PrefabUtility.GetPrefabType(findObject) == PrefabType.PrefabInstance)
 			{
 				if (PrefabUtility.GetPrefabParent(findObject) == to)
 					referencedBy.Add(findObject);
 			}
-			*/
-
+#else
 			// 如果Prefab匹配
 			if (PrefabUtility.GetPrefabInstanceStatus(findObject) == PrefabInstanceStatus.Connected)
 			{
-				if(PrefabUtility.GetCorrespondingObjectFromSource(findObject) == to)
+				if (PrefabUtility.GetCorrespondingObjectFromSource(findObject) == to)
 					referencedBy.Add(findObject);
 			}
+#endif
 
 			// 如果组件匹配
 			Component[] components = findObject.GetComponents<Component>();
@@ -191,16 +189,15 @@ public static class EditorTools
 			if (clonePrefab == null)
 				continue;
 
-			/*
-			// Unity2017过时代码
+#if UNITY_2017_4
 			// 如果Prefab匹配
 			if (PrefabUtility.GetPrefabParent(clonePrefab) == to)
 				referencedBy.Add(clonePrefab);
-			*/
-
+#else
 			// 如果Prefab匹配
 			if (PrefabUtility.GetCorrespondingObjectFromSource(clonePrefab) == to)
-				referencedBy.Add(clonePrefab);	
+				referencedBy.Add(clonePrefab);
+#endif
 
 			// 如果组件匹配
 			Component[] components = clonePrefab.GetComponentsInChildren<Component>(true); //GetComponents<Component>();

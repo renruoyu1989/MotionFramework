@@ -164,9 +164,13 @@ public class DefaultProcessor : IAssetProcessor
 		targetImporter.weldVertices = templateImporter.weldVertices;
 		targetImporter.indexFormat = templateImporter.indexFormat;
 		targetImporter.importBlendShapes = templateImporter.importBlendShapes;
+#if UNITY_2018_4_OR_NEWER
 		targetImporter.importBlendShapeNormals = templateImporter.importBlendShapeNormals;
+#endif
 		targetImporter.normalSmoothingAngle = templateImporter.normalSmoothingAngle;
+#if UNITY_2018_4_OR_NEWER
 		targetImporter.normalSmoothingSource = templateImporter.normalSmoothingSource;
+#endif
 		targetImporter.importTangents = templateImporter.importTangents;
 		targetImporter.swapUVChannels = templateImporter.swapUVChannels;
 		targetImporter.generateSecondaryUV = templateImporter.generateSecondaryUV;
@@ -211,6 +215,7 @@ public class DefaultProcessor : IAssetProcessor
 	}
 	public static void CopySpriteAtlasSetting(SpriteAtlas target, SpriteAtlas template)
 	{
+#if UNITY_2018_4_OR_NEWER
 		// 注意：默认设置为False
 		target.SetIncludeInBuild(false);
 
@@ -222,6 +227,9 @@ public class DefaultProcessor : IAssetProcessor
 		target.SetPlatformSettings(template.GetPlatformSettings("Standalone"));
 		target.SetPlatformSettings(template.GetPlatformSettings("iPhone"));
 		target.SetPlatformSettings(template.GetPlatformSettings("Android"));
+#else
+		Debug.LogWarning($"{Application.unityVersion} is not support copy sprite atlas setting. Please upgrade to unity2018.4 or newer.");
+#endif
 	}
-	#endregion
+#endregion
 }

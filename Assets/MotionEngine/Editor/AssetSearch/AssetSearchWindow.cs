@@ -292,6 +292,8 @@ public class AssetSearchWindow : EditorWindow
 			if (cloneObject == null)
 			{
 				cloneObject = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+				if (cloneObject == null)
+					cloneObject = GameObject.Instantiate<GameObject>(prefab);
 
 				// 如果是UI面板就放到Canvas底下
 				var bhvUI = cloneObject.GetComponent<Canvas>();
