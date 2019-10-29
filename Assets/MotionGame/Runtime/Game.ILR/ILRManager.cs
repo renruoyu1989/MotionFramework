@@ -83,22 +83,22 @@ namespace MotionGame
 		private void LoadHotfixAssembly()
 		{
 			// TODO：正式发布时去掉PDB，下面LoadAssembly的PDB参数设置为null
-			byte[] dllBytes = Resources.Load<TextAsset>($"Assembly/{ILRDefine.StrMyHotfixDLLFileName}").bytes;
-			byte[] pdbBytes = Resources.Load<TextAsset>($"Assembly/{ILRDefine.StrMyHotfixPDBFileName}").bytes;
+			TextAsset dllAsset = Resources.Load<TextAsset>($"Assembly/{ILRDefine.StrMyHotfixDLLFileName}");
+			TextAsset pdbAsset = Resources.Load<TextAsset>($"Assembly/{ILRDefine.StrMyHotfixPDBFileName}");
 
 			if (EnableILRuntime)
 			{
 				LogSystem.Log(ELogType.Log, "ILRuntime模式");
 				var symbolReader = new Mono.Cecil.Pdb.PdbReaderProvider();
-				_dllStream = new MemoryStream(dllBytes);
-				_pdbStream = new MemoryStream(pdbBytes);
+				if (dllAsset != null) _dllStream = new MemoryStream(dllAsset.bytes);
+				if (pdbAsset != null) _pdbStream = new MemoryStream(pdbAsset.bytes);
 				ILRDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
 				ILRDomain.LoadAssembly(_dllStream, _pdbStream, symbolReader);
 			}
 			else
 			{
 				LogSystem.Log(ELogType.Log, "Mono模式");
-				_monoAssembly = Assembly.Load(dllBytes, pdbBytes);
+				_monoAssembly = Assembly.Load(dllAsset.bytes, pdbAsset.bytes);
 			}
 		}
 
