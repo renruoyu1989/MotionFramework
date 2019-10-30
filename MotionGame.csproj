@@ -71,6 +71,8 @@
     <Compile Include="Assets\MotionGame\Runtime\_Script_\GameLauncher.cs" />
     <Compile Include="Assets\MotionGame\Runtime\_Script_\GameTest.cs" />
     <Compile Include="Assets\MotionGame\Runtime\_Script_\LANG.cs" />
+    <Compile Include="Assets\MotionGame\Runtime\_Script_\Net\AutoGenerateMessage\ProtoMessageDefine.cs" />
+    <Compile Include="Assets\MotionGame\Runtime\_Script_\Net\AutoGenerateMessage\ProtoMessageType.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Extension\RectTransformExtension.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Extension\TransformExtension.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Extension\UnityObjectExtention.cs" />
@@ -83,7 +85,6 @@
     <Compile Include="Assets\MotionGame\Runtime\Game.ILR\Adapter\Adapter_IMessage.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.ILR\ILRDefine.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.ILR\ILRHelper.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\Game.ILR\ILRManager.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.ILR\Interface\IStaticMethod.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.ILR\StaticMethod\ILRStaticMethod.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.ILR\StaticMethod\MonoStaticMethod.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Assets\MotionGame\Runtime\Manager\CfgManager.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Manager\EventManager.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Manager\FsmManager.cs" />
+    <Compile Include="Assets\MotionGame\Runtime\Manager\ILRManager.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Manager\NetManager.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Manager\PoolManager.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Manager\ResManager.cs" />

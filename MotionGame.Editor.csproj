@@ -63,6 +63,7 @@
     <Compile Include="Assets\MotionGame\Editor\Game.ILR\ILRuntimeCLRBinding.cs" />
     <Compile Include="Assets\MotionGame\Editor\Game.ILR\ILRuntimeInitialize.cs" />
     <Compile Include="Assets\MotionGame\Editor\Game.UGUI\UIPanelMonitor.cs" />
+    <None Include="Assets\MotionGame\Editor\_Script_\游戏逻辑代码相关编辑脚本.txt" />
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity2018/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>
