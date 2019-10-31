@@ -1,6 +1,5 @@
 # MotionFramework
-MotionFramework是一个基于Unity3D引擎的游戏框架。该框架由MotionEngine和MotionGame组成。
-MotionEngine是框架的基础，MotionGame是在前者的基础上做了业务逻辑上的扩展。
+MotionFramework是一个基于Unity3D引擎的游戏框架。框架采用模块化注册管理，框架整体保持轻量化、扩展性、低耦合、易用性的特点，代码结构简单清晰，没有设计模式泛滥，方便学习和使用。
 
 ## 支持的Unity版本
 Unity2017.4 && Unity2018.4
