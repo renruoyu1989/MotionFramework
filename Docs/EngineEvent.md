@@ -45,3 +45,6 @@ public void Start()
   EventManager.Instance.Send("customEventTag", msg);
 }
 ```
+
+更详细的教程请参考示例代码
+https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionGame/Runtime/_Script_/GameTest.cs
