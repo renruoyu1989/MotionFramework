@@ -47,4 +47,5 @@ public void Start()
 ```
 
 更详细的教程请参考示例代码
-[MotionGame/Runtime/_Script_/GameTest.cs](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionGame/Runtime/_Script_/GameTest.cs)
+1. [MotionGame/Runtime/_Script_/GameTest.cs](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionGame/Runtime/_Script_/GameTest.cs)
+2. [MotionGame/Runtime/_Script_/Event](https://github.com/gmhevinci/MotionFramework/tree/master/Assets/MotionGame/Runtime/_Script_/Event)
