@@ -34,3 +34,8 @@ public class CustomModule : IModule
 ```
 
 在合适的地方注册我们的模块
+```C#
+{
+  Engine.Instance.RegisterModule(CustomModule.Instance);
+}
+```
