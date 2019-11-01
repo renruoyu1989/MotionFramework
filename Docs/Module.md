@@ -41,7 +41,7 @@ public class CustomModule : IModule
 
 {
   //运行时的优先级，优先级越大越早执行。如果没有设置优先级，那么会按照添加顺序执行
-  int priority = 1000
+  int priority = 1000;
   Engine.Instance.RegisterModule(CustomModule.Instance, priority);
 }
 ```
