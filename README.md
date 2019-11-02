@@ -7,7 +7,7 @@ MotionFramework是一套基于Unity3D引擎的游戏框架。框架整体遵循*
 Unity2017.4 && Unity2018.4
 
 ## MotionEngine.Runtime
-由多个模块组成，每个模块互相独立，开发者可以灵活选择需要的模块。
+MotionFramework核心代码
 
 1. **Base**  
 [核心部分](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/Module.md)
