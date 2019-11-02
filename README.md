@@ -10,7 +10,7 @@ Unity2017.4 && Unity2018.4
 由多个模块组成，每个模块互相独立，开发者可以灵活选择需要的模块。
 
 1. **Base**  
-核心部分
+[核心部分](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/Module.md)
 
 2. **Engine.AI**  
 AI模块：有限状态机。
