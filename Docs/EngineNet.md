@@ -30,11 +30,5 @@ void Start
 }
 ```
 
-发送网络包
-
-
-接收网络包
-
-
 更详细的教程请参考示例代码
 1. [MotionGame/Runtime/Game.Net/NetProtoPackageParser.cs](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionGame/Runtime/Game.Net/NetProtoPackageParser.cs)
