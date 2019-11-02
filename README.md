@@ -49,5 +49,6 @@ IO模块
 资源引用搜索工具
 
 ## MotionGame.Runtime
-内含AudioManager, CfgManager, EventManager, FsmManager, NetManager, PoolManager, ResManager，ILRManager。
-其中新引入了ILRuntime库，来支持C#编写业务逻辑并实现热更新。协议解析器使用protobuf库来做包体序列化，并可以和ET 5.0服务器通信。
+这里已经内置了游戏开发过程中常用的管理器：AudioManager声音管理器, CfgManager配表管理器, EventManager事件管理器, FsmManager状态机管理器, NetManager网络管理器, PoolManager对象池管理器, ResManager资源管理器，ILRManager热更管理器。  
+
+其中引入了ILRuntime库，来支持使用C#脚本编写游戏业务逻辑并实现热更新。自定义的网络包解析器使用protobuf库来做包体序列化，并可以和ET 5.0服务器通信。
