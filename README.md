@@ -1,5 +1,5 @@
 # MotionFramework
-MotionFramework是一个基于Unity3D引擎的游戏框架。框架采用模块化注册管理，框架整体保持轻量化、扩展性、低耦合、易用性的特点，代码结构简单清晰，没有设计模式泛滥，方便学习和使用。
+MotionFramework是一套基于Unity3D引擎的游戏框架。框架整体遵循**轻量化、易用性、低耦合、扩展性强**的设计理念。工程结构简单清晰，代码注释详细，是作为无框架经验的公司、独立开发者、以及初学者们推荐的游戏框架。
 
 ![image](https://github.com/gmhevinci/MotionFramework/raw/master/Docs/Image/img1.png)
 
