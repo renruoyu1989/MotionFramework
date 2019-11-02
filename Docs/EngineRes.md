@@ -25,7 +25,7 @@ private void OnModelLoad(Asset asset, EAssetResult result)
   if (result != EAssetResult.OK)
     return;
   
-  // 模型已经加载完毕，我们可以在这里任何处理
+  // 模型已经加载完毕，我们可以在这里做任何处理
   _model.GameObj.transform.position = Vector3.zero;
 }
 ```
