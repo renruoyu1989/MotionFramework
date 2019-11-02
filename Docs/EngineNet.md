@@ -24,7 +24,7 @@ namespace MotionGame
 
 注册网络包解析器
 ```C#
-void Start
+void Start()
 {
   NetManager.Instance.SetPackageParseType(typeof(NetCustomPackageParser));
 }
