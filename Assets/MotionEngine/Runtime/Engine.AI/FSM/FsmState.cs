@@ -19,7 +19,12 @@ namespace MotionEngine.AI
 		/// 关系转换列表
 		/// </summary>
 		private readonly List<int> _changeToStates = new List<int>();
-		
+
+		/// <summary>
+		/// 全局状态标签
+		/// 说明：全局状态不需要添加可转换状态类型，可以任意跳转
+		/// </summary>
+		public bool IsGlobalState { get; set; } = false;
 
 		public FsmState(int type)
 		{

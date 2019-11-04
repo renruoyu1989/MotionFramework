@@ -25,11 +25,6 @@ namespace MotionEngine.AI
 		/// </summary>
 		private FsmState _preState;
 
-		/// <summary>
-		/// 全局状态
-		/// </summary>
-		private FsmState _globalState;
-
 
 		/// <summary>
 		/// 是否检测转换关系
@@ -57,21 +52,15 @@ namespace MotionEngine.AI
 		/// 启动状态机
 		/// </summary>
 		/// <param name="runStateType">初始状态类型</param>
-		/// <param name="globalStateType">全局状态类型</param>
-		public void Run(int runStateType, int globalStateType)
+		public void Run(int runStateType)
 		{
 			_runState = GetState(runStateType);
 			_preState = GetState(runStateType);
-			_globalState = GetState(globalStateType);
-
-			if (_runState == null)
-				LogSystem.Log(ELogType.Error, "Fsm system must set run state");
-
-			if (_globalState == null)
-				LogSystem.Log(ELogType.Error, "Fsm system must set global state");
 
 			if (_runState != null)
 				_runState.Enter();
+			else
+				LogSystem.Log(ELogType.Error, $"Not found run state : {runStateType}");
 		}
 
 		/// <summary>
@@ -90,13 +79,10 @@ namespace MotionEngine.AI
 		{
 			if (_runState != null)
 				_runState.OnMessage(msg);
-
-			if (_globalState != null)
-				_globalState.OnMessage(msg);
 		}
 
 		/// <summary>
-		/// 添加一个状态类
+		/// 添加一个状态节点
 		/// </summary>
 		public void AddState(FsmState state)
 		{
@@ -121,11 +107,11 @@ namespace MotionEngine.AI
 				return;
 			}
 
-			// 全局状态不需要检测
-			if (_runState.Type != _globalState.Type && state.Type != _globalState.Type)
+			// 检测转换关系
+			if (IsCheckRelation)
 			{
-				// 检测转换关系
-				if(IsCheckRelation)
+				// 全局状态不需要检测转换关系
+				if (_runState.IsGlobalState == false && state.IsGlobalState == false)
 				{
 					if (_runState.CanChangeTo(stateType) == false)
 					{
