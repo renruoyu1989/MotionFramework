@@ -9,29 +9,29 @@ Unity2017.4 && Unity2018.4
 ## 模块介绍
 游戏开发过程中常用的模块使用介绍
 
-1. **Core**  
-[游戏模块定义和注册](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/Module.md) 
+1. **Module**  
+[游戏模块的定义和注册](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/Module.md) 
+
+2. **Log**   
+[日志系统](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/LogSystem.md)
+
+2. **Event**  
+[事件管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/EventManager.md)
+
+3. **Network**  
+[网络管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/NetManager.md)
+
+4. **Res**  
+[资源管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/ResManager.md)
+
+5. **Audio**   
+[音频管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/AudioManager.md)
+
+6. **Config**   
+[配表管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/ConfigManager.md)
 
 7. **FSM**  
 [状态机管理器]
-
-2. **Event**  
-[事件管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/EngineEvent.md)
-
-3. **Network**  
-[网络管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/EngineNet.md)
-
-4. **Asset**  
-[资源管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/EngineRes.md)
-
-5. **Audio**   
-[音频管理器]
-
-6. **Config**   
-[配表管理器]
-
-7. **Pool**   
-[对象池管理器]
 
 ## 工具介绍
 内置的相关工具介绍

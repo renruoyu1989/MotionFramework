@@ -1,0 +1,41 @@
+MotionFramework内部使用了一套统一的日志系统。开发者需要注册才会显示内部的日志。
+
+```C#
+using MotionEngine;
+
+public class Test
+{
+	public void Start()
+	{
+		// 注册日志回调
+		LogSystem.RegisterCallback(LogCallback);
+	}
+
+	private void LogCallback(ELogType logType, string log)
+	{
+		if (logType == ELogType.Log)
+		{
+			UnityEngine.Debug.Log(log);
+		}
+		else if (logType == ELogType.Error)
+		{
+			UnityEngine.Debug.LogError(log);
+		}
+		else if (logType == ELogType.Warning)
+		{
+			UnityEngine.Debug.LogWarning(log);
+		}
+		else if (logType == ELogType.Exception)
+		{
+			UnityEngine.Debug.LogError(log);
+		}
+		else
+		{
+			throw new NotImplementedException($"{logType}");
+		}
+	}
+}
+```
+
+更详细的教程请参考示例代码
+1. [MotionEngine/Runtime/_Script_/GameLauncher.cs](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionGame/Runtime/_Script_/GameLauncher.cs)

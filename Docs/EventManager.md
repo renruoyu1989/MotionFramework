@@ -15,17 +15,20 @@ using UnityEngine;
 using MotionEngine.Event;
 using MotionGame;
 
-public void Start()
+public class Test
 {
-  EventManager.Instance.AddListener("customEventTag", OnHandleEventMsg);
-}
-
-private void OnHandleEventMsg(IEventMessage msg)
-{
-  if(msg is TestEventMsg)
+  public void Start()
   {
-    TestEventMsg temp = msg as TestEventMsg;
-    Debug.Log($"{temp.Value}");
+    EventManager.Instance.AddListener("customEventTag", OnHandleEventMsg);
+  }
+
+  private void OnHandleEventMsg(IEventMessage msg)
+  {
+    if(msg is TestEventMsg)
+    {
+      TestEventMsg temp = msg as TestEventMsg;
+      Debug.Log($"{temp.Value}");
+    }
   }
 }
 ```
@@ -36,13 +39,16 @@ using UnityEngine;
 using MotionEngine.Event;
 using MotionGame;
 
-public void Start()
+public class Test
 {
-  TestEventMsg msg = new TestEventMsg()
+  public void Start()
   {
-    Value = $"hello world",
-  };
-  EventManager.Instance.Send("customEventTag", msg);
+    TestEventMsg msg = new TestEventMsg()
+    {
+      Value = $"hello world",
+    };
+    EventManager.Instance.Send("customEventTag", msg);
+  }
 }
 ```
 

@@ -2,8 +2,6 @@
 定义网络包解析器
 ```C#
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using MotionEngine.Net;
 
 namespace MotionGame
@@ -24,9 +22,14 @@ namespace MotionGame
 
 注册网络包解析器
 ```C#
-void Start()
+using MotionGame;
+
+public class Test
 {
-  NetManager.Instance.SetPackageParseType(typeof(NetCustomPackageParser));
+  public void Start()
+  {
+    NetManager.Instance.SetPackageParseType(typeof(NetCustomPackageParser));
+  }
 }
 ```
 
