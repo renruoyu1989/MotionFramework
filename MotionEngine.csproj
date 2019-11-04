@@ -66,6 +66,7 @@
     <Compile Include="Assets\MotionEngine\Runtime\Base\Log\LogSystem.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.AI\FSM\FsmState.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.AI\FSM\FsmSystem.cs" />
+    <Compile Include="Assets\MotionEngine\Runtime\Engine.AI\Procedure\ProcedureSystem.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.Event\EventSystem.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.Event\Interface\IEventMessage.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.IO\ByteBuffer.cs" />
