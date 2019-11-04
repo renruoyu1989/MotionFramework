@@ -6,35 +6,35 @@ MotionFramework是一套基于Unity3D引擎的游戏框架。框架整体遵循*
 ## 支持的Unity版本
 Unity2017.4 && Unity2018.4
 
-## MotionEngine.Runtime
-MotionFramework核心代码
+## 模块介绍
+游戏开发过程中常用的模块使用介绍
 
-1. **Base**  
-[核心部分](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/Module.md)
+1. **Core**  
+[游戏模块定义和注册](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/Module.md) 
 
-2. **Engine.AI**  
-AI模块：有限状态机。
+7. **FSM**  
+[状态机管理器]
 
-3. **Engine.Event**  
-[事件模块](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/EngineEvent.md)
+2. **Event**  
+[事件管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/EngineEvent.md)
 
-4. **Engine.IO**  
-IO模块
+3. **Network**  
+[网络管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/EngineNet.md)
 
-5. **Engine.Net**  
-[网络模块](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/EngineNet.md)：异步IOCP SOCKET支持高并发，自定义协议解析器。
+4. **Asset**  
+[资源管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/EngineRes.md)
 
-6. **Engine.Patch**  
-补丁模块
+5. **Audio**   
+[音频管理器]
 
-7. **Engine.Res**  
-[资源模块](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/EngineRes.md)：基于引用计数的资源系统，基于面向对象的资源加载方式。
+6. **Config**   
+[配表管理器]
 
-8. **Engine.Utility**  
-工具模块
+7. **Pool**   
+[对象池管理器]
 
-## MotionEngine.Editor
-扩展的相关工具
+## 工具介绍
+内置的相关工具介绍
 
 1. **AssetBrowser**  
 资源对象总览工具
@@ -47,8 +47,3 @@ IO模块
 
 4. **AssetSearch**  
 资源引用搜索工具
-
-## MotionGame.Runtime
-这里已经内置了游戏开发过程中常用的管理器：AudioManager声音管理器, CfgManager配表管理器, EventManager事件管理器, FsmManager状态机管理器, NetManager网络管理器, PoolManager对象池管理器, ResManager资源管理器，ILRManager热更管理器。  
-
-其中引入了ILRuntime库，来支持使用C#脚本编写游戏业务逻辑并实现热更新。自定义的网络包解析器使用protobuf库来做包体序列化，并可以和ET 5.0服务器通信。
