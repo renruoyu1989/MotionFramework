@@ -101,6 +101,7 @@
     <Compile Include="Assets\MotionEngine\Runtime\Engine.Res\Download\WebPostDownload.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.Res\Interface\IBundleMethod.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.Res\Loader\AssetBundleLoader.cs" />
+    <Compile Include="Assets\MotionEngine\Runtime\Engine.Res\Loader\AssetDatabaseLoader.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.Res\Loader\AssetFileLoader.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.Res\Loader\AssetObjectLoader.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.Res\Loader\AssetResourceLoader.cs" />

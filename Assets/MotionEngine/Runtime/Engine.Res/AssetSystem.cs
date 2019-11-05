@@ -1,4 +1,5 @@
 ﻿//--------------------------------------------------
+// Motion Framework
 // Copyright©2018-2020 何冠峰
 // Licensed under the MIT license
 //--------------------------------------------------
@@ -18,7 +19,7 @@ namespace MotionEngine.Res
 		/// <summary>
 		/// 资源加载模式
 		/// </summary>
-		public static EAssetLoadMode AssetLoadMode { private set; get; }  = EAssetLoadMode.ResourceMode;
+		public static EAssetLoadMode AssetLoadMode { private set; get; } = EAssetLoadMode.ResourceMode;
 
 		/// <summary>
 		/// Bundle接口
@@ -28,12 +29,7 @@ namespace MotionEngine.Res
 		/// <summary>
 		/// 加载器集合
 		/// </summary>
-		private static readonly List<AssetFileLoader> _resourceLoaders = new List<AssetFileLoader>(1000);
-
-		/// <summary>
-		/// 加载器集合
-		/// </summary>
-		private static readonly List<AssetFileLoader> _bundleLoaders = new List<AssetFileLoader>(1000);
+		private static readonly List<AssetFileLoader> _fileLoaders = new List<AssetFileLoader>(1000);
 
 		/// <summary>
 		/// 文件名称缓存集合
@@ -67,14 +63,9 @@ namespace MotionEngine.Res
 		/// </summary>
 		public static void UpdatePoll()
 		{
-			for (int i = 0; i < _resourceLoaders.Count; i++)
+			for (int i = 0; i < _fileLoaders.Count; i++)
 			{
-				_resourceLoaders[i].Update();
-			}
-
-			for (int i = 0; i < _bundleLoaders.Count; i++)
-			{
-				_bundleLoaders[i].Update();
+				_fileLoaders[i].Update();
 			}
 		}
 
@@ -87,16 +78,24 @@ namespace MotionEngine.Res
 		/// <returns>返回该资源唯一的加载器</returns>
 		public static AssetFileLoader LoadAssetFile(string resName, EAssetType assetType, OnAssetFileLoad callback)
 		{
-			if (AssetLoadMode == EAssetLoadMode.ResourceMode)
+			if (AssetLoadMode == EAssetLoadMode.EditorMode)
 			{
 				string loadPath = resName;
-				return GetResourceLoader(assetType, loadPath, callback);
+				return GetFileLoader(assetType, loadPath, callback, null);
+			}
+			else if (AssetLoadMode == EAssetLoadMode.ResourceMode)
+			{
+				string loadPath = resName;
+				return GetFileLoader(assetType, loadPath, callback, null);
 			}
 			else if (AssetLoadMode == EAssetLoadMode.BundleMode)
 			{
+				if (BundleMethod == null)
+					throw new Exception("IBundleMethod is null. use AssetSystem.SetBundleMethod()");
+
 				string manifestPath = AssetPathHelper.ConvertResourcePathToManifestPath(resName);
 				string loadPath = BundleMethod.GetAssetBundleLoadPath(manifestPath);
-				return GetBundleLoader(assetType, loadPath, callback, manifestPath);
+				return GetFileLoader(assetType, loadPath, callback, manifestPath);
 			}
 			else
 			{
@@ -107,10 +106,10 @@ namespace MotionEngine.Res
 		/// <summary>
 		/// 从缓存列表里获取加载器，如果不存在创建一个新的加载器并添加到列表
 		/// </summary>
-		public static AssetFileLoader GetResourceLoader(EAssetType assetType, string loadPath, OnAssetFileLoad callback)
+		public static AssetFileLoader GetFileLoader(EAssetType assetType, string loadPath, OnAssetFileLoad callback, string manifestPath)
 		{
 			// 如果已经提交相同请求
-			AssetFileLoader loader = TryGetResourceLoaderInternal(loadPath);
+			AssetFileLoader loader = TryGetFileLoaderInternal(loadPath);
 			if (loader != null)
 			{
 				loader.Reference(); //引用计数
@@ -127,66 +126,30 @@ namespace MotionEngine.Res
 				return loader;
 			}
 
+			// 创建加载器
+			AssetFileLoader newLoader = null;
+			if (AssetLoadMode == EAssetLoadMode.EditorMode)
+				newLoader = new AssetDatabaseLoader(assetType, loadPath);
+			else if (AssetLoadMode == EAssetLoadMode.ResourceMode)
+				newLoader = new AssetResourceLoader(assetType, loadPath);
+			else if (AssetLoadMode == EAssetLoadMode.BundleMode)
+				newLoader = new AssetBundleLoader(assetType, loadPath, manifestPath);
+			else
+				throw new NotImplementedException($"{AssetLoadMode}");
+
 			// 新增下载需求
-			AssetResourceLoader newLoader = new AssetResourceLoader(assetType, loadPath);
-			_resourceLoaders.Add(newLoader);
+			_fileLoaders.Add(newLoader);
 			newLoader.LoadCallback = callback;
 			newLoader.Reference(); //引用计数
 			newLoader.Update(); //立刻轮询
 			return newLoader;
 		}
-		private static AssetFileLoader TryGetResourceLoaderInternal(string assetPath)
+		private static AssetFileLoader TryGetFileLoaderInternal(string assetPath)
 		{
 			AssetFileLoader loader = null;
-			for (int i = 0; i < _resourceLoaders.Count; i++)
+			for (int i = 0; i < _fileLoaders.Count; i++)
 			{
-				AssetFileLoader temp = _resourceLoaders[i];
-				if (temp.LoadPath.Equals(assetPath))
-				{
-					loader = temp;
-					break;
-				}
-			}
-			return loader;
-		}
-
-		/// <summary>
-		/// 从缓存列表里获取加载器，如果不存在创建一个新的加载器并添加到列表
-		/// </summary>
-		public static AssetFileLoader GetBundleLoader(EAssetType assetType, string loadPath, OnAssetFileLoad callback, string manifestPath)
-		{
-			// 如果已经提交相同请求
-			AssetFileLoader loader = TryGetBundleLoaderInternal(loadPath);
-			if (loader != null)
-			{
-				loader.Reference(); //引用计数
-				if (loader.IsDone())
-				{
-					if (callback != null)
-						callback.Invoke(loader);
-				}
-				else
-				{
-					if (callback != null)
-						loader.LoadCallback += callback;
-				}
-				return loader;
-			}
-
-			// 新增下载需求
-			AssetBundleLoader newLoader = new AssetBundleLoader(assetType, loadPath, manifestPath);
-			_bundleLoaders.Add(newLoader);
-			newLoader.LoadCallback = callback;
-			newLoader.Reference(); //引用计数
-			newLoader.Update(); //立刻轮询
-			return newLoader;
-		}
-		private static AssetFileLoader TryGetBundleLoaderInternal(string assetPath)
-		{
-			AssetFileLoader loader = null;
-			for (int i = 0; i < _bundleLoaders.Count; i++)
-			{
-				AssetFileLoader temp = _bundleLoaders[i];
+				AssetFileLoader temp = _fileLoaders[i];
 				if (temp.LoadPath.Equals(assetPath))
 				{
 					loader = temp;
@@ -202,25 +165,13 @@ namespace MotionEngine.Res
 		/// </summary>
 		public static void Release()
 		{
-			// MoAssetResourceLoader
-			for (int i = _resourceLoaders.Count - 1; i >= 0; i--)
+			for (int i = _fileLoaders.Count - 1; i >= 0; i--)
 			{
-				AssetFileLoader loader = _resourceLoaders[i];
+				AssetFileLoader loader = _fileLoaders[i];
 				if (loader.IsDone() && loader.RefCount <= 0)
 				{
 					loader.UnLoad(true);
-					_resourceLoaders.RemoveAt(i);
-				}
-			}
-
-			// MoAssetBundleLoader
-			for (int i = _bundleLoaders.Count - 1; i >= 0; i--)
-			{
-				AssetFileLoader loader = _bundleLoaders[i];
-				if (loader.IsDone() && loader.RefCount <= 0)
-				{
-					loader.UnLoad(true);
-					_bundleLoaders.RemoveAt(i);
+					_fileLoaders.RemoveAt(i);
 				}
 			}
 		}
@@ -230,21 +181,12 @@ namespace MotionEngine.Res
 		/// </summary>
 		public static void ForceReleaseAll()
 		{
-			// MoAssetResourceLoader
-			for (int i = 0; i < _resourceLoaders.Count; i++)
+			for (int i = 0; i < _fileLoaders.Count; i++)
 			{
-				AssetFileLoader loader = _resourceLoaders[i];
+				AssetFileLoader loader = _fileLoaders[i];
 				loader.UnLoad(true);
 			}
-			_resourceLoaders.Clear();
-
-			// MoAssetBundleLoader
-			for (int i = 0; i < _bundleLoaders.Count; i++)
-			{
-				AssetFileLoader loader = _bundleLoaders[i];
-				loader.UnLoad(true);
-			}
-			_bundleLoaders.Clear();
+			_fileLoaders.Clear();
 
 			// 释放所有资源
 			Resources.UnloadUnusedAssets();
@@ -289,31 +231,16 @@ namespace MotionEngine.Res
 		}
 
 		// 获取加载器相关数据
-		public static int GetResourceFileLoaderCount()
+		public static int GetFileLoaderCount()
 		{
-			return _resourceLoaders.Count;
+			return _fileLoaders.Count;
 		}
-		public static int GetResourceFileLoaderFailedCount()
+		public static int GetFileLoaderFailedCount()
 		{
 			int count = 0;
-			for (int i = 0; i < _resourceLoaders.Count; i++)
+			for (int i = 0; i < _fileLoaders.Count; i++)
 			{
-				AssetFileLoader temp = _resourceLoaders[i];
-				if (temp.LoadState == EAssetFileLoadState.LoadAssetFileFailed)
-					count++;
-			}
-			return count;
-		}
-		public static int GetBundleFileLoaderCount()
-		{
-			return _bundleLoaders.Count;
-		}
-		public static int GetBundleFileLoaderFailedCount()
-		{
-			int count = 0;
-			for (int i = 0; i < _bundleLoaders.Count; i++)
-			{
-				AssetFileLoader temp = _bundleLoaders[i];
+				AssetFileLoader temp = _fileLoaders[i];
 				if (temp.LoadState == EAssetFileLoadState.LoadAssetFileFailed)
 					count++;
 			}
@@ -323,12 +250,7 @@ namespace MotionEngine.Res
 #if UNITY_EDITOR
 		public static List<AssetFileLoader> GetFileLoaders()
 		{
-			if (AssetLoadMode == EAssetLoadMode.ResourceMode)
-				return _resourceLoaders;
-			else if (AssetLoadMode == EAssetLoadMode.BundleMode)
-				return _bundleLoaders;
-			else
-				throw new NotImplementedException($"{AssetLoadMode}");
+			return _fileLoaders;
 		}
 #endif
 	}

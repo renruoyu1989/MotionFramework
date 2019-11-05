@@ -1,4 +1,5 @@
 ﻿//--------------------------------------------------
+// Motion Framework
 // Copyright©2018-2020 何冠峰
 // Licensed under the MIT license
 //--------------------------------------------------
@@ -81,7 +82,6 @@ namespace MotionEngine.Res
 				}
 			}
 		}
-
 		public override void LoadMainAsset(EAssetType mainAssetType, OnAssetObjectLoad callback)
 		{
 			// Check error

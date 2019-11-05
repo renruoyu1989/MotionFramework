@@ -31,24 +31,8 @@ namespace MotionGame
 		}
 		public void OnGUI()
 		{
-			int totalCount = 0;
-			int failedCount = 0;
-
-			if (AssetSystem.AssetLoadMode == EAssetLoadMode.ResourceMode)
-			{
-				totalCount = AssetSystem.GetResourceFileLoaderCount();
-				failedCount = AssetSystem.GetResourceFileLoaderFailedCount();
-			}
-			else if (AssetSystem.AssetLoadMode == EAssetLoadMode.BundleMode)
-			{
-				totalCount = AssetSystem.GetBundleFileLoaderCount();
-				failedCount = AssetSystem.GetBundleFileLoaderFailedCount();
-			}
-			else
-			{
-				throw new NotImplementedException($"{AssetSystem.AssetLoadMode}");
-			}
-
+			int totalCount = AssetSystem.GetFileLoaderCount();
+			int failedCount = AssetSystem.GetFileLoaderFailedCount();
 			Engine.GUILable($"AssetLoadMode : {AssetSystem.AssetLoadMode}");
 			Engine.GUILable($"Asset loader total count : {totalCount}");
 			Engine.GUILable($"Asset loader failed count : {failedCount}");

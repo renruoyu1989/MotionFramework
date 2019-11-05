@@ -1,4 +1,5 @@
 ﻿//--------------------------------------------------
+// Motion Framework
 // Copyright©2018-2020 何冠峰
 // Licensed under the MIT license
 //--------------------------------------------------
@@ -66,7 +67,7 @@ namespace MotionEngine.Res
 					foreach (string dpManifestPath in dependencies)
 					{
 						string dpLoadPath = AssetSystem.BundleMethod.GetAssetBundleLoadPath(dpManifestPath);
-						AssetFileLoader dpLoader = AssetSystem.GetBundleLoader(EAssetType.None, dpLoadPath, null, dpManifestPath);
+						AssetFileLoader dpLoader = AssetSystem.GetFileLoader(EAssetType.None, dpLoadPath, null, dpManifestPath);
 						_depends.Add(dpLoader);
 					}
 				}
