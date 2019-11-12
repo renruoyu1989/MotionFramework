@@ -7,7 +7,7 @@ using UnityEditor;
 
 public class ClearPlayerSetting
 {
-	[MenuItem("MotionTools/Misc - Clear PlayerSetting")]
+	[MenuItem("MotionTools/Clear PlayerSetting")]
 	static void ClearPlayerSettingFun()
 	{
 		PlayerPrefs.DeleteAll();

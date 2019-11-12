@@ -14,7 +14,7 @@ public class AssetImporterWindow : EditorWindow
 {
 	static AssetImporterWindow _thisInstance;
 
-	[MenuItem("MotionTools/Asset - AssetImporter")]
+	[MenuItem("MotionTools/Asset Importer", false, 103)]
 	static void ShowWindow()
 	{
 		if (_thisInstance == null)

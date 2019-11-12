@@ -16,7 +16,7 @@ public class AssetBrowserWindow : EditorWindow
 {
 	static AssetBrowserWindow _thisInstance;
 
-	[MenuItem("MotionTools/Asset - AssetBrowser")]
+	[MenuItem("MotionTools/Asset Browser", false, 101)]
 	static void ShowWindow()
 	{
 		if (_thisInstance == null)
