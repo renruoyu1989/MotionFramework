@@ -74,6 +74,8 @@
     <Compile Include="Assets\MotionEngine\Editor\EditorInitialize.cs" />
     <Compile Include="Assets\MotionEngine\Editor\EditorTools.cs" />
     <Compile Include="Assets\MotionEngine\Editor\Misc\ClearPlayerSetting.cs" />
+    <Compile Include="Assets\MotionEngine\Editor\ParticleProfiler\ParticleProfilerWindow.cs" />
+    <Compile Include="Assets\MotionEngine\Editor\ParticleProfiler\ParticleTester.cs" />
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity2018/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>
