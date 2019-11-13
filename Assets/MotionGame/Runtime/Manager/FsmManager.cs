@@ -13,7 +13,7 @@ namespace MotionGame
 		/// <summary>
 		/// 状态机系统
 		/// </summary>
-		public readonly FsmSystem System = new FsmSystem();
+		public readonly FsmSystem InternalSystem = new FsmSystem();
 
 		/// <summary>
 		/// 初始运行状态
@@ -29,26 +29,27 @@ namespace MotionGame
 		}
 		public void Start()
 		{
-			System.Run(_runState);
+			InternalSystem.Run(_runState);
 		}
 		public void Update()
 		{
-			System.Update();
+			InternalSystem.Update();
 		}
 		public void LateUpdate()
 		{
 		}
 		public void OnGUI()
 		{
-			Engine.GUILable($"FSM : {System.RunStateType}");
+			Engine.GUILable($"FSM : {InternalSystem.RunStateType}");
 		}
+
 
 		/// <summary>
 		/// 添加一个状态节点
 		/// </summary>
 		public void AddState(FsmState state)
 		{
-			System.AddState(state);
+			InternalSystem.AddState(state);
 		}
 
 		/// <summary>
@@ -56,7 +57,7 @@ namespace MotionGame
 		/// </summary>
 		public void ChangeState(int stateType)
 		{
-			System.ChangeState(stateType);
+			InternalSystem.ChangeState(stateType);
 		}
 
 		/// <summary>
