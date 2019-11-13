@@ -190,12 +190,16 @@ public class ParticleProfilerWindow : EditorWindow
 				{
 					GUILayout.Button(_texTips); //绘制提示图片
 					EditorGUILayout.HelpBox($"以下粒子系统组件不支持过程化模式！具体原因查看气泡提示", MessageType.Warning, true);
+#if UNITY_2018_4_OR_NEWER
 					List<ParticleSystem> particleList = _tester.AllParticles;
 					foreach (var ps in particleList)
 					{
 						if (ps.proceduralSimulationSupported == false)
 							EditorGUILayout.ObjectField($"{ps.gameObject.name}", ps.gameObject, typeof(GameObject), false, GUILayout.Width(300));
 					}
+#else
+					EditorGUILayout.LabelField("当前版本不支持过程化检测，请升级至2018.4版本或最新版本");
+#endif
 				}
 				EditorGUILayout.EndScrollView();
 				EditorGUI.indentLevel = 0;
