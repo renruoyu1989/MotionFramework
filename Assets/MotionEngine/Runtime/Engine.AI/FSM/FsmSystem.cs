@@ -93,6 +93,10 @@ namespace MotionEngine.AI
 			{
 				_states.Add(state);
 			}
+			else
+			{
+				LogSystem.Log(ELogType.Warning, $"State {state.Type} already existed");
+			}
 		}
 
 		/// <summary>

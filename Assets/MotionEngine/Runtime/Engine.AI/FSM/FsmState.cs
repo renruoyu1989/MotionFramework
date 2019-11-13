@@ -33,7 +33,7 @@ namespace MotionEngine.AI
 		public abstract void Enter();
 		public abstract void Execute();
 		public abstract void Exit();
-		public abstract void OnMessage(object msg);
+		public virtual void OnMessage(object msg) { }
 
 		/// <summary>
 		/// 添加可转换状态类型

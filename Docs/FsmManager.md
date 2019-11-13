@@ -26,9 +26,6 @@ public class FsmStart : FsmState
 	public override void Exit()
 	{
 	}
-	public override void OnMessage(object msg)
-	{
-	}
 }
 
 public class FsmRunning : FsmState
@@ -43,9 +40,6 @@ public class FsmRunning : FsmState
 	{
 	}
 	public override void Exit()
-	{
-	}
-	public override void OnMessage(object msg)
 	{
 	}
 }
