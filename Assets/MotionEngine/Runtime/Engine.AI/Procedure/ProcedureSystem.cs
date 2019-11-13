@@ -37,7 +37,7 @@ namespace MotionEngine.AI
 			if (_types.Count > 0)
 				_system.Run(_types[0]);
 			else
-				LogSystem.Log(ELogType.Warning, "Procedure system dont has any state.");
+				LogSystem.Log(ELogType.Warning, "Procedure system dont has any procedure.");
 		}
 
 		/// <summary>
@@ -49,13 +49,14 @@ namespace MotionEngine.AI
 		}
 
 		/// <summary>
-		/// 添加一个流程
+		/// 创建并自动添加一个流程
 		/// 注意添加的先后顺序
 		/// </summary>
 		public void AddProcedure(FsmState procedure)
 		{
-			_types.Add(procedure.Type);
 			_system.AddState(procedure);
+			if (_types.Contains(procedure.Type) == false)
+				_types.Add(procedure.Type);
 		}
 
 		/// <summary>
