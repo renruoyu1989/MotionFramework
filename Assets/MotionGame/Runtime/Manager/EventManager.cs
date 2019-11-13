@@ -13,7 +13,7 @@ namespace MotionGame
 		/// <summary>
 		/// 事件系统
 		/// </summary>
-		public readonly EventSystem System = new EventSystem();
+		public readonly EventSystem InternalSystem = new EventSystem();
 
 
 		private EventManager()
@@ -33,7 +33,7 @@ namespace MotionGame
 		}
 		public void OnGUI()
 		{
-			Engine.GUILable($"Listener total count : {System.GetAllListenerCount()}");
+			Engine.GUILable($"Listener total count : {InternalSystem.GetAllListenerCount()}");
 		}
 
 		/// <summary>
@@ -41,7 +41,7 @@ namespace MotionGame
 		/// </summary>
 		public void AddListener(string eventTag, System.Action<IEventMessage> listener)
 		{
-			System.AddListener(eventTag, listener);
+			InternalSystem.AddListener(eventTag, listener);
 		}
 
 		/// <summary>
@@ -49,7 +49,7 @@ namespace MotionGame
 		/// </summary>
 		public void RemoveListener(string eventTag, System.Action<IEventMessage> listener)
 		{
-			System.RemoveListener(eventTag, listener);
+			InternalSystem.RemoveListener(eventTag, listener);
 		}
 
 		/// <summary>
@@ -57,7 +57,7 @@ namespace MotionGame
 		/// </summary>
 		public void Send(string eventTag, IEventMessage message)
 		{
-			System.Broadcast(eventTag, message);
+			InternalSystem.Broadcast(eventTag, message);
 		}
 	}
 }
