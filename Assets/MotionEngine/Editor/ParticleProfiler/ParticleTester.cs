@@ -306,6 +306,7 @@ public class ParticleTester
 		}
 
 		// 计算特效生命周期
+		CurveSampleTime = 1f;
 		foreach (var ps in _allParticles)
 		{
 			float playingTime = ps.main.duration;
