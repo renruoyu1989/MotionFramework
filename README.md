@@ -54,3 +54,6 @@ Unity2017.4 && Unity2018.4
 
 4. **AssetSearch**  
 资源引用搜索工具
+
+5. **ParticleProfiler**  
+特效性能查看工具
