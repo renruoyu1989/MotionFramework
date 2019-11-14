@@ -1,5 +1,6 @@
 ﻿using MotionEngine;
 using MotionEngine.Event;
+using MotionEngine.Debug;
 
 namespace MotionGame
 {
@@ -33,7 +34,7 @@ namespace MotionGame
 		}
 		public void OnGUI()
 		{
-			Engine.GUILable($"Listener total count : {InternalSystem.GetAllListenerCount()}");
+			DebugConsole.GUILable($"[{nameof(EventManager)}] Listener total count : {InternalSystem.GetAllListenerCount()}");
 		}
 
 		/// <summary>

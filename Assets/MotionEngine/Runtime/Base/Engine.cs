@@ -199,26 +199,5 @@ namespace MotionEngine
 			_bhvCoroutine.StopAllCoroutines();
 		}
 		#endregion
-
-		#region GUI辅助方法
-		public static void GUILable(string text)
-		{
-			GUIStyle style = GUIStyle.none;
-			style.richText = true;
-			GUILayout.Label("<size=18><color=white>" + text + "</color></size>", style);
-		}
-		public static void GUIRedLable(string text)
-		{
-			GUIStyle style = GUIStyle.none;
-			style.richText = true;
-			GUILayout.Label("<size=18><color=red>" + text + "</color></size>", style);
-		}
-		public static void GUIYellowLable(string text)
-		{
-			GUIStyle style = GUIStyle.none;
-			style.richText = true;
-			GUILayout.Label("<size=18><color=yellow>" + text + "</color></size>", style);
-		}
-		#endregion
 	}
 }

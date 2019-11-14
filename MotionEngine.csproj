@@ -67,6 +67,9 @@
     <Compile Include="Assets\MotionEngine\Runtime\Engine.AI\FSM\FsmState.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.AI\FSM\FsmSystem.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.AI\Procedure\ProcedureSystem.cs" />
+    <Compile Include="Assets\MotionEngine\Runtime\Engine.Debug\Attribute\DebugAttribute.cs" />
+    <Compile Include="Assets\MotionEngine\Runtime\Engine.Debug\DebugConsole.cs" />
+    <Compile Include="Assets\MotionEngine\Runtime\Engine.Debug\Interface\IDebug.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.Event\EventSystem.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.Event\Interface\IEventMessage.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.IO\ByteBuffer.cs" />

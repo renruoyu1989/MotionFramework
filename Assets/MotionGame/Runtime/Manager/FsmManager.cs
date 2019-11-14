@@ -1,5 +1,6 @@
 ﻿using MotionEngine;
 using MotionEngine.AI;
+using MotionEngine.Debug;
 
 namespace MotionGame
 {
@@ -40,7 +41,7 @@ namespace MotionGame
 		}
 		public void OnGUI()
 		{
-			Engine.GUILable($"FSM : {InternalSystem.RunStateType}");
+			DebugConsole.GUILable($"[{nameof(FsmManager)}] FSM : {InternalSystem.RunStateType}");
 		}
 
 

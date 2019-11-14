@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using MotionEngine;
 using MotionEngine.Net;
+using MotionEngine.Debug;
 
 namespace MotionGame
 {
@@ -72,7 +73,7 @@ namespace MotionGame
 		}
 		public void OnGUI()
 		{
-			Engine.GUILable($"Network state : {State}");
+			DebugConsole.GUILable($"[{nameof(NetManager)}] Network state : {State}");
 		}
 
 		private void UpdatePickMsg()

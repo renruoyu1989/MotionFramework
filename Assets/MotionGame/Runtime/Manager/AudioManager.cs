@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MotionEngine;
 using MotionEngine.Res;
+using MotionEngine.Debug;
 
 namespace MotionGame
 {
@@ -95,7 +96,7 @@ namespace MotionGame
 		}
 		public void OnGUI()
 		{
-			Engine.GUILable($"Audio total count : {_assets.Count}");
+			DebugConsole.GUILable($"[{nameof(AudioManager)}] Audio total count : {_assets.Count}");
 		}
 
 		/// <summary>

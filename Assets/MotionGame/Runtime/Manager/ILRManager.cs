@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using MotionEngine;
+using MotionEngine.Debug;
 
 namespace MotionGame
 {
@@ -57,7 +58,7 @@ namespace MotionGame
 		}
 		public void OnGUI()
 		{
-			Engine.GUILable($"EnableILRuntime : {EnableILRuntime}");
+			DebugConsole.GUILable($"[{nameof(ILRManager)}] EnableILRuntime : {EnableILRuntime}");
 		}
 
 		/// <summary>

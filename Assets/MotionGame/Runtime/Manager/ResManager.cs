@@ -1,6 +1,7 @@
 ﻿using System;
 using MotionEngine;
 using MotionEngine.Res;
+using MotionEngine.Debug;
 
 namespace MotionGame
 {
@@ -33,9 +34,9 @@ namespace MotionGame
 		{
 			int totalCount = AssetSystem.GetFileLoaderCount();
 			int failedCount = AssetSystem.GetFileLoaderFailedCount();
-			Engine.GUILable($"AssetLoadMode : {AssetSystem.AssetLoadMode}");
-			Engine.GUILable($"Asset loader total count : {totalCount}");
-			Engine.GUILable($"Asset loader failed count : {failedCount}");
+			DebugConsole.GUILable($"[{nameof(ResManager)}] AssetLoadMode : {AssetSystem.AssetLoadMode}");
+			DebugConsole.GUILable($"[{nameof(ResManager)}] Asset loader total count : {totalCount}");
+			DebugConsole.GUILable($"[{nameof(ResManager)}] Asset loader failed count : {failedCount}");
 		}
 	}
 }
