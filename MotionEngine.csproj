@@ -85,6 +85,9 @@
     <Compile Include="Assets\MotionEngine\Runtime\Engine.Patch\PatchDefine.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.Patch\PatchElement.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.Patch\PatchFile.cs" />
+    <Compile Include="Assets\MotionEngine\Runtime\Engine.Reference\Interface\IReference.cs" />
+    <Compile Include="Assets\MotionEngine\Runtime\Engine.Reference\ReferencePool.cs" />
+    <Compile Include="Assets\MotionEngine\Runtime\Engine.Reference\ReferenceSystem.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.Res\Asset\Asset.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.Res\Asset\AssetAtlas.cs" />
     <Compile Include="Assets\MotionEngine\Runtime\Engine.Res\Asset\AssetAudio.cs" />
