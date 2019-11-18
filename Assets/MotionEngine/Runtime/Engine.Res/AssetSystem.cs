@@ -247,11 +247,12 @@ namespace MotionEngine.Res
 			return count;
 		}
 
-#if UNITY_EDITOR
+		/// <summary>
+		/// 调试专属方法
+		/// </summary>
 		public static List<AssetFileLoader> GetFileLoaders()
 		{
 			return _fileLoaders;
 		}
-#endif
 	}
 }
