@@ -113,8 +113,9 @@ namespace MotionEngine.Debug
 			GUILayout.EndHorizontal();
 
 			// 绘制选中节点的内容
-			GUILayout.Space(20);
-			_scrollPos = GUILayout.BeginScrollView(_scrollPos, GUILayout.Width(Screen.width), GUILayout.Height(Screen.height));
+			float scrollWidth = Screen.width;
+			float scrollHeight = Screen.height - GUIButtonStyle.fixedHeight - 10;
+			_scrollPos = GUILayout.BeginScrollView(_scrollPos, GUILayout.Width(scrollWidth), GUILayout.Height(scrollHeight));
 			{
 				for (int i = 0; i < _wrappers.Count; i++)
 				{
