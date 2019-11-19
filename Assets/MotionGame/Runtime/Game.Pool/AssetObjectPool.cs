@@ -50,6 +50,19 @@ namespace MotionGame
 			}
 		}
 
+		/// <summary>
+		/// 内部缓存总数
+		/// </summary>
+		public int Count
+		{
+			get { return _pool.Count; }
+		}
+
+		/// <summary>
+		/// 外部使用总数
+		/// </summary>
+		public int SpawnCount { private set; get; }
+
 
 		public AssetObjectPool(Transform root, string resName, int capacity)
 		{
@@ -107,6 +120,7 @@ namespace MotionGame
 			if (go == null)
 				return;
 
+			SpawnCount--;
 			go.SetActive(false);
 			go.transform.SetParent(_root);
 			go.transform.localPosition = Vector3.zero;
@@ -124,7 +138,7 @@ namespace MotionGame
 				_callbacks += callback;
 				return;
 			}
-
+	
 			if (_pool.Count > 0)
 			{
 				GameObject go = _pool.Pop();
@@ -138,6 +152,7 @@ namespace MotionGame
 				obj.SetActive(true);
 				callback.Invoke(obj);
 			}
+			SpawnCount++;
 		}
 
 		/// <summary>
@@ -161,6 +176,7 @@ namespace MotionGame
 				go = GameObject.Instantiate(_go);
 				go.SetActive(true);
 			}
+			SpawnCount++;
 			return go;
 		}
 
