@@ -51,6 +51,19 @@ namespace MotionGame
 		}
 
 		/// <summary>
+		/// 加载结果
+		/// </summary>
+		public EAssetResult LoadResult
+		{
+			get
+			{
+				if (_asset == null)
+					return EAssetResult.None;
+				return _asset.Result;
+			}
+		}
+
+		/// <summary>
 		/// 内部缓存总数
 		/// </summary>
 		public int Count
@@ -96,7 +109,7 @@ namespace MotionGame
 			for (int i = 0; i < Capacity; i++)
 			{
 				GameObject obj = GameObject.Instantiate(_go) as GameObject;
-				Restore(obj);
+				InternalRestore(obj);
 			}
 
 			// 最后返回结果
@@ -121,6 +134,10 @@ namespace MotionGame
 				return;
 
 			SpawnCount--;
+			InternalRestore(go);
+		}
+		private void InternalRestore(GameObject go)
+		{
 			go.SetActive(false);
 			go.transform.SetParent(_root);
 			go.transform.localPosition = Vector3.zero;
@@ -201,6 +218,7 @@ namespace MotionGame
 
 			// 清空回调
 			_callbacks = null;
+			SpawnCount = 0;
 		}
 	}
 }
