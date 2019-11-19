@@ -106,7 +106,7 @@ namespace MotionEngine.Res
 					return assetPath;
 			}
 
-			LogSystem.Log(ELogType.Error, $"Not found asset database file : {loadPath}");
+			LogSystem.Log(ELogType.Warning, $"Not found asset database file : {loadPath}");
 			return string.Empty;
 #else
 			throw new Exception("Should never get here.");
