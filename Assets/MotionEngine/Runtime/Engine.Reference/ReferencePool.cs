@@ -33,13 +33,16 @@ namespace MotionEngine.Reference
 		}
 
 		/// <summary>
-		/// 对象总数
+		/// 内部缓存总数
 		/// </summary>
 		public int Count
 		{
 			get { return _pool.Count; }
 		}
 
+		/// <summary>
+		/// 外部使用总数
+		/// </summary>
 		public int SpawnCount { private set; get; }
 
 		/// <summary>

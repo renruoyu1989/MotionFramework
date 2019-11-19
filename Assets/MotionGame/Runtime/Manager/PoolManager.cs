@@ -121,5 +121,13 @@ namespace MotionGame
 				LogSystem.Log(ELogType.Error, $"Should never get here. ResName is {resName}");
 			}
 		}
+
+		/// <summary>
+		/// 调试专属方法
+		/// </summary>
+		public Dictionary<string, AssetObjectPool> DebugAllPools
+		{
+			get { return _pools; }
+		}
 	}
 }

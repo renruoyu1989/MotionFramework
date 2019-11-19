@@ -250,7 +250,7 @@ namespace MotionEngine.Res
 		/// <summary>
 		/// 调试专属方法
 		/// </summary>
-		public static List<AssetFileLoader> GetFileLoaders()
+		public static List<AssetFileLoader> DebugAllLoaders()
 		{
 			return _fileLoaders;
 		}

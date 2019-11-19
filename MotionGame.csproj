@@ -82,7 +82,8 @@
     <Compile Include="Assets\MotionGame\Runtime\Game.Config\Attribute\ConfigAttribute.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Config\Attribute\ConfigHandler.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Config\ConfigDefine.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\Game.Debug\DebugAsset.cs" />
+    <Compile Include="Assets\MotionGame\Runtime\Game.Debug\DebugAssetPool.cs" />
+    <Compile Include="Assets\MotionGame\Runtime\Game.Debug\DebugBundle.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Debug\DebugLog.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Debug\DebugModule.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Debug\DebugRefer.cs" />

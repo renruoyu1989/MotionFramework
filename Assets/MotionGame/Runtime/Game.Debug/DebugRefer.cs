@@ -14,8 +14,8 @@ namespace MotionGame
 		}
 		public void OnGUI()
 		{
-			var pools = ReferenceSystem.AllPools;
-			DebugConsole.GUILable($"引用池总数：{pools.Count}");
+			var pools = ReferenceSystem.DebugAllPools;
+			DebugConsole.GUILable($"池总数：{pools.Count}");
 			foreach(var pair in pools)
 			{
 				DebugConsole.GUILable($"[{pair.Value.ClassType.FullName}] CacheCount = {pair.Value.Count} SpwanCount = {pair.Value.SpawnCount}");

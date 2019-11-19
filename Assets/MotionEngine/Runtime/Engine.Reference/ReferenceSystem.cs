@@ -104,7 +104,7 @@ namespace MotionEngine.Reference
 		/// <summary>
 		/// 调试专属方法
 		/// </summary>
-		public static Dictionary<Type, ReferencePool> AllPools
+		public static Dictionary<Type, ReferencePool> DebugAllPools
 		{
 			get { return _pools; }
 		}

@@ -75,7 +75,7 @@ public class AssetBrowserWindow : EditorWindow
 		// 清空列表
 		_cacheInfos.Clear();
 
-		var fileLoaders = AssetSystem.GetFileLoaders();
+		var fileLoaders = AssetSystem.DebugAllLoaders();
 		foreach (var loader in fileLoaders)
 		{
 			// 只搜索关键字
