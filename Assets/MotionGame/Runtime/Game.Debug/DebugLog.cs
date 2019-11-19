@@ -4,16 +4,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using MotionEngine;
 using MotionEngine.Debug;
+using MotionEngine.Reference;
 
 namespace MotionGame
 {
 	[DebugAttribute("日志列表", 102)]
 	public class DebugLog : IDebug
 	{
-		private class LogWrapper
+		private class LogWrapper : IReference
 		{
 			public LogType Type;
 			public string Log;
+			public void OnRelease()
+			{
+				Log = string.Empty;
+			}
 		}
 
 		/// <summary>
@@ -68,13 +73,16 @@ namespace MotionGame
 
 		private void HandleUnityEngineLog(string logString, string stackTrace, LogType type)
 		{
-			LogWrapper wrapper = new LogWrapper();
+			LogWrapper wrapper = ReferenceSystem.Spawn<LogWrapper>();
 			wrapper.Type = type;
 			wrapper.Log = $"[{type}] {logString}";
-
 			_logs.Add(wrapper);
+
 			if (_logs.Count > LOG_MAX_COUNT)
+			{
+				ReferenceSystem.Release(_logs[0]);
 				_logs.RemoveAt(0);
+			}
 		}
 	}
 }
