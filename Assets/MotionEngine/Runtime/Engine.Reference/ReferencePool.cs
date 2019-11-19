@@ -40,6 +40,8 @@ namespace MotionEngine.Reference
 			get { return _pool.Count; }
 		}
 
+		public int SpawnCount { private set; get; }
+
 		/// <summary>
 		/// 申请引用对象
 		/// </summary>
@@ -54,6 +56,7 @@ namespace MotionEngine.Reference
 			{
 				item = Activator.CreateInstance(ClassType) as IReference;
 			}
+			SpawnCount++;
 			return item;
 		}
 
@@ -71,6 +74,7 @@ namespace MotionEngine.Reference
 			if (_pool.Contains(item))
 				throw new Exception($"The item {item.GetType()} already exists.");
 
+			SpawnCount--;
 			item.OnRelease();
 			_pool.Enqueue(item);
 		}
