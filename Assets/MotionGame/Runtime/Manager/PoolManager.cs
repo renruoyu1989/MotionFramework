@@ -7,7 +7,7 @@ using UnityEngine;
 namespace MotionGame
 {
 	/// <summary>
-	/// 模型资源对象池管理器
+	/// 实体资源池管理器
 	/// </summary>
 	public sealed class PoolManager
 	{
@@ -33,7 +33,7 @@ namespace MotionGame
 		}
 
 		/// <summary>
-		/// 创建一种模型资源的对象池
+		/// 创建一种实体资源的对象池
 		/// </summary>
 		public AssetObjectPool CreatePool(string resName, int capacity)
 		{
@@ -71,24 +71,41 @@ namespace MotionGame
 		}
 
 		/// <summary>
-		/// 获取一个模型资源
+		/// 异步方式获取一个实体对象
 		/// </summary>
 		public void Spawn(string resName, Action<GameObject> callbcak)
 		{
 			if (_pools.ContainsKey(resName))
 			{
-				_pools[resName].Pop(callbcak);
+				_pools[resName].Spawn(callbcak);
 			}
 			else
 			{
-				// 如果不存在是否创建该资源的对象池
+				// 如果不存在创建该实体的对象池
 				AssetObjectPool pool = CreatePool(resName, 0);
-				pool.Pop(callbcak);
+				pool.Spawn(callbcak);
 			}
 		}
 
 		/// <summary>
-		/// 回收一个模型资源
+		/// 同步方式获取一个实体对象
+		/// </summary>
+		public GameObject Spawn(string resName)
+		{
+			if (_pools.ContainsKey(resName))
+			{
+				return _pools[resName].Spawn();
+			}
+			else
+			{
+				// 如果不存在创建该实体的对象池
+				AssetObjectPool pool = CreatePool(resName, 0);
+				return pool.Spawn();
+			}
+		}
+
+		/// <summary>
+		/// 回收一个实体对象
 		/// </summary>
 		public void Restore(string resName, GameObject obj)
 		{
@@ -97,7 +114,7 @@ namespace MotionGame
 
 			if (_pools.ContainsKey(resName))
 			{
-				_pools[resName].Push(obj);
+				_pools[resName].Restore(obj);
 			}
 			else
 			{

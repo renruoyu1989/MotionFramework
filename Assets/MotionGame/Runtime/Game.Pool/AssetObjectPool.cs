@@ -7,33 +7,28 @@ using MotionEngine.Res;
 namespace MotionGame
 {
 	/// <summary>
-	/// GameObject对象池
+	/// 实体资源对象池
 	/// </summary>
 	public class AssetObjectPool
 	{
-		/// <summary>
-		/// 池子
-		/// </summary>
+		// 池子
 		private readonly Stack<GameObject> _pool;
 
-		/// <summary>
-		/// 对象资源类
-		/// </summary>
+		// 实体资源类
 		private AssetObject _asset;
 
-		/// <summary>
-		/// 对象池Root
-		/// </summary>
+		// 实体对象
+		private GameObject _go;
+
+		// 对象池Root
 		private Transform _root;
 
-		/// <summary>
-		/// 资源加载完毕回调
-		/// </summary>
+		// 资源加载完毕回调
 		private Action<GameObject> _callbacks;
 
 
 		/// <summary>
-		/// 模型资源名称
+		/// 实体资源名称
 		/// </summary>
 		public string ResName { private set; get; }
 
@@ -45,7 +40,15 @@ namespace MotionGame
 		/// <summary>
 		/// 是否准备完毕
 		/// </summary>
-		public bool IsPrepare { private set; get; } = false;
+		public bool IsPrepare
+		{
+			get
+			{
+				if (_asset == null)
+					return false;
+				return _asset.IsLoadDone();
+			}
+		}
 
 
 		public AssetObjectPool(Transform root, string resName, int capacity)
@@ -57,32 +60,31 @@ namespace MotionGame
 			// 创建缓存池
 			_pool = new Stack<GameObject>(capacity);
 
-			// 创建并加载资源
+			// 加载资源
 			_asset = new AssetObject();
-			_asset.Load(resName, OnAssetQuey);
+			_asset.Load(resName, OnAssetPrepare);
 		}
 
-		/// <summary>
-		/// 当资源加载完毕
-		/// </summary>
-		private void OnAssetQuey(object assetClass, EAssetResult result)
+		// 当资源加载完毕
+		private void OnAssetPrepare(object assetClass, EAssetResult result)
 		{
+			// 如果加载失败，创建临时对象
 			if (result == EAssetResult.Failed)
-				return;
+				_go = new GameObject(ResName);
+			else
+				_go = _asset.GameObj;
 
-			_asset.GameObj.SetActive(false);
-			_asset.GameObj.transform.SetParent(_root);
-			_asset.GameObj.transform.localPosition = Vector3.zero;
+			// 设置游戏对象
+			_go.SetActive(false);
+			_go.transform.SetParent(_root);
+			_go.transform.localPosition = Vector3.zero;
 
 			// 创建初始对象
 			for (int i = 0; i < Capacity; i++)
 			{
-				GameObject obj = GameObject.Instantiate(_asset.GameObj) as GameObject;
-				Push(obj);
+				GameObject obj = GameObject.Instantiate(_go) as GameObject;
+				Restore(obj);
 			}
-
-			// 准备完毕
-			IsPrepare = true;
 
 			// 最后返回结果
 			if (_callbacks != null)
@@ -91,7 +93,7 @@ namespace MotionGame
 				for (int i = 0; i < actions.Length; i++)
 				{
 					var action = (Action<GameObject>)actions[i];
-					Pop(action);
+					Spawn(action);
 				}
 				_callbacks = null;
 			}
@@ -100,21 +102,21 @@ namespace MotionGame
 		/// <summary>
 		/// 存储一个对象
 		/// </summary>
-		public void Push(GameObject obj)
+		public void Restore(GameObject go)
 		{
-			if (obj == null)
+			if (go == null)
 				return;
 
-			obj.SetActive(false);
-			obj.transform.SetParent(_root);
-			obj.transform.localPosition = Vector3.zero;
-			_pool.Push(obj);
+			go.SetActive(false);
+			go.transform.SetParent(_root);
+			go.transform.localPosition = Vector3.zero;
+			_pool.Push(go);
 		}
 
 		/// <summary>
-		/// 获取一个对象
+		/// 异步的方式获取一个对象
 		/// </summary>
-		public void Pop(Action<GameObject> callback)
+		public void Spawn(Action<GameObject> callback)
 		{
 			// 如果对象池还没有准备完毕
 			if (IsPrepare == false)
@@ -125,17 +127,41 @@ namespace MotionGame
 
 			if (_pool.Count > 0)
 			{
-				GameObject obj = _pool.Pop();
-				obj.SetActive(true);
-				obj.transform.parent = null;
-				callback.Invoke(obj);
+				GameObject go = _pool.Pop();
+				go.SetActive(true);
+				go.transform.parent = null;
+				callback.Invoke(go);
 			}
 			else
 			{
-				GameObject obj = GameObject.Instantiate(_asset.GameObj);
+				GameObject obj = GameObject.Instantiate(_go);
 				obj.SetActive(true);
 				callback.Invoke(obj);
 			}
+		}
+
+		/// <summary>
+		/// 同步的方式获取一个对象
+		/// </summary>
+		public GameObject Spawn()
+		{
+			// 如果对象池还没有准备完毕
+			if (IsPrepare == false)
+				throw new Exception($"{_asset.ResName} is not prepare");
+
+			GameObject go = null;
+			if (_pool.Count > 0)
+			{
+				go = _pool.Pop();
+				go.SetActive(true);
+				go.transform.parent = null;
+			}
+			else
+			{
+				go = GameObject.Instantiate(_go);
+				go.SetActive(true);
+			}
+			return go;
 		}
 
 		/// <summary>
