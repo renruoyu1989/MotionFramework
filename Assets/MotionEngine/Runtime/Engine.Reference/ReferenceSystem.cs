@@ -55,6 +55,15 @@ namespace MotionEngine.Reference
 		}
 
 		/// <summary>
+		/// 申请引用对象
+		/// </summary>
+		public static T Spawn<T>() where T : class, IReference, new()
+		{
+			Type type = typeof(T);
+			return Spawn(type) as T;
+		}
+
+		/// <summary>
 		/// 回收引用对象
 		/// </summary>
 		public static void Release(IReference item)
