@@ -88,6 +88,7 @@ namespace MotionEngine.Reference
 		public void Clear()
 		{
 			_pool.Clear();
+			SpawnCount = 0;
 		}
 	}
 }
