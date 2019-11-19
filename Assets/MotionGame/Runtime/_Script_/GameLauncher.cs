@@ -24,6 +24,9 @@ public class GameLauncher : MonoBehaviour
 		// 不销毁游戏对象
 		DontDestroyOnLoad(gameObject);
 
+		// 注册MotionEngine日志系统
+		LogSystem.RegisterCallback(HandleMotionEngineLog);
+
 		// 设置协程脚本
 		Engine.Instance.InitCoroutineBehaviour(this);
 
@@ -74,6 +77,31 @@ public class GameLauncher : MonoBehaviour
 
 		// 屏幕不休眠
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;
+	}
+
+	// 日志回调
+	private void HandleMotionEngineLog(ELogType logType, string log)
+	{
+		if (logType == ELogType.Log)
+		{
+			UnityEngine.Debug.Log(log);
+		}
+		else if (logType == ELogType.Error)
+		{
+			UnityEngine.Debug.LogError(log);
+		}
+		else if (logType == ELogType.Warning)
+		{
+			UnityEngine.Debug.LogWarning(log);
+		}
+		else if (logType == ELogType.Exception)
+		{
+			UnityEngine.Debug.LogError(log);
+		}
+		else
+		{
+			throw new NotImplementedException($"{logType}");
+		}
 	}
 
 	/// <summary>

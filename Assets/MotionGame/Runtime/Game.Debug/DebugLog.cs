@@ -34,9 +34,6 @@ namespace MotionGame
 
 		public void OnInit()
 		{
-			// 注册MotionEngine日志系统
-			LogSystem.RegisterCallback(HandleMotionEngineLog);
-
 			// 注册UnityEngine日志系统
 			Application.logMessageReceived += HandleUnityEngineLog;
 		}
@@ -78,29 +75,6 @@ namespace MotionGame
 			_logs.Add(wrapper);
 			if (_logs.Count > LOG_MAX_COUNT)
 				_logs.RemoveAt(0);
-		}
-		private void HandleMotionEngineLog(ELogType logType, string log)
-		{
-			if (logType == ELogType.Log)
-			{
-				UnityEngine.Debug.Log(log);
-			}
-			else if (logType == ELogType.Error)
-			{
-				UnityEngine.Debug.LogError(log);
-			}
-			else if (logType == ELogType.Warning)
-			{
-				UnityEngine.Debug.LogWarning(log);
-			}
-			else if (logType == ELogType.Exception)
-			{
-				UnityEngine.Debug.LogError(log);
-			}
-			else
-			{
-				throw new NotImplementedException($"{logType}");
-			}
 		}
 	}
 }
