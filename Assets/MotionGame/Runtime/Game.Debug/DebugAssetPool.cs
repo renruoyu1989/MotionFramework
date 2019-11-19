@@ -17,7 +17,11 @@ namespace MotionGame
 			DebugConsole.GUILable($"池总数：{pools.Count}");
 			foreach (var pair in pools)
 			{
-				DebugConsole.GUILable($"[{pair.Value.ResName}] CacheCount = {pair.Value.Count} SpwanCount = {pair.Value.SpawnCount}");
+				string content = $"[{pair.Value.ResName}] CacheCount = {pair.Value.Count} SpwanCount = {pair.Value.SpawnCount}";
+				if(pair.Value.LoadResult == MotionEngine.Res.EAssetResult.Failed)
+					DebugConsole.GUIRedLable(content);
+				else
+					DebugConsole.GUILable(content);
 			}
 		}
 	}
