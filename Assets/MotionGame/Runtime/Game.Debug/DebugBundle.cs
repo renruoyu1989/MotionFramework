@@ -8,7 +8,7 @@ using UnityEngine;
 namespace MotionGame
 {
 	[DebugAttribute("资源列表", 103)]
-	public class DebugAsset : IDebug
+	public class DebugBundle : IDebug
 	{
 		// 加载器总数
 		private int _loaderTotalCount = 0;
@@ -48,7 +48,7 @@ namespace MotionGame
 			_cacheInfos.Clear();
 
 			// 绘制显示列表
-			var fileLoaders = AssetSystem.GetFileLoaders();
+			var fileLoaders = AssetSystem.DebugAllLoaders();
 			_loaderTotalCount = fileLoaders.Count;
 			foreach (var loader in fileLoaders)
 			{
