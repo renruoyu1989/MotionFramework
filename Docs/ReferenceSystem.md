@@ -1,4 +1,4 @@
-定义类
+定义引用类
 ```C#
 using MotionEngine.Reference;
 
@@ -22,10 +22,17 @@ public class Test
 {
 	public void Start()
 	{
-		// 获取对象
-		ReferClass refer = ReferenceSystem.Spawn(typeof(ReferClass))
-		// 回收对象
-		ReferenceSystem.Release(refer)
+		// 获取对象方式1
+		{
+			ReferClass refer = ReferenceSystem.Spawn(typeof(ReferClass));
+			ReferenceSystem.Release(refer)
+		}
+
+		// 获取对象方式2
+		{
+			ReferClass refer = ReferenceSystem.Spawn<ReferClass>();
+			ReferenceSystem.Release(refer)
+		}
 	}
 }
 ```

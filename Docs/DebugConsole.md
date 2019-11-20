@@ -1,7 +1,7 @@
 
 控制台系统可以帮助开发者在游戏运行时显示一些关键数据或帮助调试游戏。
 
-框架默认自带几个控制台节点：模块信息，日志列表，资源列表
+框架默认自带几个控制台节点：系统，模块，日志，资源列表，引用池，实体池等
 ![image](https://github.com/gmhevinci/MotionFramework/raw/master/Docs/Image/img2.png)  
 
 定义自己的控制台节点  
@@ -24,6 +24,8 @@ namespace MotionGame
 	}
 }
 ```
+
+注意：定义完成后，运行游戏即可查看我们自定义的节点
 
 更详细的教程请参考示例代码
 1. [MotionEngine/Runtime/Game.Debug](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionGame/Runtime/Game.Debug)
