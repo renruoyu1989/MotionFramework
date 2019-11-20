@@ -30,7 +30,7 @@ namespace MotionEngine.Res
 			projectPath = UtilFile.GetRegularPath(projectPath);
 			return UtilFormat.Format("{0}/Sandbox/{1}", projectPath, assetPath);
 #else
-		return MoStringFormat.Format("{0}/Sandbox/{1}", Application.persistentDataPath, assetPath);
+		return UtilFormat.Format("{0}/Sandbox/{1}", Application.persistentDataPath, assetPath);
 #endif
 		}
 
@@ -43,11 +43,11 @@ namespace MotionEngine.Res
 #if UNITY_EDITOR
 			return UtilFormat.Format("file:///{0}", path);
 #elif UNITY_IPHONE
-			return MoStringFormat.Format("file://{0}", path);
+			return UtilFormat.Format("file://{0}", path);
 #elif UNITY_ANDROID
 			return path;
 #elif UNITY_STANDALONE
-			return MoStringFormat.Format("file:///{0}", path);
+			return UtilFormat.Format("file:///{0}", path);
 #endif
 		}
 
