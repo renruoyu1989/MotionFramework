@@ -5,7 +5,7 @@ using MotionEngine.Debug;
 
 namespace MotionGame
 {
-	[DebugAttribute("实体资源池", 105)]
+	[DebugAttribute("实体池", 105)]
 	public class DebugPool : IDebug
 	{
 		public void OnInit()

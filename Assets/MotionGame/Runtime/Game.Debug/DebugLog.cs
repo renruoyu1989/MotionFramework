@@ -8,7 +8,7 @@ using MotionEngine.Reference;
 
 namespace MotionGame
 {
-	[DebugAttribute("日志列表", 102)]
+	[DebugAttribute("日志", 102)]
 	public class DebugLog : IDebug
 	{
 		private class LogWrapper : IReference
