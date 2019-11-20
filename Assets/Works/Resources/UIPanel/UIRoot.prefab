@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6398736321721266466}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1024, y: -576, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 9167895381957558164}
@@ -75,7 +75,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2100133421776013757}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: UIDesktop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +111,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7266466292851966540}
   - component: {fileID: 3819782919378900372}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: UICamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 7065406879249176620}
   - component: {fileID: 8606153857348655283}
   - component: {fileID: 8460747169798259904}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: UIRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
