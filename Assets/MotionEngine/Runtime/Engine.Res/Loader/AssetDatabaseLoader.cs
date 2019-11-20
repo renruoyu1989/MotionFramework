@@ -71,7 +71,7 @@ namespace MotionEngine.Res
 				}
 			}
 #else
-			throw new Exception("Should never get here.");
+			throw new Exception("AssetDatabaseLoader only support unity editor.");
 #endif
 		}
 		public override void LoadMainAsset(EAssetType mainAssetType, OnAssetObjectLoad callback)
