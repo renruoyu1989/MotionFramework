@@ -87,6 +87,7 @@
     <Compile Include="Assets\MotionGame\Runtime\Game.Debug\DebugLog.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Debug\DebugModule.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Debug\DebugRefer.cs" />
+    <Compile Include="Assets\MotionGame\Runtime\Game.Debug\DebugSystem.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.ILR\Adapter\Adapter_IMessage.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.ILR\ILRDefine.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.ILR\ILRHelper.cs" />
