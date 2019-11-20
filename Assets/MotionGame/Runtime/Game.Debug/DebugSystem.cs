@@ -17,6 +17,14 @@ namespace MotionGame
 		{
 			int space = 15;
 
+			GUILayout.Space(space);
+			DebugConsole.GUILable($"Unity Version : {Application.unityVersion}");
+			DebugConsole.GUILable($"Unity Pro License : {Application.HasProLicense()}");
+			DebugConsole.GUILable($"Application Version : {Application.version}");
+			DebugConsole.GUILable($"Application Install Path : {Application.dataPath}");
+			DebugConsole.GUILable($"Application Persistent Path : {Application.persistentDataPath}");
+
+			GUILayout.Space(space);
 			DebugConsole.GUILable($"OS : {SystemInfo.operatingSystem}");
 			DebugConsole.GUILable($"OS Memory : {SystemInfo.systemMemorySize / 1000}GB");
 			DebugConsole.GUILable($"CPU : {SystemInfo.processorType}");
@@ -43,8 +51,10 @@ namespace MotionGame
 			DebugConsole.GUILable($"Supports GPS : {SystemInfo.supportsLocationService}"); //GPS硬件
 
 			GUILayout.Space(space);
-			DebugConsole.GUILable($"Battery Level : {SystemInfo.batteryLevel}");
-			DebugConsole.GUILable($"Battery Status : {SystemInfo.batteryStatus}");
+			DebugConsole.GUILable($"Screen DPI : {Screen.dpi}");
+			DebugConsole.GUILable($"Game Resolution : {Screen.width} x {Screen.height}");
+			DebugConsole.GUILable($"Device Resolution : {Screen.currentResolution.width} x {Screen.currentResolution.height}");
+			DebugConsole.GUILable($"Graphics Quality : {QualitySettings.names[QualitySettings.GetQualityLevel()]}");
 
 			GUILayout.Space(space);
 			long memory = Profiler.GetTotalReservedMemoryLong() / 1000000;
@@ -57,6 +67,32 @@ namespace MotionGame
 			DebugConsole.GUILable($"Total Mono Memory : {memory}MB");
 			memory = Profiler.GetMonoUsedSizeLong() / 1000000;
 			DebugConsole.GUILable($"Used Mono Memory : {memory}MB");
+
+			GUILayout.Space(space);
+			DebugConsole.GUILable($"Battery Level : {SystemInfo.batteryLevel}");
+			DebugConsole.GUILable($"Battery Status : {SystemInfo.batteryStatus}");
+			DebugConsole.GUILable($"Network Status : {GetNetworkState()}");
+			DebugConsole.GUILable($"Elapse Time : {GetElapseTime()}");
+			DebugConsole.GUILable($"Time Scale : {Time.timeScale}");
+		}
+
+		private string GetNetworkState()
+		{
+			string internetState = string.Empty;
+			if (Application.internetReachability == NetworkReachability.NotReachable)
+				internetState = "not reachable";
+			else if (Application.internetReachability == NetworkReachability.ReachableViaCarrierDataNetwork)
+				internetState = "carrier data network";
+			else if (Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork)
+				internetState = "local area network";
+			return internetState;
+		}
+		private string GetElapseTime()
+		{
+			int day = (int)(Time.realtimeSinceStartup / 86400f);
+			int hour = (int)((Time.realtimeSinceStartup % 86400f) / 3600f);
+			int sec = (int)(((Time.realtimeSinceStartup % 86400f) % 3600f) / 60f);
+			return $"{day}天{hour}小时{sec}分";
 		}
 	}
 }
