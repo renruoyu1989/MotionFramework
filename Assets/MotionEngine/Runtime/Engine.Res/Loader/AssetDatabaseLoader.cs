@@ -96,7 +96,7 @@ namespace MotionEngine.Res
 			// AssetDatabase加载资源需要提供文件后缀格式，然后LoadPath并没有文件格式信息。
 			// 通过查找该文件所在文件夹内同名的文件来确定AssetDatabase的加载路径。
 			string fileName = System.IO.Path.GetFileNameWithoutExtension(loadPath);
-			string folderPath = $"{Patch.PatchDefine.StrMyPackRootPath}/{System.IO.Path.GetDirectoryName(loadPath)}";
+			string folderPath = $"{AssetSystem.AssetRootPath}/{System.IO.Path.GetDirectoryName(loadPath)}";
 			string[] guids = UnityEditor.AssetDatabase.FindAssets(string.Empty, new[] { folderPath });
 			for (int i = 0; i < guids.Length; i++)
 			{

@@ -58,7 +58,11 @@ namespace MotionEngine.Res
 		public static string ConvertResourcePathToManifestPath(string path)
 		{
 			if(CachedManifestRootPath == null)
-				CachedManifestRootPath = PatchDefine.StrMyPackRootPath.ToLower();
+			{
+				if (string.IsNullOrEmpty(AssetSystem.AssetRootPath))
+					throw new System.Exception("Asset system root path is null or empty.");
+				CachedManifestRootPath = AssetSystem.AssetRootPath.ToLower();
+			}
 
 			path = path.ToLower(); //转换为小写形式
 			return UtilFormat.Format("{0}/{1}{2}", CachedManifestRootPath, path, PatchDefine.StrBundleSuffixName);

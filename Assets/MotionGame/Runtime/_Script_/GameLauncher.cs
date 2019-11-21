@@ -4,6 +4,7 @@ using UnityEngine;
 using MotionEngine;
 using MotionEngine.Res;
 using MotionEngine.Debug;
+using MotionEngine.Patch;
 using MotionGame;
 
 public class GameLauncher : MonoBehaviour
@@ -110,7 +111,10 @@ public class GameLauncher : MonoBehaviour
 	private void RegisterAndRunAllGameModule()
 	{
 		// 设置资源系统加载模式
-		AssetSystem.SetAssetLoadMode(AssetLoadMode);
+		AssetSystem.AssetLoadMode = AssetLoadMode;
+
+		// 设置资源系统根路径
+		AssetSystem.AssetRootPath = PatchDefine.StrMyPackRootPath;
 
 		// 设置网络包解析器
 		NetManager.Instance.SetPackageParseType(typeof(NetProtoPackageParser));

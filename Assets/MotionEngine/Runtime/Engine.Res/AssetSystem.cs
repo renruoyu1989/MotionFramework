@@ -8,6 +8,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MotionEngine.Patch;
 
 namespace MotionEngine.Res
 {
@@ -16,16 +17,6 @@ namespace MotionEngine.Res
 	/// </summary>
 	public static class AssetSystem
 	{
-		/// <summary>
-		/// 资源加载模式
-		/// </summary>
-		public static EAssetLoadMode AssetLoadMode { private set; get; } = EAssetLoadMode.ResourceMode;
-
-		/// <summary>
-		/// Bundle接口
-		/// </summary>
-		public static IBundleMethod BundleMethod { private set; get; }
-
 		/// <summary>
 		/// 加载器集合
 		/// </summary>
@@ -43,20 +34,20 @@ namespace MotionEngine.Res
 
 
 		/// <summary>
-		/// 设置资源加载模式
+		/// 资源系统根路径
 		/// </summary>
-		public static void SetAssetLoadMode(EAssetLoadMode loadMode)
-		{
-			AssetLoadMode = loadMode;
-		}
+		public static string AssetRootPath { set; get; }
 
 		/// <summary>
-		/// 设置Bundle接口
+		/// 资源系统加载模式
 		/// </summary>
-		public static void SetBundleMethod(IBundleMethod bundleMethod)
-		{
-			BundleMethod = bundleMethod;
-		}
+		public static EAssetLoadMode AssetLoadMode { set; get; }
+
+		/// <summary>
+		/// Bundle接口
+		/// </summary>
+		public static IBundleMethod BundleMethod { set; get; }
+
 
 		/// <summary>
 		/// 轮询更新
@@ -91,7 +82,7 @@ namespace MotionEngine.Res
 			else if (AssetLoadMode == EAssetLoadMode.BundleMode)
 			{
 				if (BundleMethod == null)
-					throw new Exception("IBundleMethod is null. use AssetSystem.SetBundleMethod()");
+					throw new Exception("AssetSystem.BundleMethod is null.");
 
 				string manifestPath = AssetPathHelper.ConvertResourcePathToManifestPath(resName);
 				string loadPath = BundleMethod.GetAssetBundleLoadPath(manifestPath);
