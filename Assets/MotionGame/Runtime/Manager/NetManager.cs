@@ -17,11 +17,6 @@ namespace MotionGame
 		public static readonly NetManager Instance = new NetManager();
 
 		/// <summary>
-		/// 网络包解析器类型
-		/// </summary>
-		private Type _packageParseType;
-
-		/// <summary>
 		/// 服务端
 		/// </summary>
 		private TServer _server;
@@ -52,13 +47,11 @@ namespace MotionGame
 		}
 		public void Awake()
 		{
-			if (_packageParseType == null)
-				throw new Exception("PackageParseType is null");
 		}
 		public void Start()
 		{
 			_server = new TServer();
-			_server.Start(true, _packageParseType);
+			_server.Start(false, null);
 		}
 		public void Update()
 		{
@@ -104,23 +97,15 @@ namespace MotionGame
 		}
 
 		/// <summary>
-		/// 设置解析器类型
-		/// </summary>
-		public void SetPackageParseType(Type parseType)
-		{
-			_packageParseType = parseType;
-		}
-
-		/// <summary>
 		/// 连接服务器
 		/// </summary>
-		public void ConnectServer(string host, int port)
+		public void ConnectServer(string host, int port, Type packageParseType)
 		{
 			if (State == ENetworkState.Disconnect)
 			{
 				State = ENetworkState.Connecting;
 				IPEndPoint remote = new IPEndPoint(IPAddress.Parse(host), port);
-				_server.ConnectAsync(remote, OnConnectServer);
+				_server.ConnectAsync(remote, OnConnectServer, packageParseType);
 			}
 		}
 		private void OnConnectServer(TChannel channel, SocketError error)

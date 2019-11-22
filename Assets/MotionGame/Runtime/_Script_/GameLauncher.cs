@@ -116,9 +116,6 @@ public class GameLauncher : MonoBehaviour
 		// 设置资源系统根路径
 		AssetSystem.AssetRootPath = PatchDefine.StrMyPackRootPath;
 
-		// 设置网络包解析器
-		NetManager.Instance.SetPackageParseType(typeof(NetProtoPackageParser));
-
 		// 设置ILRuntime开关
 		ILRManager.Instance.EnableILRuntime = EnableILRuntime;
 

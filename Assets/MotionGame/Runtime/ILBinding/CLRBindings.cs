@@ -51,13 +51,13 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_Events_UnityEvent_Binding.Register(app);
             MotionGame_AudioManager_Binding.Register(app);
             UnityEngine_UI_UISprite_Binding.Register(app);
+            System_Type_Binding.Register(app);
             UnityEngine_Time_Binding.Register(app);
             Google_Protobuf_ProtoPreconditions_Binding.Register(app);
             Google_Protobuf_CodedOutputStream_Binding.Register(app);
             Google_Protobuf_CodedInputStream_Binding.Register(app);
             MotionGame_ILRManager_Binding.Register(app);
             System_Collections_Generic_List_1_Type_Binding.Register(app);
-            System_Type_Binding.Register(app);
             System_Attribute_Binding.Register(app);
             MotionGame_NetMessageAttribute_Binding.Register(app);
             MotionGame_DoubleMap_2_UInt16_Type_Binding.Register(app);

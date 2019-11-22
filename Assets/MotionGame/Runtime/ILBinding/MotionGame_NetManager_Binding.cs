@@ -26,7 +26,7 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{};
             method = type.GetMethod("get_State", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_State_0);
-            args = new Type[]{typeof(System.String), typeof(System.Int32)};
+            args = new Type[]{typeof(System.String), typeof(System.Int32), typeof(System.Type)};
             method = type.GetMethod("ConnectServer", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, ConnectServer_1);
             args = new Type[]{typeof(System.UInt16), typeof(System.Object)};
@@ -62,20 +62,24 @@ namespace ILRuntime.Runtime.Generated
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 3);
+            StackObject* __ret = ILIntepreter.Minus(__esp, 4);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Int32 @port = ptr_of_this_method->Value;
+            System.Type @packageParseType = (System.Type)typeof(System.Type).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
+            System.Int32 @port = ptr_of_this_method->Value;
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
             System.String @host = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 4);
             MotionGame.NetManager instance_of_this_method = (MotionGame.NetManager)typeof(MotionGame.NetManager).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            instance_of_this_method.ConnectServer(@host, @port);
+            instance_of_this_method.ConnectServer(@host, @port, @packageParseType);
 
             return __ret;
         }

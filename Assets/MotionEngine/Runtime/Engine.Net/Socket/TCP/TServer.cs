@@ -17,7 +17,7 @@ namespace MotionEngine.Net
 	public class TServer : IDisposable
 	{
 		#region Fields
-		private Type _packageParseType;
+		private Type _listenerPackageParseType;
 
 		/// <summary>
 		/// 监听Socket，用于接受客户端的连接请求
@@ -95,11 +95,12 @@ namespace MotionEngine.Net
 		}
 		#endregion
 
-
 		/// <summary>
-		/// 开始服务
+		/// 开始网络服务
 		/// </summary>
-		public void Start(bool isClient, Type packageParseType)
+		/// <param name="openListen">是否开启监听</param>
+		/// <param name="listenerPackageParseType">监听频道使用的网络包解析器类型</param>
+		public void Start(bool openListen, Type listenerPackageParseType)
 		{
 			if (IsRunning)
 				return;
@@ -107,10 +108,10 @@ namespace MotionEngine.Net
 			IsRunning = true;
 
 			// 解析器类型
-			_packageParseType = packageParseType;
+			_listenerPackageParseType = listenerPackageParseType;
 
-			// 客户端不需要初始化的内容
-			if (isClient == false)
+			// 如果需要开启监听
+			if(openListen)
 			{
 				// 最大连接数信号
 				_maxAcceptedSemaphore = new Semaphore(MaxClient, MaxClient);
@@ -129,7 +130,7 @@ namespace MotionEngine.Net
 		}
 
 		/// <summary>
-		/// 停止服务
+		/// 停止网络服务
 		/// </summary>
 		public void Stop()
 		{
@@ -236,7 +237,7 @@ namespace MotionEngine.Net
 			{
 				// 创建频道
 				TChannel channel = new TChannel();
-				channel.InitChannel(e.AcceptSocket, _packageParseType);
+				channel.InitChannel(e.AcceptSocket, _listenerPackageParseType);
 
 				// 添加频道
 				AddChannel(channel);
@@ -252,17 +253,34 @@ namespace MotionEngine.Net
 		#endregion
 
 		#region 主动连接
+		private class UserToken
+		{
+			public OnConnectServer Callback;
+			public System.Type PackageParseType;
+		}
+
+		/// <summary>
+		/// 网络连接的委托类型
+		/// </summary>
+		/// <param name="channel">通信频道</param>
+		/// <param name="error">连接结果</param>
 		public delegate void OnConnectServer(TChannel channel, SocketError error);
 
 		/// <summary>
 		/// 开始连接
 		/// </summary>
-		public void ConnectAsync(IPEndPoint remote, OnConnectServer callback)
+		public void ConnectAsync(IPEndPoint remote, OnConnectServer callback, System.Type packageParseType)
 		{
+			UserToken token = new UserToken()
+			{
+				Callback = callback,
+				PackageParseType = packageParseType,
+			};
+
 			SocketAsyncEventArgs args = new SocketAsyncEventArgs();
 			args.RemoteEndPoint = remote;
 			args.Completed += new EventHandler<SocketAsyncEventArgs>(AcceptEventArg_Completed);
-			args.UserToken = callback;
+			args.UserToken = token;
 
 			// 异步连接
 			// TODO : 后面要支持IPV6
@@ -281,11 +299,12 @@ namespace MotionEngine.Net
 		{
 			TChannel channel = null;
 			SocketAsyncEventArgs e = obj as SocketAsyncEventArgs;
+			UserToken token = (UserToken)e.UserToken;
 			if (e.SocketError == SocketError.Success)
 			{
 				// 创建频道
 				channel = new TChannel();
-				channel.InitChannel(e.ConnectSocket, _packageParseType);
+				channel.InitChannel(e.ConnectSocket, token.PackageParseType);
 
 				// 加入到频道列表
 				lock (_allChannels)
@@ -299,9 +318,8 @@ namespace MotionEngine.Net
 			}
 
 			// 回调函数		
-			OnConnectServer callback = (OnConnectServer)e.UserToken;
-			if (callback != null)
-				callback.Invoke(channel, e.SocketError);		
+			if (token.Callback != null)
+				token.Callback.Invoke(channel, e.SocketError);
 		}
 		#endregion
 
