@@ -2,7 +2,8 @@
     "name": "MotionGame.Editor",
     "references": [
         "MotionGame",
-        "MotionGame.ThirdParty"
+        "MotionGame.ThirdParty",
+        "MotionEngine.Editor"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
