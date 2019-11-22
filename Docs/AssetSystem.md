@@ -27,6 +27,7 @@ public class Test
 }
 ```
 
+**AssetBundle**  
 在使用AssetBundle加载模式的时候，我们需要设置AssetSystem.BundleMethod接口，这个接口主要是提供了资源间依赖关系的查询工作。我们可以使用官方提供的AssetBundleManifest文件，也可以使用自己的依赖关系文件。  
 
 ```C#

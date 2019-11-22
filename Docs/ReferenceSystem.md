@@ -24,7 +24,7 @@ public class Test
 	{
 		// 获取对象方式1
 		{
-			ReferClass refer = ReferenceSystem.Spawn(typeof(ReferClass));
+			ReferClass refer = ReferenceSystem.Spawn(typeof(ReferClass)) as ReferClass;
 			ReferenceSystem.Release(refer)
 		}
 

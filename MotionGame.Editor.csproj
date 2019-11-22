@@ -60,6 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\MotionGame\Editor\Builder\BuildPatch.cs" />
     <Compile Include="Assets\MotionGame\Editor\Game.ILR\ILRuntimeCLRBinding.cs" />
     <Compile Include="Assets\MotionGame\Editor\Game.ILR\ILRuntimeInitialize.cs" />
     <Compile Include="Assets\MotionGame\Editor\Game.UGUI\UIPanelMonitor.cs" />
@@ -673,6 +674,10 @@
     <ProjectReference Include="MotionGame.ThirdParty.csproj">
       <Project>{AFF434F9-6402-C2E0-744E-20DC2432E40E}</Project>
       <Name>MotionGame.ThirdParty</Name>
+    </ProjectReference>
+    <ProjectReference Include="MotionEngine.Editor.csproj">
+      <Project>{C2FC55A8-DD7A-9359-3947-08C00B760CAC}</Project>
+      <Name>MotionEngine.Editor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
