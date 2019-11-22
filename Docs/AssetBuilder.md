@@ -5,9 +5,9 @@
 **界面说明**  
 ```
 Build Version : 补丁包的版本号
-Build Pack Path : 资源系统根路径，工具会以根路径内的资源为单位进行依赖分析并打包
+Build Pack Path : 打包路径，工具会以根路径内的资源为单位进行依赖分析并打包
 Build Output Path : 打包完成后的输出路径（在工程目录下）。该路径无法修改！
-Force Rebuild : 强制重建会删除当前平台下所有的打包文件，并重新生成最新的打包文件
+Force Rebuild : 强制重建会删除当前平台下所有的补丁文件，并重新生成补丁文件
 
 Compression : Assetbundle的压缩格式
 Append Hash : 生成的AssetBundle文件名称添加Hash信息
