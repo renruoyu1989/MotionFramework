@@ -20,9 +20,9 @@ C# && .Net4.x
 
 4. [引用池系统](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/ReferenceSystem.md) **(ReferenceSystem)** - 用于C#引用类型的对象池，对于频繁创建的引用类型，使用引用池可以帮助减少GC。
 
-5. [资源系统](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/AssetSystem.md) **(AssetSystem)** - 资源系统提供了三种加载方式：AssetDatabase加载方式，Resources加载方式，AssetBundle加载方式。资源系统底层是基于引用计数的设计方案，外部使用方式是基于面向对象的设计思路。
+5. [资源系统](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/AssetSystem.md) **(AssetSystem)** - 资源系统提供了三种加载方式：AssetDatabase加载方式，Resources加载方式，AssetBundle加载方式。资源系统底层是基于引用计数的设计方案。
 
-6. [网络系统](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/Network.md) **(Network)** - 异步IOCP SOCKET长连接方案，支持TCP和UDP协议。还支持同时建立多个通信通道，例如连接逻辑服务器的同时还可以连接聊天服务器。自定义的网络解析器，支持自定义序列化和反序列化方案，当然也支持ProtoBuf。
+6. [网络系统](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/Network.md) **(Network)** - 异步IOCP SOCKET长连接方案，支持TCP和UDP协议。还支持同时建立多个通信通道，例如连接逻辑服务器的同时还可以连接聊天服务器。不同的通信频道支持使用不同的网络包解析器。我们可以定义支持ProtoBuf的网络包解析器，当然也可以使用自己的序列化和反序列化方案。
 
 7. [调试控制台](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/DebugConsole.md) **(DebugConsole)** - 在游戏发布运行的时候，通过调试控制台，可以方便我们查看一些调试信息。框架内置了系统，模块，日志，资源列表，引用池，实体池等多个窗口。我们也可以很方便的添加自定义的调试窗口。
 

@@ -13,6 +13,15 @@ public class Test
 		// 播放背景音乐
 		bool loop = true;
 		AudioManager.Instance.PlayMusic("Music/cityBgMusic", loop);
+
+		// 全部静音
+		AudioManager.Instance.Mute(true);
+
+		// 背景音乐静音设置
+		AudioManager.Instance.Mute(EAudioLayer.Music, true);
+
+		// 背景音乐音量设置
+		AudioManager.Instance.Volume(EAudioLayer.Music. 0.5f);
 	}
 }
 ```
