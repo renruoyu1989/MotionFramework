@@ -17,7 +17,7 @@ Ignore Type Tree Chanages : 忽略TypeTree变化，建议勾选
 
 **生成结果**  
 生成成功后会在输出目录下找到新生成的补丁文件夹。  
-![image](https://github.com/gmhevinci/MotionFramework/raw/master/Docs/Image/img106.png)
+![image](https://github.com/gmhevinci/MotionFramework/raw/master/Docs/Image/img101_1.png)
 
 **Jenkins支持**
 ```
