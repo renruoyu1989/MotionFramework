@@ -19,9 +19,47 @@ Ignore Type Tree Chanages : 忽略TypeTree变化，建议勾选
 生成成功后会在输出目录下找到新生成的补丁文件夹。  
 ![image](https://github.com/gmhevinci/MotionFramework/raw/master/Docs/Image/img101_1.png)
 
-```
+**补丁文件**
+每次打包都会生成一个名为package.bytes的补丁文件，补丁文件内包含了所有资源的信息，例如：名称，版本，大小，MD5
+```C#
 //读取package.bytes文件
+using System;
+using System.Collections;
+using MotionEngine;
+using MotionEngine.Res;
+using MotionEngine.Patch;
 
+public class Test
+{
+	private PatchFile _patchFile;
+
+	public void Start()
+	{
+		Engine.Instance.StartCoroutine(HotfixParseAppPackageFile());
+	}
+
+	public IEnumerator HotfixParseAppPackageFile()
+	{
+		// 从流文件夹内读取补丁文件
+		string filePath = AssetPathHelper.MakeStreamingLoadPath("package.bytes");
+
+		// Download file
+		WebDataDownload download = new WebDataDownload();
+		download.URL = AssetPathHelper.ConvertToWWWPath(filePath);
+		download.LoadCallback = null;
+		yield return download.DownLoad();
+
+		// Check result
+		if (download.LoadState != EWebLoadState.LoadSucceed)
+			throw new Exception($"Failed download file : {filePath}");
+
+		// 解析补丁文件
+		_patchFile = new PatchFile();
+		_patchFile.Parse(download.GetText());
+
+		download.Dispose();
+	}
+}
 ```
 
 **Jenkins支持**
