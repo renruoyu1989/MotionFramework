@@ -1,5 +1,5 @@
+### 资源打包工具 (AssetBuilder)
 
-资源打包工具  
 ![image](https://github.com/gmhevinci/MotionFramework/raw/master/Docs/Image/img101.png)
 
 **界面说明**  
@@ -18,6 +18,11 @@ Ignore Type Tree Chanages : 忽略TypeTree变化，建议勾选
 **生成结果**  
 生成成功后会在输出目录下找到新生成的补丁文件夹。  
 ![image](https://github.com/gmhevinci/MotionFramework/raw/master/Docs/Image/img101_1.png)
+
+```
+//读取package.bytes文件
+
+```
 
 **Jenkins支持**
 ```

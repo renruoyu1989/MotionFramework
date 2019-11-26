@@ -1,5 +1,5 @@
+### 资源导入工具 (AssetImporter)
 
-资源导入工具  
 ![image](https://github.com/gmhevinci/MotionFramework/raw/master/Docs/Image/img102.png)  
 
 在项目开发过程中，有大量相同类型的资源放置在同一个文件夹内，例如：音频，纹理等。每次添加新资源都要手动设置资源的格式，即使能批量修改也是非常麻烦。资源导入工具可以帮助我们简化资源格式设置工作，点击 + 号可以添加要自动处理的资源文件路径，资源导入器代表着一套处理规则，工具提供了一个默认的资源导入器(DefaultProcessor)。

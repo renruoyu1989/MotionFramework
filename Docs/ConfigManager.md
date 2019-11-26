@@ -1,3 +1,5 @@
+### 配表管理器 (CfgManager)
+
 [FlashExcel](https://github.com/gmhevinci/FlashExcel)导表工具会自动生成表格相关的CS脚本和二进制数据文件
 ```C#
 using MotionGame;
