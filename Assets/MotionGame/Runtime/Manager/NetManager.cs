@@ -34,12 +34,12 @@ namespace MotionGame
 		/// <summary>
 		/// Mono层网络消息接收回调
 		/// </summary>
-		public Action<NetReceivePackage> MonoProtoCallback;
+		public Action<INetPackage> MonoPackageCallback;
 
 		/// <summary>
 		/// 热更层网络消息接收回调
 		/// </summary>
-		public Action<NetReceivePackage> HotfixProtoCallback;
+		public Action<INetPackage> HotfixPackageCallback;
 
 
 		private NetManager()
@@ -73,14 +73,13 @@ namespace MotionGame
 		{
 			if (_channel != null)
 			{
-				NetReceivePackage package = (NetReceivePackage)_channel.PickMsg();
+				INetPackage package = (INetPackage)_channel.PickMsg();
 				if (package != null)
 				{
-					if (package.ProtoObj != null)
-						MonoProtoCallback.Invoke(package);
-
-					if (package.ProtoBodyData != null)
-						HotfixProtoCallback.Invoke(package);
+					if (package.IsMonoPackage)
+						MonoPackageCallback.Invoke(package);
+					else
+						HotfixPackageCallback.Invoke(package);
 				}
 			}
 		}
@@ -138,17 +137,13 @@ namespace MotionGame
 		/// <summary>
 		/// 发送消息
 		/// </summary>
-		public void SendMsg(ushort msgID, System.Object protoObj)
+		public void SendMsg(INetPackage package)
 		{
 			if (State != ENetworkState.Connected)
 			{
 				LogSystem.Log(ELogType.Warning, "Network is not connected.");
 				return;
 			}
-
-			NetSendPackage package = new NetSendPackage();
-			package.Type = msgID;
-			package.ProtoObj = protoObj;
 
 			if (_channel != null)
 				_channel.SendMsg(package);

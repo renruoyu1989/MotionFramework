@@ -26,7 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,7 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <NoConfig>true</NoConfig>
@@ -60,19 +60,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\MotionGame\Runtime\_Script_\Config\AutoGenerateConfig\CfgAutoGenerateLanguage.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\_Script_\Config\AutoGenerateConfig\CfgHero.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\_Script_\Config\ConfigDefine.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\_Script_\Config\ConfigHelper.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\_Script_\Config\ConfigType.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\_Script_\Event\EventMessageDefine.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\_Script_\Event\EventMessageTag.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\_Script_\GameDefine.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\_Script_\GameLauncher.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\_Script_\GameTest.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\_Script_\LANG.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\_Script_\Net\AutoGenerateMessage\ProtoMessageDefine.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\_Script_\Net\AutoGenerateMessage\ProtoMessageType.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Extension\RectTransformExtension.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Extension\TransformExtension.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Extension\UnityObjectExtention.cs" />
@@ -82,90 +69,30 @@
     <Compile Include="Assets\MotionGame\Runtime\Game.Config\Attribute\ConfigAttribute.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Config\Attribute\ConfigHandler.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Config\ConfigDefine.cs" />
+    <Compile Include="Assets\MotionGame\Runtime\Game.Config\Mono.Xml\MiniParser.cs" />
+    <Compile Include="Assets\MotionGame\Runtime\Game.Config\Mono.Xml\SecurityParser.cs" />
+    <Compile Include="Assets\MotionGame\Runtime\Game.Config\Mono.Xml\SmallXmlParser.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Debug\DebugAssetPool.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Debug\DebugBundle.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Debug\DebugLog.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Debug\DebugModule.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Debug\DebugRefer.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Debug\DebugSystem.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\Game.ILR\Adapter\Adapter_IMessage.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\Game.ILR\ILRDefine.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\Game.ILR\ILRHelper.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\Game.ILR\Interface\IStaticMethod.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\Game.ILR\StaticMethod\ILRStaticMethod.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\Game.ILR\StaticMethod\MonoStaticMethod.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\Game.ILR\ValueTypeBinder\QuaternionBinder.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\Game.ILR\ValueTypeBinder\Vector2Binder.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\Game.ILR\ValueTypeBinder\Vector3Binder.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Net\Attribute\NetMessageAttribute.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\Game.Net\NetProtoHandler.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\Game.Net\NetProtoPackageParser.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\Game.Net\ProtobufHelper.cs" />
+    <Compile Include="Assets\MotionGame\Runtime\Game.Net\Interface\INetPackage.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Pool\AssetObjectPool.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Pool\ObjectPool.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.UGUI\UIManifest.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.UGUI\UISprite.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Utility\GameUtility.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Game.Utility\WordsFilter.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\CLRBindings.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\Google_Protobuf_CodedInputStream_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\Google_Protobuf_CodedOutputStream_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\Google_Protobuf_ProtoPreconditions_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\MotionEngine_IO_StringConvert_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\MotionEngine_LogSystem_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\MotionEngine_Res_Asset_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\MotionEngine_Res_AssetObject_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\MotionGame_AudioManager_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\MotionGame_DoubleMap_2_UInt16_Type_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\MotionGame_EventManager_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\MotionGame_ILRManager_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\MotionGame_NetManager_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\MotionGame_NetMessageAttribute_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\MotionGame_NetReceivePackage_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\MotionGame_ProtobufHelper_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Action_1_ILTypeInstance_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Activator_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Attribute_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Bin_t.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Bin_t_t.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Collections_Generic_Dictionary_2_String_List_1_Action_1_I_t.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Collections_Generic_Dictionary_2_String_List_1_Action_1_I_t_t.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Collections_Generic_Dictionary_2_String_List_1_Action_1_I_t_t_t.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Collections_Generic_KeyValuePair_2_Int32_ILTypeInstance_B_t.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Collections_Generic_List_1_Action_1_ILTypeInstance_Bindin_t.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Collections_Generic_List_1_Double_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Collections_Generic_List_1_Int32_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Collections_Generic_List_1_Int64_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Collections_Generic_List_1_Single_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Collections_Generic_List_1_String_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Collections_Generic_List_1_Type_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Exception_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_IDisposable_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Object_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Reflection_MemberInfo_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_String_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\System_Type_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\TestEventMsg_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\UnityEngine_Debug_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\UnityEngine_Events_UnityEvent_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\UnityEngine_GameObject_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\UnityEngine_Object_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\UnityEngine_Time_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\UnityEngine_Transform_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\UnityEngine_TransformExtension_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\UnityEngine_UI_Button_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\UnityEngine_UI_Text_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\UnityEngine_UI_UIManifest_Binding.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\ILBinding\UnityEngine_UI_UISprite_Binding.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Manager\AudioManager.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Manager\CfgManager.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Manager\EventManager.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Manager\FsmManager.cs" />
-    <Compile Include="Assets\MotionGame\Runtime\Manager\ILRManager.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Manager\NetManager.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Manager\PoolManager.cs" />
     <Compile Include="Assets\MotionGame\Runtime\Manager\ResManager.cs" />
-    <None Include="Assets\MotionGame\Runtime\_Script_\非热更游戏逻辑代码.txt" />
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity2018/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>
@@ -762,10 +689,6 @@
     <ProjectReference Include="MotionEngine.csproj">
       <Project>{D07B0B04-1E2D-03A5-A38B-4D314E41B91C}</Project>
       <Name>MotionEngine</Name>
-    </ProjectReference>
-    <ProjectReference Include="MotionGame.ThirdParty.csproj">
-      <Project>{AFF434F9-6402-C2E0-744E-20DC2432E40E}</Project>
-      <Name>MotionGame.ThirdParty</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
