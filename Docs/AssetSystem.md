@@ -33,6 +33,7 @@ public class Test
 
 ```C#
 using MotionEngine.Res;
+using UnityEngine;
 
 public class PatchBundleMethod : IBundleMethod
 {
