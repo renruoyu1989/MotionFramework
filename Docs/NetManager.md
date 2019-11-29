@@ -42,4 +42,3 @@ public class Test
 
 更详细的教程请参考示例代码
 1. [MotionGame/Runtime/Manager/NetManager.cs](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionGame/Runtime/Manager/NetManager.cs)
-2. [MotionGame/Runtime/Game.Net/NetProtoPackageParser.cs](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionGame/Runtime/Game.Net/NetProtoPackageParser.cs)

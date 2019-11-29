@@ -38,6 +38,3 @@ public class Test
 	}
 }
 ```
-
-更详细的教程请参考示例代码
-1. [MotionEngine/Runtime/_Script_/GameLauncher.cs](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionGame/Runtime/_Script_/GameLauncher.cs)
