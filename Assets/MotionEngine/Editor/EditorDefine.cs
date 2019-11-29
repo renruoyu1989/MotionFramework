@@ -8,7 +8,7 @@ public class EditorDefine
 	/// <summary>
 	/// 导入器的配置文件存储路径
 	/// </summary>
-	public const string ImporterSettingFilePath = "Assets/MotionEngine/Setting/ImportSetting.asset";
+	public const string ImporterSettingFilePath = "Assets/MotionSetting/ImportSetting.asset";
 }
 
 /// <summary>

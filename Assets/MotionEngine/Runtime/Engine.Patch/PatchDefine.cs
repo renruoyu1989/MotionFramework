@@ -15,12 +15,12 @@ namespace MotionEngine.Patch
 		/// <summary>
 		/// 我们设定的打包根路径
 		/// </summary>
-		public const string StrMyPackRootPath = "Assets/Works/Resources";
+		public const string StrMyPackRootPath = "Assets/Works/MyResources";
 
 		/// <summary>
 		/// 我们设定的图集根路径
 		/// </summary>
-		public const string StrMyUIAtlasFolderPath = "Assets/Works/Resources/UIAtlas";
+		public const string StrMyUIAtlasFolderPath = "Assets/Works/MyResources/UIAtlas";
 
 		/// <summary>
 		/// 我们设定的精灵根路径（图集关联的精灵）

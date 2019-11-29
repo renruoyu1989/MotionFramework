@@ -2,6 +2,7 @@
 // Copyright©2018-2020 何冠峰
 // Licensed under the MIT license
 //--------------------------------------------------
+#if MOTION_INIT
 using System.IO;
 using UnityEditor;
 using MotionEngine.Patch;
@@ -41,3 +42,4 @@ class EditorInitialize
 			Directory.CreateDirectory(PatchDefine.StrMyUISpriteFolderPath);
 	}
 }
+#endif
