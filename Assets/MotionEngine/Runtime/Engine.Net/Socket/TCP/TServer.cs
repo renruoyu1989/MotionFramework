@@ -17,6 +17,9 @@ namespace MotionEngine.Net
 	public class TServer : IDisposable
 	{
 		#region Fields
+		/// <summary>
+		/// 监听频道使用的网络包解析器类型
+		/// </summary>
 		private Type _listenerPackageParseType;
 
 		/// <summary>
@@ -267,8 +270,11 @@ namespace MotionEngine.Net
 		public delegate void OnConnectServer(TChannel channel, SocketError error);
 
 		/// <summary>
-		/// 开始连接
+		/// 异步连接
 		/// </summary>
+		/// <param name="remote">IP终端</param>
+		/// <param name="callback">连接回调</param>
+		/// <param name="packageParseType">网络包解析器</param>
 		public void ConnectAsync(IPEndPoint remote, OnConnectServer callback, System.Type packageParseType)
 		{
 			UserToken token = new UserToken()
@@ -282,9 +288,7 @@ namespace MotionEngine.Net
 			args.Completed += new EventHandler<SocketAsyncEventArgs>(AcceptEventArg_Completed);
 			args.UserToken = token;
 
-			// 异步连接
-			// TODO : 后面要支持IPV6
-			Socket clientSock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+			Socket clientSock = new Socket(remote.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 			bool willRaiseEvent = clientSock.ConnectAsync(args);
 			if (!willRaiseEvent)
 			{
