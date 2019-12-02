@@ -53,8 +53,10 @@ C# && .Net4.x
 
 4. [特效性能查看工具](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/ParticleProfiler.md) **(ParticleProfiler)**
 
-## 热更新方案
-推荐使用ILRuntime热更新方案，所以框架内置了ILRuntime的使用范例。
+## DEMO
+1. [Demo1](https://github.com/gmhevinci/Demo1) 使用ILRuntime热更新方案的演示例子。
+
+2. Demo2 使用XLua热更新方案的演示例子。
 
 ## 声明
 作者本人将会一直维护该框架，提交的Issue会在48小时内解决，欢迎加入社区QQ群：654986302

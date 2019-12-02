@@ -90,12 +90,12 @@ namespace MotionEngine.Res
 		/// <summary>
 		/// 获取AssetDatabase的加载路径
 		/// </summary>
-		private string GetDatabaseAssetPath(string loadPath)
+		public static string GetDatabaseAssetPath(string loadPath)
 		{
 #if UNITY_EDITOR
-			// AssetDatabase加载资源需要提供文件后缀格式，然后LoadPath并没有文件格式信息。
-			// 通过查找该文件所在文件夹内同名的文件来确定AssetDatabase的加载路径。
-			string fileName = System.IO.Path.GetFileNameWithoutExtension(loadPath);
+			// 注意：AssetDatabase加载资源需要提供文件后缀格式，然而LoadPath并没有文件格式信息
+			// 所以我们通过查找该文件所在文件夹内同名的首个文件来确定AssetDatabase的加载路径。
+			string fileName = System.IO.Path.GetFileName(loadPath);
 			string folderPath = $"{AssetSystem.AssetRootPath}/{System.IO.Path.GetDirectoryName(loadPath)}";
 			string[] guids = UnityEditor.AssetDatabase.FindAssets(string.Empty, new[] { folderPath });
 			for (int i = 0; i < guids.Length; i++)
@@ -109,7 +109,7 @@ namespace MotionEngine.Res
 			LogSystem.Log(ELogType.Warning, $"Not found asset database file : {loadPath}");
 			return string.Empty;
 #else
-			throw new Exception("Should never get here.");
+			throw new Exception("AssetDatabaseLoader only support unity editor.");
 #endif
 		}
 	}
