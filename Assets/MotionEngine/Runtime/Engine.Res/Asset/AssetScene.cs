@@ -33,7 +33,7 @@ namespace MotionEngine.Res
 			// 开始异步加载场景
 			string[] splits = ResName.Split('/');
 			string sceneName = splits[splits.Length-1];
-			Engine.Instance.StartCoroutine(StartLoading(sceneName));
+			AppEngine.Instance.StartCoroutine(StartLoading(sceneName));
 			return true;
 		}
 

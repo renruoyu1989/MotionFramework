@@ -14,7 +14,7 @@ namespace MotionGame
 		public void OnGUI()
 		{
 			// 显示游戏模块数据
-			Engine.Instance.OnGUI();
+			AppEngine.Instance.OnGUI();
 		}
 	}
 }
