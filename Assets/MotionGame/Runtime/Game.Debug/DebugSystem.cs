@@ -10,12 +10,17 @@ namespace MotionGame
 	[DebugAttribute("系统", 102)]
 	public class DebugSystem : IDebug
 	{
+		// GUI相关
+		private Vector2 _scrollPos = Vector2.zero;
+
 		public void OnInit()
 		{
 		}
 		public void OnGUI()
 		{
 			int space = 15;
+
+			_scrollPos = DebugConsole.GUIBeginScrollView(_scrollPos, 0);
 
 			GUILayout.Space(space);
 			DebugConsole.GUILable($"Unity Version : {Application.unityVersion}");
@@ -74,6 +79,8 @@ namespace MotionGame
 			DebugConsole.GUILable($"Network Status : {GetNetworkState()}");
 			DebugConsole.GUILable($"Elapse Time : {GetElapseTime()}");
 			DebugConsole.GUILable($"Time Scale : {Time.timeScale}");
+
+			DebugConsole.GUIEndScrollView();
 		}
 
 		private string GetNetworkState()

@@ -38,7 +38,6 @@ namespace MotionEngine.Debug
 		// GUI相关
 		private static bool _visibleToggle = false;
 		private static int _showIndex = 0;
-		private static Vector2 _scrollPos = new Vector2(0, 0);
 		private static Texture _bgTexture;
 		private static string[] _toolbarTitles;
 
@@ -49,9 +48,9 @@ namespace MotionEngine.Debug
 		public static void Init()
 		{
 			// 加载背景纹理
-			_bgTexture = Resources.Load<Texture>("buildinBackground");
+			_bgTexture = Resources.Load<Texture>("builtin_background");
 			if (_bgTexture == null)
-				UnityEngine.Debug.LogWarning("Not found buildinBackground texture.");
+				UnityEngine.Debug.LogWarning("Not found builtin_background texture in Resources folder.");
 
 			// 获取所有调试类
 			List<Type> allTypes = UtilAssembly.GetAssignableAttributeTypes(typeof(IDebug), typeof(DebugAttribute));
@@ -112,26 +111,20 @@ namespace MotionEngine.Debug
 			}
 			GUILayout.EndHorizontal();
 
-			// 绘制选中节点的内容
-			float scrollWidth = Screen.width;
-			float scrollHeight = Screen.height - GUIButtonStyle.fixedHeight - 10;
-			_scrollPos = GUILayout.BeginScrollView(_scrollPos, GUILayout.Width(scrollWidth), GUILayout.Height(scrollHeight));
+			// 绘制选中节点
+			for (int i = 0; i < _wrappers.Count; i++)
 			{
-				for (int i = 0; i < _wrappers.Count; i++)
-				{
-					if (_showIndex != i)
-						continue;
-					NodeWrapper wrapper = _wrappers[i];
-					wrapper.Instance.OnGUI();
-				}
+				if (_showIndex != i)
+					continue;
+				NodeWrapper wrapper = _wrappers[i];
+				wrapper.Instance.OnGUI();
 			}
-			GUILayout.EndScrollView();
 		}
 
 		#region GUI辅助方法
 		private static bool _initGlobalStyle = false;
 		public static GUIStyle GUIToolbarStyle { private set; get; }
-		public static GUIStyle GUIButtonStyle { private set; get; }	
+		public static GUIStyle GUIButtonStyle { private set; get; }
 		public static GUIStyle GUIToogleStyle1 { private set; get; }
 		public static GUIStyle GUIToogleStyle2 { private set; get; }
 		public static GUIStyle GUITextFieldStyle { private set; get; }
@@ -177,6 +170,16 @@ namespace MotionEngine.Debug
 			}
 		}
 
+		public static Vector2 GUIBeginScrollView(Vector2 pos, int fixedViewHeight)
+		{
+			float scrollWidth = Screen.width;
+			float scrollHeight = Screen.height - GUIButtonStyle.fixedHeight - fixedViewHeight - 10;
+			return GUILayout.BeginScrollView(pos, GUILayout.Width(scrollWidth), GUILayout.Height(scrollHeight));
+		}
+		public static void GUIEndScrollView()
+		{
+			GUILayout.EndScrollView();
+		}
 		public static bool GUIToggle(string name, bool checkFlag)
 		{
 			GUIStyle style = checkFlag ? GUIToogleStyle1 : GUIToogleStyle2;
