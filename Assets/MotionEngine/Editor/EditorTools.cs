@@ -482,6 +482,29 @@ public static class EditorTools
 		string projectPath = GetProjectPath();
 		return $"{projectPath}/{assetPath}";
 	}
+
+	/// <summary>
+	/// 递归查找目标文件夹路径
+	/// </summary>
+	/// <param name="root">搜索的根目录</param>
+	/// <param name="folderName">目标文件夹名称</param>
+	/// <returns>返回找到的文件夹路径，如果没有找到返回空字符串</returns>
+	public static string FindFolder(string root, string folderName)
+	{
+		DirectoryInfo rootInfo = new DirectoryInfo(root);
+		DirectoryInfo[] infoList = rootInfo.GetDirectories();
+		for (int i = 0; i < infoList.Length; i++)
+		{
+			string fullPath = infoList[i].FullName;
+			if (infoList[i].Name == folderName)
+				return fullPath;
+
+			string result = FindFolder(fullPath, folderName);
+			if (string.IsNullOrEmpty(result) == false)
+				return result;
+		}
+		return string.Empty;
+	}
 	#endregion
 
 	#region 字符串相关

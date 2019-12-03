@@ -57,10 +57,22 @@ public class ParticleProfilerWindow : EditorWindow
 	private void Awake()
 	{
 		_lastTime = EditorApplication.timeSinceStartup;
-		_texTips = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/MotionEngine/Editor/ParticleProfiler/GUI/tips.png");
-		if (_texTips == null)
-			Debug.LogWarning("Not found ParticleProfilerWindows tips texture.");
 
+		// 加载提示图片
+		string folderPath = EditorTools.FindFolder(Application.dataPath, "ParticleProfiler");
+		if (string.IsNullOrEmpty(folderPath) == false)
+		{
+			string temp = EditorTools.AbsolutePathToAssetPath(folderPath);
+			_texTips = AssetDatabase.LoadAssetAtPath<Texture2D>($"{temp}/GUI/tips.png");
+			if (_texTips == null)
+				Debug.LogWarning("Not found ParticleProfilerWindows tips texture.");
+		}
+		else
+		{
+			Debug.LogWarning("Not found ParticleProfiler folder.");
+		}
+
+		// 加载测试场景
 		string path = EditorPrefs.GetString(PROFILER_SCENE_KEY, string.Empty);
 		if(string.IsNullOrEmpty(path) == false)
 			_profilerScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
