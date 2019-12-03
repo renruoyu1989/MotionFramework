@@ -7,7 +7,7 @@ using MotionEngine.Debug;
 
 namespace MotionGame
 {
-	[DebugAttribute("系统", 100)]
+	[DebugAttribute("系统", 102)]
 	public class DebugSystem : IDebug
 	{
 		public void OnInit()
