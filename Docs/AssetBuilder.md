@@ -62,7 +62,7 @@ public class Test
 
 	public void Start()
 	{
-		Engine.Instance.StartCoroutine(HotfixParseAppPackageFile());
+		AppEngine.Instance.StartCoroutine(HotfixParseAppPackageFile());
 	}
 
 	public IEnumerator HotfixParseAppPackageFile()

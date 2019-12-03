@@ -44,12 +44,12 @@ public class Test
   public void Start()
   {
     // 注册模块
-    Engine.Instance.RegisterModule(CustomModule.Instance);
+    AppEngine.Instance.RegisterModule(CustomModule.Instance);
 
     // 带优先级的注册方式
     // 说明：运行时的优先级，优先级越大越早执行。如果没有设置优先级，那么会按照添加顺序执行
     int priority = 1000;
-    Engine.Instance.RegisterModule(CustomModule.Instance, priority);
+    AppEngine.Instance.RegisterModule(CustomModule.Instance, priority);
   }
 }
 ```
