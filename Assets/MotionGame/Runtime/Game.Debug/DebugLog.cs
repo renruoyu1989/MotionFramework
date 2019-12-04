@@ -8,7 +8,7 @@ using MotionEngine.Reference;
 
 namespace MotionGame
 {
-	[DebugAttribute("日志", 102)]
+	[DebugAttribute("日志", 101)]
 	public class DebugLog : IDebug
 	{
 		private class LogWrapper : IReference
@@ -35,7 +35,7 @@ namespace MotionGame
 		private bool _showLog = true;
 		private bool _showWarning = true;
 		private bool _showError = true;
-
+		private Vector2 _scrollPos = Vector2.zero;
 
 		public void OnInit()
 		{
@@ -50,6 +50,7 @@ namespace MotionGame
 			_showError = DebugConsole.GUIToggle("Error", _showError);
 			GUILayout.EndHorizontal();
 
+			_scrollPos = DebugConsole.GUIBeginScrollView(_scrollPos, 40);
 			for (int i = 0; i < _logs.Count; i++)
 			{
 				LogWrapper wrapper = _logs[i];
@@ -69,6 +70,7 @@ namespace MotionGame
 						DebugConsole.GUIRedLable(wrapper.Log);
 				}
 			}
+			DebugConsole.GUIEndScrollView();
 		}
 
 		private void HandleUnityEngineLog(string logString, string stackTrace, LogType type)

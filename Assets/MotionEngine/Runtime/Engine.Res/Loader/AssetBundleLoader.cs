@@ -89,7 +89,7 @@ namespace MotionEngine.Res
 			if (LoadState == EAssetFileLoadState.LoadAssetFile)
 			{
 #if UNITY_EDITOR
-				// TODO：Unity2017.4编辑器模式下，如果AssetBundle文件不存在会导致编辑器崩溃，这里做了预判。
+				// 注意：Unity2017.4编辑器模式下，如果AssetBundle文件不存在会导致编辑器崩溃，这里做了预判。
 				if (System.IO.File.Exists(LoadPath) == false)
 				{
 					LogSystem.Log(ELogType.Warning, $"Not found assetBundle file : {LoadPath}");
@@ -114,7 +114,6 @@ namespace MotionEngine.Res
 				// Check scene
 				if (AssetType == EAssetType.Scene)
 				{
-					//_cacheBundle.isStreamedSceneAssetBundle; //TODO 验证接口
 					LoadState = EAssetFileLoadState.LoadAssetFileOK;
 					LoadCallback?.Invoke(this);
 					return;

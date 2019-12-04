@@ -40,6 +40,9 @@ namespace MotionGame
 		// 过滤的关键字
 		private string _filterKey = string.Empty;
 
+		// GUI相关
+		private Vector2 _scrollPos = Vector2.zero;
+
 
 		public void OnInit()
 		{
@@ -56,8 +59,9 @@ namespace MotionGame
 			}
 			GUILayout.EndHorizontal();
 
-			GUILayout.Space(10);
 			DebugConsole.GUILable($"加载器总数：{_loaderTotalCount}");
+
+			_scrollPos = DebugConsole.GUIBeginScrollView(_scrollPos, 80);
 			for (int i = 0; i < _cacheInfos.Count; i++)
 			{
 				var element = _cacheInfos[i];
@@ -66,6 +70,7 @@ namespace MotionGame
 				else
 					DebugConsole.GUILable(element.Info);
 			}
+			DebugConsole.GUIEndScrollView();
 		}
 		private void FilterInfos()
 		{

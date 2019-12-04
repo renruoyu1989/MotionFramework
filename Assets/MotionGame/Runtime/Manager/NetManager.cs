@@ -16,16 +16,17 @@ namespace MotionGame
 	{
 		public static readonly NetManager Instance = new NetManager();
 
-		/// <summary>
-		/// 服务端
-		/// </summary>
+		// 服务端
 		private TServer _server;
 
-		/// <summary>
-		/// 通信频道
-		/// </summary>
+		// 通信频道
 		private TChannel _channel;
 
+		// GUI显示数据
+		private string _host = string.Empty;
+		private int _port = 0;
+		private AddressFamily _family = AddressFamily.Unknown;
+		
 		/// <summary>
 		/// 当前的网络状态
 		/// </summary>
@@ -66,7 +67,10 @@ namespace MotionGame
 		}
 		public void OnGUI()
 		{
-			DebugConsole.GUILable($"[{nameof(NetManager)}] Network state : {State}");
+			DebugConsole.GUILable($"[{nameof(NetManager)}] State : {State}");
+			DebugConsole.GUILable($"[{nameof(NetManager)}] IP Host : {_host}");
+			DebugConsole.GUILable($"[{nameof(NetManager)}] IP Port : {_port}");
+			DebugConsole.GUILable($"[{nameof(NetManager)}] IP Type : {_family}");
 		}
 
 		private void UpdatePickMsg()
@@ -105,6 +109,11 @@ namespace MotionGame
 				State = ENetworkState.Connecting;
 				IPEndPoint remote = new IPEndPoint(IPAddress.Parse(host), port);
 				_server.ConnectAsync(remote, OnConnectServer, packageParseType);
+
+				// 记录数据
+				_host = host;
+				_port = port;
+				_family = remote.AddressFamily;
 			}
 		}
 		private void OnConnectServer(TChannel channel, SocketError error)

@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace MotionEngine
 {
-	public class Engine
+	public class AppEngine
 	{
 		/// <summary>
 		/// 模块封装类
@@ -33,7 +33,7 @@ namespace MotionEngine
 		}
 
 
-		public static readonly Engine Instance = new Engine();
+		public static readonly AppEngine Instance = new AppEngine();
 
 		/// <summary>
 		/// 模块集合
@@ -51,7 +51,7 @@ namespace MotionEngine
 		private MonoBehaviour _bhvCoroutine;
 
 
-		private Engine()
+		private AppEngine()
 		{
 		}
 

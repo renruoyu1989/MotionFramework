@@ -403,24 +403,25 @@ public class AssetBuilder
 	#endregion
 
 	#region 文件加密
-	private const string StrEncryptFolderName = "/Assembly/";
-	
 	private void EncryptFiles(string[] allAssetBundles)
 	{
 		ShowBuildLog($"开始加密资源文件");
+
+		// 初始化加密器
+		InitAssetEncrypter();
 
 		int progressBarCount = 0;
 		foreach (string assetName in allAssetBundles)
 		{
 			string path = $"{OutputPath}/{assetName}";
-			if (path.Contains(StrEncryptFolderName))
+			if(AssetEncrypterCheck(path))
 			{
 				byte[] fileData = File.ReadAllBytes(path);
 
 				// 通过判断文件合法性，规避重复加密一个文件。
 				if (EditorTools.CheckBundleFileValid(fileData))
 				{
-					byte[] bytes = EncryptInternal(fileData);
+					byte[] bytes = AssetEncrypterEncrypt(fileData);
 					File.WriteAllBytes(path, bytes);
 					ShowBuildLog($"文件加密完成：{path}");
 				}
@@ -433,10 +434,35 @@ public class AssetBuilder
 		EditorUtility.ClearProgressBar();
 		progressBarCount = 0;
 	}
-	private byte[] EncryptInternal(byte[] data)
+
+	private Type _encrypterType = null;
+	private void InitAssetEncrypter()
 	{
-		// TODO 这里实现你自己的加密算法
-		return data;
+		_encrypterType = Type.GetType("AssetEncrypter");
+	}
+	private bool AssetEncrypterCheck(string filePath)
+	{
+		if (_encrypterType != null)
+		{
+			var method = _encrypterType.GetMethod("Check");
+			return (bool)method.Invoke(null, new object[] { filePath });
+		}
+		else
+		{
+			return false;
+		}
+	}
+	private byte[] AssetEncrypterEncrypt(byte[] data)
+	{
+		if (_encrypterType != null)
+		{
+			var method = _encrypterType.GetMethod("Encrypt");
+			return (byte[])method.Invoke(null, new object[] { data });
+		}
+		else
+		{
+			return data;
+		}
 	}
 	#endregion
 
@@ -641,3 +667,31 @@ public class AssetBuilder
 	}
 	#endregion
 }
+
+/*
+/// <summary>
+/// 资源加密器
+/// </summary>
+public static class AssetEncrypter
+{
+	private const string StrEncryptFolderName = "/Assembly/";
+
+	/// <summary>
+	/// 检测文件是否需要加密
+	/// </summary>
+	public static bool Check(string path)
+	{
+		return path.Contains(StrEncryptFolderName);
+	}
+
+	/// <summary>
+	/// 对数据进行加密，并返回加密后的数据
+	/// </summary>
+	public static byte[] Encrypt(byte[] data)
+	{
+		// 这里使用你的加密算法
+		return data;
+	}
+}
+*/
+ 

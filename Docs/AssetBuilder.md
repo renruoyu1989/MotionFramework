@@ -15,6 +15,33 @@ Disable Write Type Tree : 禁止写入TypeTree，建议不勾选
 Ignore Type Tree Chanages : 忽略TypeTree变化，建议勾选
 ```
 
+**加密方式**  
+要实现Bundle文件加密，只需要实现下面代码
+```C#
+// 注意：这是一个静态类，类名和方法名固定不能改变。
+public static class AssetEncrypter
+{
+	private const string StrEncryptFolderName = "/Assembly/";
+
+	/// <summary>
+	/// 检测文件是否需要加密
+	/// </summary>
+	public static bool Check(string path)
+	{
+		return path.Contains(StrEncryptFolderName);
+	}
+
+	/// <summary>
+	/// 对数据进行加密，并返回加密后的数据
+	/// </summary>
+	public static byte[] Encrypt(byte[] data)
+	{
+		// 这里使用你的加密算法
+		return data;
+	}
+}
+```
+
 **生成结果**  
 生成成功后会在输出目录下找到新生成的补丁文件夹。  
 ![image](https://github.com/gmhevinci/MotionFramework/raw/master/Docs/Image/img101_1.png)
@@ -35,7 +62,7 @@ public class Test
 
 	public void Start()
 	{
-		Engine.Instance.StartCoroutine(HotfixParseAppPackageFile());
+		AppEngine.Instance.StartCoroutine(HotfixParseAppPackageFile());
 	}
 
 	public IEnumerator HotfixParseAppPackageFile()
