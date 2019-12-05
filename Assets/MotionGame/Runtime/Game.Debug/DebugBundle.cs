@@ -92,7 +92,7 @@ namespace MotionGame
 						continue;
 				}
 
-				string info = GameUtility.Substring(loader.LoadPath, "/assets/", false);
+				string info = GameTools.Substring(loader.LoadPath, "/assets/", false);
 				info = info.Replace(".unity3d", string.Empty);
 				info = $"{info} = {loader.RefCount}";
 

@@ -4,19 +4,27 @@
 //--------------------------------------------------
 using System.IO;
 using UnityEngine;
-using MotionEngine.Utility;
 using MotionEngine.Patch;
+using MotionEngine.IO;
 
 namespace MotionEngine.Res
 {
 	public static class AssetPathHelper
 	{
 		/// <summary>
+		/// 获取规范的路径
+		/// </summary>
+		public static string GetRegularPath(string path)
+		{
+			return path.Replace('\\', '/').Replace("\\", "/"); //替换为Linux路径格式
+		}
+
+		/// <summary>
 		/// 获取基于流文件夹的加载路径
 		/// </summary>
 		public static string MakeStreamingLoadPath(string assetPath)
 		{
-			return UtilFormat.Format("{0}/{1}", Application.streamingAssetsPath, assetPath);
+			return StringFormat.Format("{0}/{1}", Application.streamingAssetsPath, assetPath);
 		}
 
 		/// <summary>
@@ -27,10 +35,10 @@ namespace MotionEngine.Res
 #if UNITY_EDITOR
 			// 注意：为了方便调试查看，编辑器下把存储目录放到项目里
 			string projectPath = Path.GetDirectoryName(Application.dataPath);
-			projectPath = UtilFile.GetRegularPath(projectPath);
-			return UtilFormat.Format("{0}/Sandbox/{1}", projectPath, assetPath);
+			projectPath = GetRegularPath(projectPath);
+			return StringFormat.Format("{0}/Sandbox/{1}", projectPath, assetPath);
 #else
-		return UtilFormat.Format("{0}/Sandbox/{1}", Application.persistentDataPath, assetPath);
+		return StringFormat.Format("{0}/Sandbox/{1}", Application.persistentDataPath, assetPath);
 #endif
 		}
 
@@ -41,13 +49,13 @@ namespace MotionEngine.Res
 		{
 			// 注意：WWW加载方式，必须要在路径前面加file://
 #if UNITY_EDITOR
-			return UtilFormat.Format("file:///{0}", path);
+			return StringFormat.Format("file:///{0}", path);
 #elif UNITY_IPHONE
-			return UtilFormat.Format("file://{0}", path);
+			return StringFormat.Format("file://{0}", path);
 #elif UNITY_ANDROID
 			return path;
 #elif UNITY_STANDALONE
-			return UtilFormat.Format("file:///{0}", path);
+			return StringFormat.Format("file:///{0}", path);
 #endif
 		}
 
@@ -65,7 +73,7 @@ namespace MotionEngine.Res
 			}
 
 			path = path.ToLower(); //转换为小写形式
-			return UtilFormat.Format("{0}/{1}{2}", CachedManifestRootPath, path, PatchDefine.StrBundleSuffixName);
+			return StringFormat.Format("{0}/{1}{2}", CachedManifestRootPath, path, PatchDefine.StrBundleSuffixName);
 		}	
 	}
 }

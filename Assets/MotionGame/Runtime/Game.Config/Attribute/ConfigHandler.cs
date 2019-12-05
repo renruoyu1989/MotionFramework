@@ -11,7 +11,7 @@ namespace MotionGame
 
 		static ConfigHandler()
 		{
-			List<Type> result = UtilAssembly.GetAssignableAttributeTypes(typeof(AssetConfig), typeof(ConfigAttribute));
+			List<Type> result = AssemblyUtility.GetAssignableAttributeTypes(typeof(AssetConfig), typeof(ConfigAttribute));
 			for (int i = 0; i < result.Count; i++)
 			{
 				Type type = result[i];
