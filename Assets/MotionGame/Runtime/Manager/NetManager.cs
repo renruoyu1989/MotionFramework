@@ -10,6 +10,16 @@ using MotionEngine.Debug;
 namespace MotionGame
 {
 	/// <summary>
+	/// 网络状态
+	/// </summary>
+	public enum ENetworkState
+	{
+		Disconnect,
+		Connecting,
+		Connected,
+	}
+
+	/// <summary>
 	/// 网络管理器
 	/// </summary>
 	public sealed class NetManager : IModule
