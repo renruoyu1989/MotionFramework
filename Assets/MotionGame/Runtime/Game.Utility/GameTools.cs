@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.IO;
+using System.Text;
 using UnityEngine;
 
 namespace MotionGame
 {
-	public static class GameUtility
+	public static class GameTools
 	{
 		/// <summary>
 		/// 数值组比较
@@ -100,7 +102,7 @@ namespace MotionGame
 		}
 		#endregion
 
-		#region HTML
+		#region HTML相关
 		/// <summary>
 		/// 获取HTML中纯文本
 		/// </summary>
@@ -141,7 +143,7 @@ namespace MotionGame
 		}
 		#endregion
 
-		#region String
+		#region 字符串相关
 		/// <summary>
 		/// 截取字符串
 		/// 获取匹配到的后面内容
@@ -169,6 +171,52 @@ namespace MotionGame
 				return content.Substring(startIndex);
 			else
 				return content.Substring(startIndex + key.Length);
+		}
+		#endregion
+
+		#region 文件相关
+		/// <summary>
+		/// 创建文件
+		/// 注意：如果存在则删除旧文件
+		/// </summary>
+		public static void CreateFile(string filePath, byte[] data)
+		{
+			// 删除旧文件
+			if (File.Exists(filePath))
+				File.Delete(filePath);
+
+			// 创建目录
+			CreateFileDirectory(filePath);
+
+			// 创建新文件
+			using (FileStream fs = File.Create(filePath))
+			{
+				fs.Write(data, 0, data.Length);
+				fs.Flush();
+				fs.Close();
+			}
+		}
+
+		/// <summary>
+		/// 创建文件
+		/// 注意：如果存在则删除旧文件
+		/// </summary>
+		public static void CreateFile(string filePath, string info)
+		{
+			byte[] bytes = Encoding.UTF8.GetBytes(info);
+			CreateFile(filePath, bytes);
+		}
+
+		/// <summary>
+		/// 创建文件所在的目录
+		/// </summary>
+		/// <param name="filePath">文件路径</param>
+		public static void CreateFileDirectory(string filePath)
+		{
+			// If the destination directory doesn't exist, create it.
+			string destDirectory = Path.GetDirectoryName(filePath);
+			if (Directory.Exists(destDirectory) == false)
+				Directory.CreateDirectory(destDirectory);
 		}
 		#endregion
 	}
