@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UnityEngine
 {
-	public static class TransformExtension
+	public static class UnityEngine_Transform_Extension
 	{
 		private static List<Transform> _childStack = new List<Transform>(1000);
 
