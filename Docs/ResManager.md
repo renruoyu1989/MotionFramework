@@ -12,7 +12,7 @@ public class Test
   {
     // 加载模型
     _model = new AssetObject();
-    _model.Load("Model/npc001", OnModelLoad);
+    _model.Load("Model/npc001", OnAssetPrepare);
   }
 
   public void OnDestroy()
@@ -25,13 +25,14 @@ public class Test
     }
   }
 
-  private void OnModelLoad(Asset asset, EAssetResult result)
+  private void OnAssetPrepare(Asset asset)
   {
-    if (result != EAssetResult.OK)
+    if (asset.Result != EAssetResult.OK)
       return;
     
     // 模型已经加载完毕，我们可以在这里做任何处理
-    _model.GameObj.transform.position = Vector3.zero;
+    GameObject go = _model.GetMainAsset<GameObject>();
+    go.transform.position = Vector3.zero;
   }
 }
 ```
