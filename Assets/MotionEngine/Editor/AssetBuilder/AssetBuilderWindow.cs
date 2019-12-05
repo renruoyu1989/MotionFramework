@@ -3,14 +3,10 @@
 // Licensed under the MIT license
 //--------------------------------------------------
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using UnityEngine;
 using UnityEditor;
 using MotionEngine.Patch;
-using MotionEngine.Utility;
 
 public class AssetBuilderWindow : EditorWindow
 {
@@ -260,11 +256,11 @@ public class AssetBuilderWindow : EditorWindow
 	/// </summary>
 	private static void SaveSettingsToPlayerPrefs(AssetBuilder builder)
 	{
-		UtilPlayerPrefs.SetEnum<AssetBuilder.ECompressOption>(StrEditorCompressOption, builder.CompressOption);
-		UtilPlayerPrefs.SetBool(StrEditorIsForceRebuild, builder.IsForceRebuild);
-		UtilPlayerPrefs.SetBool(StrEditorIsAppendHash, builder.IsAppendHash);
-		UtilPlayerPrefs.SetBool(StrEditorIsDisableWriteTypeTree, builder.IsDisableWriteTypeTree);
-		UtilPlayerPrefs.SetBool(StrEditorIsIgnoreTypeTreeChanges, builder.IsIgnoreTypeTreeChanges);
+		EditorTools.PlayerSetEnum<AssetBuilder.ECompressOption>(StrEditorCompressOption, builder.CompressOption);
+		EditorTools.PlayerSetBool(StrEditorIsForceRebuild, builder.IsForceRebuild);
+		EditorTools.PlayerSetBool(StrEditorIsAppendHash, builder.IsAppendHash);
+		EditorTools.PlayerSetBool(StrEditorIsDisableWriteTypeTree, builder.IsDisableWriteTypeTree);
+		EditorTools.PlayerSetBool(StrEditorIsIgnoreTypeTreeChanges, builder.IsIgnoreTypeTreeChanges);
 	}
 	
 	/// <summary>
@@ -272,11 +268,11 @@ public class AssetBuilderWindow : EditorWindow
 	/// </summary>
 	private static void LoadSettingsFromPlayerPrefs(AssetBuilder builder)
 	{
-		builder.CompressOption = UtilPlayerPrefs.GetEnum<AssetBuilder.ECompressOption>(StrEditorCompressOption, AssetBuilder.ECompressOption.Uncompressed);
-		builder.IsForceRebuild = UtilPlayerPrefs.GetBool(StrEditorIsForceRebuild, false);
-		builder.IsAppendHash = UtilPlayerPrefs.GetBool(StrEditorIsAppendHash, false);
-		builder.IsDisableWriteTypeTree = UtilPlayerPrefs.GetBool(StrEditorIsDisableWriteTypeTree, false);
-		builder.IsIgnoreTypeTreeChanges = UtilPlayerPrefs.GetBool(StrEditorIsIgnoreTypeTreeChanges, false);
+		builder.CompressOption = EditorTools.PlayerGetEnum<AssetBuilder.ECompressOption>(StrEditorCompressOption, AssetBuilder.ECompressOption.Uncompressed);
+		builder.IsForceRebuild = EditorTools.PlayerGetBool(StrEditorIsForceRebuild, false);
+		builder.IsAppendHash = EditorTools.PlayerGetBool(StrEditorIsAppendHash, false);
+		builder.IsDisableWriteTypeTree = EditorTools.PlayerGetBool(StrEditorIsDisableWriteTypeTree, false);
+		builder.IsIgnoreTypeTreeChanges = EditorTools.PlayerGetBool(StrEditorIsIgnoreTypeTreeChanges, false);
 	}
 	#endregion
 }

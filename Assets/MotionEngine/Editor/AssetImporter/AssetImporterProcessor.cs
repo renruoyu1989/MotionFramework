@@ -54,7 +54,7 @@ public class AssetImporterProcessor : AssetPostprocessor
 		CacheProcessor.Clear();
 
 		// 获取所有资源处理器类型
-		List<Type> result = UtilAssembly.GetAssignableTypes(typeof(IAssetProcessor));
+		List<Type> result = AssemblyUtility.GetAssignableTypes(typeof(IAssetProcessor));
 		for(int i=0; i<result.Count; i++)
 		{
 			Type type = result[i];

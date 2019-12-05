@@ -497,7 +497,7 @@ public class AssetBuilder
 			{
 				string assetName = PatchDefine.StrBuildManifestFileName;
 				string path = $"{OutputPath}/{assetName}";
-				string md5 = UtilHash.FileMD5(path);
+				string md5 = HashUtility.FileMD5(path);
 				long sizeKB = EditorTools.GetFileSize(path) / 1024;
 				int version = BuildVersion;
 
@@ -510,7 +510,7 @@ public class AssetBuilder
 			foreach (string assetName in allAssetBundles)
 			{
 				string path = $"{OutputPath}/{assetName}";
-				string md5 = UtilHash.FileMD5(path);
+				string md5 = HashUtility.FileMD5(path);
 				long sizeKB = EditorTools.GetFileSize(path) / 1024;
 				int version = BuildVersion;
 
