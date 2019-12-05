@@ -8,40 +8,45 @@ namespace MotionEngine.Res
 {
 	public class AssetObject : Asset
 	{
-		/// <summary>
-		/// 实例化的游戏对象
-		/// </summary>
-		public GameObject GameObj { get; protected set; }
+		// 主资源对象
+		private UnityEngine.Object _mainAsset;
 
-		public AssetObject()
-			: base(EAssetType.Object)
+		protected override bool OnPrepare(UnityEngine.Object asset)
 		{
-		}
-		protected override bool OnPrepare(UnityEngine.Object asset, bool result)
-		{
-			if (base.OnPrepare(asset, result) == false)
-				return false;
-
-			// 实例化
-			GameObj = Object.Instantiate(asset) as GameObject;
-			if (GameObj == null)
-			{
-				LogSystem.Log(ELogType.Error, $"Failed to instantiate GameObject : {ResName}");
-				return false;
-			}
-
+			_mainAsset = asset;
 			return true;
 		}
 
-		public override void UnLoad()
+		/// <summary>
+		/// 获取主资源对象
+		/// </summary>
+		public UnityEngine.Object GetMainAsset()
 		{
-			if (GameObj != null)
+			return _mainAsset;
+		}
+
+		/// <summary>
+		/// 获取主资源对象
+		/// UnityEngine.TextAsset
+		/// UnityEngine.AudioClip
+		/// UnityEngine.Texture
+		/// UnityEngine.Sprite
+		/// UnityEngine.U2D.SpriteAtlas
+		/// UnityEngine.Video.VideoClip
+		/// UnityEngine.GameObject
+		/// UnityEngine.Font
+		/// UnityEngine.Shader
+		/// UnityEngine.Material
+		/// </summary>
+		public T GetMainAsset<T>() where T : UnityEngine.Object
+		{
+			if (_mainAsset is GameObject)
 			{
-				UnityEngine.Object.Destroy(GameObj);
-				GameObj = null;
+				GameObject go = Object.Instantiate(_mainAsset) as GameObject;
+				return go as T;
 			}
 
-			base.UnLoad();
+			return _mainAsset as T;
 		}
 	}
 }

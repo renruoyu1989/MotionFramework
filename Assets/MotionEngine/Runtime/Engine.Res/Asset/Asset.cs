@@ -9,7 +9,7 @@ namespace MotionEngine.Res
 	{
 		/// <summary>
 		/// 资源名称
-		/// 注意：相对于Resources文件夹的相对路径
+		/// 注意：资源在工程内相对于AssetSystem.AssetRootPath的相对路径
 		/// </summary>
 		public string ResName { private set; get; }
 
@@ -19,30 +19,20 @@ namespace MotionEngine.Res
 		public EAssetResult Result { private set; get; }
 
 		/// <summary>
-		/// 资源类型
+		/// 用户回调
 		/// </summary>
-		public EAssetType AssetType { private set; get; }
-
-		/// <summary>
-		/// 准备完毕回调
-		/// </summary>
-		private System.Action<Asset, EAssetResult> _prepareCallback;
+		private System.Action<Asset> _userCallback;
 
 		/// <summary>
 		/// 缓存的加载器
 		/// </summary>
-		private AssetFileLoader _cacheLoader;
+		protected AssetFileLoader _cacheLoader;
 
-
-		public Asset(EAssetType assetType)
-		{
-			AssetType = assetType;
-		}
 
 		/// <summary>
 		/// 异步加载
 		/// </summary>
-		public void Load(string resName, System.Action<Asset, EAssetResult> prepareCallbcak)
+		public void Load(string resName, System.Action<Asset> userCallbcak)
 		{
 			// 防止重复加载
 			if (Result != EAssetResult.None)
@@ -59,17 +49,18 @@ namespace MotionEngine.Res
 
 			ResName = resName;
 			Result = EAssetResult.Loading;
-			_prepareCallback = prepareCallbcak;
-			_cacheLoader = AssetSystem.LoadAssetFile(ResName, AssetType, OnAssetFileLoad);
+			_userCallback = userCallbcak;
+			bool isStreamScene = this is AssetScene;
+			_cacheLoader = AssetSystem.LoadAssetFile(ResName, isStreamScene, OnAssetFileLoad);
 		}
 
 		/// <summary>
 		/// 卸载
 		/// </summary>
-		public virtual void UnLoad()
+		public void UnLoad()
 		{
 			Result = EAssetResult.None;
-
+			_userCallback = null;
 			if (_cacheLoader != null)
 			{
 				_cacheLoader.Release();
@@ -85,49 +76,66 @@ namespace MotionEngine.Res
 			return Result == EAssetResult.Failed || Result == EAssetResult.OK;
 		}
 
+
+		/// <summary>
+		/// 准备过程
+		/// </summary>
+		/// <param name="mainAsset">主资源对象</param>
+		protected virtual bool OnPrepare(UnityEngine.Object mainAsset)
+		{
+			return true;
+		}
+
+		// 当资源文件加载完毕
 		private void OnAssetFileLoad(AssetFileLoader loader)
 		{
 			// 注意 : 如果在加载过程中调用UnLoad，等资源文件加载完毕时不再执行后续准备工作。
 			if (Result != EAssetResult.Loading)
 				return;
 
-			if (loader.LoadState == EAssetFileLoadState.LoadAssetFileOK)
+			// Check error
+			if (loader.LoadState != EAssetFileLoadState.LoadAssetFileOK)
 			{
-				loader.LoadMainAsset(AssetType, OnAssetObjectLoad);
+				Result = EAssetResult.Failed;
+				_userCallback?.Invoke(this);
+				return;
+			}
+
+			if (this is AssetScene || this is AssetPackage)
+			{
+				bool result = OnPrepare(null);
+				Result = result ? EAssetResult.OK : EAssetResult.Failed;
+				_userCallback?.Invoke(this);
+			}
+			else if (this is AssetObject)
+			{
+				loader.LoadMainAsset(null, OnMainAssetLoad);
 			}
 			else
 			{
-				Result = EAssetResult.Failed;
-
-				// 回调接口
-				if (_prepareCallback != null)
-					_prepareCallback.Invoke(this, Result);
+				throw new System.NotImplementedException($"Not support invalid asset class.");
 			}
 		}
-		private void OnAssetObjectLoad(UnityEngine.Object asset, bool result)
+
+		// 当主资源对象加载完毕
+		private void OnMainAssetLoad(UnityEngine.Object mainAsset)
 		{
 			// 注意 : 如果在加载过程中调用UnLoad，等资源对象加载完毕时不再执行后续准备工作。
 			if (Result != EAssetResult.Loading)
 				return;
 
-			// 准备数据
-			if (OnPrepare(asset, result))
+			// Check result
+			if (mainAsset == null)
 			{
-				Result = EAssetResult.OK;
+				Result = EAssetResult.Failed;
 			}
 			else
 			{
-				Result = EAssetResult.Failed;
-				LogSystem.Log(ELogType.Warning, $"Failed to prepare asset : {ResName}");
+				bool result = OnPrepare(mainAsset);
+				Result = result ? EAssetResult.OK : EAssetResult.Failed;
 			}
 
-			// 回调接口
-			if (_prepareCallback != null)
-				_prepareCallback.Invoke(this, Result);
-		}
-		protected virtual bool OnPrepare(UnityEngine.Object asset, bool result)
-		{
-			return result;
+			_userCallback?.Invoke(this);
 		}
 	}
 }

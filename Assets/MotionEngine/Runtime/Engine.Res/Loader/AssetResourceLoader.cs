@@ -26,8 +26,8 @@ namespace MotionEngine.Res
 		private ResourceRequest _cacheRequest;
 
 
-		public AssetResourceLoader(EAssetType assetType, string loadPath)
-			: base(assetType, loadPath)
+		public AssetResourceLoader(bool isStreamScene, string loadPath)
+			: base(isStreamScene, loadPath)
 		{
 		}
 		public override void Update()
@@ -44,12 +44,7 @@ namespace MotionEngine.Res
 			if (LoadState == EAssetFileLoadState.LoadAssetFile)
 			{
 				// Load resource folder file		
-				System.Type systemType = AssetSystem.MakeSystemType(AssetType);
-				if (systemType == null)
-					_cacheRequest = Resources.LoadAsync(LoadPath);
-				else
-					_cacheRequest = Resources.LoadAsync(LoadPath, systemType);
-
+				_cacheRequest = Resources.LoadAsync(LoadPath);
 				LoadState = EAssetFileLoadState.CheckAssetFile;
 			}
 
@@ -61,7 +56,7 @@ namespace MotionEngine.Res
 				_mainAsset = _cacheRequest.asset;
 
 				// Check scene
-				if (AssetType == EAssetType.Scene)
+				if (IsStreamScene)
 				{
 					LoadState = EAssetFileLoadState.LoadAssetFileOK;
 					LoadCallback?.Invoke(this);
@@ -82,17 +77,17 @@ namespace MotionEngine.Res
 				}
 			}
 		}
-		public override void LoadMainAsset(EAssetType mainAssetType, OnAssetObjectLoad callback)
+		public override void LoadMainAsset(System.Type assetType, System.Action<UnityEngine.Object> callback)
 		{
 			// Check error
 			if (LoadState != EAssetFileLoadState.LoadAssetFileOK)
 			{
 				LogSystem.Log(ELogType.Error, $"Can not load asset object, {nameof(AssetResourceLoader)} is not ok : {LoadPath}");
-				callback?.Invoke(null, false);
+				callback?.Invoke(null);
 				return;
 			}
 
-			callback?.Invoke(_mainAsset, LoadState == EAssetFileLoadState.LoadAssetFileOK);
+			callback?.Invoke(_mainAsset);
 		}
 	}
 }

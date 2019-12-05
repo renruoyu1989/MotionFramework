@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using MotionEngine;
 using MotionEngine.IO;
 using MotionEngine.Res;
+using UnityEngine;
 
 namespace MotionGame
 {
@@ -19,25 +20,27 @@ namespace MotionGame
 	/// <summary>
 	/// 配表资源类
 	/// </summary>
-	public abstract class AssetConfig : AssetByte
+	public abstract class AssetConfig : AssetObject
 	{
 		/// <summary>
 		/// 配表数据集合
 		/// </summary>
 		protected readonly Dictionary<int, ConfigTab> _tabs = new Dictionary<int, ConfigTab>();
 
-		public AssetConfig()
+
+		protected override bool OnPrepare(UnityEngine.Object mainAsset)
 		{
-		}
-		protected override bool OnPrepare(UnityEngine.Object asset, bool result)
-		{
-			if (base.OnPrepare(asset, result) == false)
+			if (base.OnPrepare(mainAsset) == false)
 				return false;
 
 			try
 			{
+				TextAsset temp = mainAsset as TextAsset;
+				if (temp == null)
+					return false;
+
 				// 解析数据
-				ParseDataInternal();
+				ParseDataInternal(temp.bytes);
 			}
 			catch (Exception ex)
 			{
@@ -59,9 +62,9 @@ namespace MotionGame
 		/// <summary>
 		/// 解析数据
 		/// </summary>
-		private void ParseDataInternal()
+		private void ParseDataInternal(byte[] bytes)
 		{
-			ByteBuffer bb = new ByteBuffer(_bytes);
+			ByteBuffer bb = new ByteBuffer(bytes);
 
 			int tabLine = 1;
 			const int headMarkAndSize = 6;
@@ -111,9 +114,8 @@ namespace MotionGame
 		/// </summary>
 		public void ParseDataFromCustomData(byte[] bytes)
 		{
-			_bytes = bytes;
 			_tabs.Clear();
-			ParseDataInternal();
+			ParseDataInternal(bytes);
 		}
 
 

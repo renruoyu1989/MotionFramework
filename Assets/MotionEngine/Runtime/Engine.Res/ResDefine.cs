@@ -12,39 +12,24 @@ namespace MotionEngine.Res
 	}
 
 	/// <summary>
-	/// 当资源文件加载完毕
-	/// </summary>
-	public delegate void OnAssetFileLoad(AssetFileLoader loader);
-
-	/// <summary>
-	/// 当资源对象加载完毕
-	/// </summary>
-	public delegate void OnAssetObjectLoad(UnityEngine.Object asset, bool result);
-
-	/// <summary>
 	/// 资源加载模式
 	/// </summary>
 	public enum EAssetLoadMode
 	{
-		EditorMode, //AssetDatabase加载模式
-		ResourceMode, //Resource加载模式
-		BundleMode, //AssetBundle加载模式
-	}
+		/// <summary>
+		/// AssetDatabase加载模式
+		/// </summary>
+		EditorMode,
 
-	/// <summary>
-	/// 资源类型
-	/// </summary>
-	public enum EAssetType
-	{
-		None,
-		Scene, //场景
-		Text, //配表（UnityEngine.TextAsset）
-		Audio, //音频（UnityEngine.AudioClip）
-		Texture, //纹理（UnityEngine.Texture）
-		Sprite, //精灵（UnityEngine.Sprite）
-		Atlas, //图集（UnityEngine.U2D.SpriteAtlas）
-		Video, //视频 (UnityEngine.Video.VideoClip)
-		Object, //预制体（UnityEngine.GameObject）
+		/// <summary>
+		/// Resource加载模式
+		/// </summary>
+		ResourceMode,
+
+		/// <summary>
+		/// AssetBundle加载模式
+		/// </summary>
+		BundleMode,
 	}
 
 	/// <summary>

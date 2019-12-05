@@ -16,9 +16,9 @@ namespace MotionEngine.Res
 		public int RefCount { get; private set; }
 
 		/// <summary>
-		/// 资源类型
+		/// 是否是流场景资源
 		/// </summary>
-		public EAssetType AssetType { get; private set; }
+		public bool IsStreamScene { get; private set; }
 
 		/// <summary>
 		/// 加载路径
@@ -26,22 +26,23 @@ namespace MotionEngine.Res
 		public string LoadPath { get; private set; }
 
 		/// <summary>
-		/// 完成回调
-		/// </summary>
-		public OnAssetFileLoad LoadCallback { get; set; }
-
-		/// <summary>
 		/// 加载状态
 		/// </summary>
 		public EAssetFileLoadState LoadState { get; protected set; }
 
+		/// <summary>
+		/// 完成回调
+		/// </summary>
+		public System.Action<AssetFileLoader> LoadCallback { get; set; }
 
-		public AssetFileLoader(EAssetType assetType, string loadPath)
+
+		public AssetFileLoader(bool isStreamScene, string loadPath)
 		{
-			RefCount = 0;	
-			AssetType = assetType;
+			RefCount = 0;
+			IsStreamScene = isStreamScene;
 			LoadPath = loadPath;
 			LoadState = EAssetFileLoadState.None;
+			LoadCallback = null;
 		}
 
 		/// <summary>
@@ -51,10 +52,9 @@ namespace MotionEngine.Res
 
 		/// <summary>
 		/// 加载主资源对象
-		/// 注意：在加载主资源对象的时候，需要传入资源类型，因为依赖Bundle被加载的时候，AssetType为空。
 		/// </summary>
-		public abstract void LoadMainAsset(EAssetType mainAssetType, OnAssetObjectLoad callback);
-
+		public abstract void LoadMainAsset(System.Type assetType, System.Action<UnityEngine.Object> callback);
+		
 		/// <summary>
 		/// 引用接口（引用计数递加）
 		/// </summary>
@@ -81,7 +81,7 @@ namespace MotionEngine.Res
 		/// <summary>
 		/// 是否完毕（无论成功失败）
 		/// </summary>
-		public bool IsDone()
+		public virtual bool IsDone()
 		{
 			return LoadState == EAssetFileLoadState.LoadAssetFileOK || LoadState == EAssetFileLoadState.LoadAssetFileFailed;
 		}

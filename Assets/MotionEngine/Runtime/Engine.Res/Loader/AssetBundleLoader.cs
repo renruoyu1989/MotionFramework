@@ -36,19 +36,16 @@ namespace MotionEngine.Res
 		private AssetBundleCreateRequest _cacheRequest;
 
 
-		public AssetBundleLoader(EAssetType assetType, string loadPath, string manifestPath)
-			: base(assetType, loadPath)
+		public AssetBundleLoader(bool isStreamScene, string loadPath, string manifestPath)
+			: base(isStreamScene, loadPath)
 		{
 			_manifestPath = manifestPath;
 		}
 		public override void Update()
 		{
-			// 轮询更新主资源对象加载
+			// 轮询更新所有对象加载器
 			if (LoadState == EAssetFileLoadState.LoadAssetFileOK)
-			{
-				if (_mainAssetLoader != null)
-					_mainAssetLoader.Update();
-			}
+				UpdateAllAssetObjectLoader();
 
 			if (IsDone())
 				return;
@@ -67,7 +64,7 @@ namespace MotionEngine.Res
 					foreach (string dpManifestPath in dependencies)
 					{
 						string dpLoadPath = AssetSystem.BundleMethod.GetAssetBundleLoadPath(dpManifestPath);
-						AssetFileLoader dpLoader = AssetSystem.GetFileLoader(EAssetType.None, dpLoadPath, null, dpManifestPath);
+						AssetFileLoader dpLoader = AssetSystem.GetFileLoader(false, dpLoadPath, null, dpManifestPath);
 						_depends.Add(dpLoader);
 					}
 				}
@@ -112,7 +109,7 @@ namespace MotionEngine.Res
 				_cacheBundle = _cacheRequest.assetBundle;
 
 				// Check scene
-				if (AssetType == EAssetType.Scene)
+				if (IsStreamScene)
 				{
 					LoadState = EAssetFileLoadState.LoadAssetFileOK;
 					LoadCallback?.Invoke(this);
@@ -133,6 +130,20 @@ namespace MotionEngine.Res
 				}
 			}
 		}
+		public override void LoadMainAsset(System.Type assetType, System.Action<UnityEngine.Object> callback)
+		{
+			// Check error
+			if (LoadState != EAssetFileLoadState.LoadAssetFileOK)
+			{
+				LogSystem.Log(ELogType.Error, $"Can not load asset object, {nameof(AssetBundleLoader)} is not ok : {LoadPath}");
+				callback?.Invoke(null);
+				return;
+			}
+
+			string assetName = AssetSystem.GetCacheFileName(LoadPath);
+			LoadAsset(assetName, assetType, callback);
+		}
+
 		public override void Reference()
 		{
 			base.Reference();
@@ -160,8 +171,6 @@ namespace MotionEngine.Res
 				throw new Exception($"Bundle file loader ref is not zero : {LoadPath}");
 			if (IsDone() == false)
 				throw new Exception($"Bundle file loader is not done : {LoadPath}");
-			if (CheckMainAssetObjectLoaderIsDone() == false)
-				throw new Exception($"Main asset object loader is not done : {LoadPath}");
 
 			// 卸载AssetBundle
 			if (_cacheBundle != null)
@@ -172,52 +181,89 @@ namespace MotionEngine.Res
 
 			_depends.Clear();
 		}
-
-		#region 主资源对象
-		private AssetObjectLoader _mainAssetLoader = null;
-		public override void LoadMainAsset(EAssetType assetType, OnAssetObjectLoad callback)
+		public override bool IsDone()
 		{
-			// Check error
-			if (LoadState != EAssetFileLoadState.LoadAssetFileOK)
-			{
-				LogSystem.Log(ELogType.Error, $"Can not load asset object, {nameof(AssetBundleLoader)} is not ok : {LoadPath}");
-				callback?.Invoke(null, false);
-				return;
-			}
+			if (base.IsDone() == false)
+				return false;
 
-			// Check secne
-			// 注意：场景文件在获取资源对象的时候直接返回成功
-			if (assetType == EAssetType.Scene)
-			{
-				callback?.Invoke(null, true);
-				return;
-			}
+			return CheckAllAssetObjectLoaderIsDone();
+		}
 
-			// 如果加载器不存在
-			if (_mainAssetLoader == null)
+		#region 资源对象相关
+		// 对象加载器列表
+		private readonly List<AssetObjectLoader> _assetObjectLoaders = new List<AssetObjectLoader>();
+
+		/// <summary>
+		/// 检测所有对象加载器是否完毕
+		/// </summary>
+		public bool CheckAllAssetObjectLoaderIsDone()
+		{
+			bool isAllLoadDone = true;
+			for (int i = 0; i < _assetObjectLoaders.Count; i++)
 			{
-				string assetName = AssetSystem.GetCacheFileName(LoadPath);
-				_mainAssetLoader = new AssetObjectLoader(_cacheBundle, assetName, assetType);
-				_mainAssetLoader.LoadCallback = callback;
-				_mainAssetLoader.Update(); //立刻轮询
+				var loader = _assetObjectLoaders[i];
+				if (loader.IsDone() == false)
+				{
+					isAllLoadDone = false;
+					break;
+				}
 			}
-			else
-			{
-				if (_mainAssetLoader.IsDone())
-					callback?.Invoke(_mainAssetLoader.AssetObject, _mainAssetLoader.LoadState == EAssetObjectLoadState.LoadAssetObjectOK);
-				else
-					_mainAssetLoader.LoadCallback += callback;
-			}
+			return isAllLoadDone;
 		}
 
 		/// <summary>
-		/// 检测主资源加载器是否完毕
+		/// 加载资源对象
 		/// </summary>
-		public bool CheckMainAssetObjectLoaderIsDone()
+		/// <param name="assetName">资源对象名称</param>
+		/// <param name="assetType">资源对象类型</param>
+		/// <param name="callback">结果回调</param>
+		public void LoadAsset(string assetName, System.Type assetType, System.Action<UnityEngine.Object> callback)
 		{
-			if (_mainAssetLoader == null)
-				return true;
-			return _mainAssetLoader.IsDone();
+			// 如果已经提交相同请求
+			AssetObjectLoader loader = TryGetAssetObjectLoaderInternal(assetName);
+			if (loader != null)
+			{
+				if (loader.IsDone())
+					callback?.Invoke(loader.AssetObject);
+				else
+					loader.LoadCallback += callback;
+			}
+			else
+			{
+				// 创建加载器
+				AssetObjectLoader newLoader = new AssetObjectLoader(_cacheBundle, assetName, assetType);
+
+				// 新增下载需求
+				_assetObjectLoaders.Add(newLoader);
+				newLoader.LoadCallback = callback;
+				newLoader.Update(); //立刻轮询
+			}
+		}
+
+		// 获取一个对象加载器
+		private AssetObjectLoader TryGetAssetObjectLoaderInternal(string assetName)
+		{
+			AssetObjectLoader loader = null;
+			for (int i = 0; i < _assetObjectLoaders.Count; i++)
+			{
+				AssetObjectLoader temp = _assetObjectLoaders[i];
+				if (temp.AssetName.Equals(assetName))
+				{
+					loader = temp;
+					break;
+				}
+			}
+			return loader;
+		}
+
+		// 更新所有对象加载器
+		private void UpdateAllAssetObjectLoader()
+		{
+			for (int i = 0; i < _assetObjectLoaders.Count; i++)
+			{
+				var loader = _assetObjectLoaders[i];
+				loader.Update();
+			}
 		}
 		#endregion
 	}

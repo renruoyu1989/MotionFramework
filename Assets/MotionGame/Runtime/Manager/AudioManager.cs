@@ -1,13 +1,45 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using MotionEngine;
 using MotionEngine.Res;
 using MotionEngine.Debug;
+using UnityEngine;
 
 namespace MotionGame
 {
+	/// <summary>
+	/// 音频资源类
+	/// </summary>
+	internal class AssetAudio : AssetObject
+	{
+		/// <summary>
+		/// 标签
+		/// </summary>
+		public int AudioTag { private set; get; }
+
+		/// <summary>
+		/// 资源对象
+		/// </summary>
+		public AudioClip Clip { private set; get; }
+
+		public AssetAudio(int audioTag)
+		{
+			AudioTag = audioTag;
+		}
+		protected override bool OnPrepare(UnityEngine.Object mainAsset)
+		{
+			if (base.OnPrepare(mainAsset) == false)
+				return false;
+
+			Clip = mainAsset as AudioClip;
+			if (Clip == null)
+				return false;
+
+			return true;
+		}
+	}
+
 	/// <summary>
 	/// 音频层级
 	/// </summary>
@@ -168,9 +200,9 @@ namespace MotionGame
 				// 新建加载资源
 				AssetAudio assetAudio = new AssetAudio((int)EAudioLayer.Music);
 				_assets.Add(name, assetAudio);
-				assetAudio.Load(BaseFolderPath + name, (Asset asset, EAssetResult result) =>
+				assetAudio.Load(BaseFolderPath + name, (Asset asset) =>
 				{
-					if (result == EAssetResult.OK)
+					if (asset.Result == EAssetResult.OK)
 					{
 						PlayAudioClipInternal(EAudioLayer.Music, _assets[name].Clip, loop);
 						PlayFadeEffect(EFadeMode.FadeIn);
@@ -199,9 +231,9 @@ namespace MotionGame
 				// 新建加载资源
 				AssetAudio assetAudio = new AssetAudio((int)EAudioLayer.Ambient);
 				_assets.Add(name, assetAudio);
-				assetAudio.Load(BaseFolderPath + name, (Asset asset, EAssetResult result) =>
+				assetAudio.Load(BaseFolderPath + name, (Asset asset) =>
 				{
-					if (result == EAssetResult.OK)
+					if (asset.Result == EAssetResult.OK)
 						PlayAudioClipInternal(EAudioLayer.Ambient, _assets[name].Clip, loop);
 				});
 			}
@@ -230,9 +262,9 @@ namespace MotionGame
 				// 新建加载资源
 				AssetAudio assetAudio = new AssetAudio((int)EAudioLayer.Voice);
 				_assets.Add(name, assetAudio);
-				assetAudio.Load(BaseFolderPath + name, (Asset asset, EAssetResult result) =>
+				assetAudio.Load(BaseFolderPath + name, (Asset asset) =>
 				{
-					if (result == EAssetResult.OK)
+					if (asset.Result == EAssetResult.OK)
 						PlayAudioClipInternal(EAudioLayer.Voice, _assets[name].Clip, false);
 				});
 			}
@@ -261,9 +293,9 @@ namespace MotionGame
 				// 新建加载资源
 				AssetAudio assetAudio = new AssetAudio((int)EAudioLayer.Sound);
 				_assets.Add(name, assetAudio);
-				assetAudio.Load(BaseFolderPath + name, (Asset asset, EAssetResult result) =>
+				assetAudio.Load(BaseFolderPath + name, (Asset asset) =>
 				{
-					if (result == EAssetResult.OK)
+					if (asset.Result == EAssetResult.OK)
 						PlayAudioClipInternal(EAudioLayer.Sound, _assets[name].Clip, false);
 				});
 			}
@@ -297,9 +329,9 @@ namespace MotionGame
 				// 新建加载资源
 				AssetAudio assetAudio = new AssetAudio((int)EAudioLayer.Sound);
 				_assets.Add(name, assetAudio);
-				assetAudio.Load(BaseFolderPath + name, (Asset asset, EAssetResult result) =>
+				assetAudio.Load(BaseFolderPath + name, (Asset asset) =>
 				{
-					if (result == EAssetResult.OK)
+					if (asset.Result == EAssetResult.OK)
 					{
 						if (audio != null)
 							audio.PlayOneShot(_assets[name].Clip);

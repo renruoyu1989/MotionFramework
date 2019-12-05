@@ -3,23 +3,26 @@ using System.Security;
 using Mono.Xml;
 using MotionEngine;
 using MotionEngine.Res;
+using UnityEngine;
 
 namespace MotionGame
 {
-	public abstract class AssetXml : AssetText
+	public abstract class AssetXml : AssetObject
 	{
 		protected SecurityElement _xml;
 
-		public AssetXml()
+
+		protected override bool OnPrepare(UnityEngine.Object mainAsset)
 		{
-		}
-		protected override bool OnPrepare(UnityEngine.Object asset, bool result)
-		{
-			if (base.OnPrepare(asset, result) == false)
+			if (base.OnPrepare(mainAsset) == false)
+				return false;
+
+			TextAsset temp = mainAsset as TextAsset;
+			if (temp == null)
 				return false;
 
 			SecurityParser sp = new SecurityParser();
-			sp.LoadXml(Text.text);
+			sp.LoadXml(temp.text);
 			_xml = sp.ToXml();
 
 			if (_xml == null)

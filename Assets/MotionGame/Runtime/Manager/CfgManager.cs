@@ -46,7 +46,7 @@ namespace MotionGame
 		/// 加载配表
 		/// </summary>
 		/// <param name="cfgName">配表文件名称</param>
-		public void Load(string cfgName, System.Action<Asset, EAssetResult> prepareCallback)
+		public void Load(string cfgName, System.Action<Asset> prepareCallback)
 		{
 			// 防止重复加载
 			if (_cfgs.ContainsKey(cfgName))

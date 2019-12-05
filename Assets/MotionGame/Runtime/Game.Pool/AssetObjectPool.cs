@@ -92,13 +92,13 @@ namespace MotionGame
 		}
 
 		// 当资源加载完毕
-		private void OnAssetPrepare(object assetClass, EAssetResult result)
+		private void OnAssetPrepare(Asset asset)
 		{
 			// 如果加载失败，创建临时对象
-			if (result == EAssetResult.Failed)
+			if (asset.Result == EAssetResult.Failed)
 				_go = new GameObject(ResName);
 			else
-				_go = _asset.GameObj;
+				_go = _asset.GetMainAsset<GameObject>();
 
 			// 设置游戏对象
 			_go.SetActive(false);

@@ -24,7 +24,7 @@ namespace MotionEngine.Res
 		/// <summary>
 		/// 资源对象的类型
 		/// </summary>
-		public EAssetType AssetType { private set; get; }
+		public System.Type AssetType { private set; get; }
 
 		/// <summary>
 		/// 最终获取的资源对象
@@ -39,7 +39,7 @@ namespace MotionEngine.Res
 		/// <summary>
 		/// 结果回调
 		/// </summary>
-		public OnAssetObjectLoad LoadCallback;
+		public System.Action<UnityEngine.Object> LoadCallback;
 
 		/// <summary>
 		/// Request对象
@@ -47,7 +47,7 @@ namespace MotionEngine.Res
 		private AssetBundleRequest _cacheRequest;
 
 
-		public AssetObjectLoader(AssetBundle bundle, string assetName, EAssetType assetType)
+		public AssetObjectLoader(AssetBundle bundle, string assetName, System.Type assetType)
 		{
 			_cacheBundle = bundle;
 			AssetName = assetName;
@@ -71,9 +71,10 @@ namespace MotionEngine.Res
 			// 1. 加载主资源对象
 			if (LoadState == EAssetObjectLoadState.LoadAssetObject)
 			{
-				// Load main asset
-				System.Type systemType = AssetSystem.MakeSystemType(AssetType);
-				_cacheRequest = _cacheBundle.LoadAssetAsync(AssetName, systemType);
+				if(AssetType == null)
+					_cacheRequest = _cacheBundle.LoadAssetAsync(AssetName);
+				else
+					_cacheRequest = _cacheBundle.LoadAssetAsync(AssetName, AssetType);
 				LoadState = EAssetObjectLoadState.CheckAssetObject;
 			}
 
@@ -83,18 +84,8 @@ namespace MotionEngine.Res
 				if (_cacheRequest.isDone == false)
 					return;
 				AssetObject = _cacheRequest.asset;
-
-				// Check error
-				if (AssetObject == null)
-				{
-					LoadState = EAssetObjectLoadState.LoadAssetObjectFailed;
-					LoadCallback?.Invoke(AssetObject, false);
-				}
-				else
-				{
-					LoadState = EAssetObjectLoadState.LoadAssetObjectOK;
-					LoadCallback?.Invoke(AssetObject, true);
-				}
+				LoadState = AssetObject == null ? EAssetObjectLoadState.LoadAssetObjectFailed : EAssetObjectLoadState.LoadAssetObjectOK;
+				LoadCallback?.Invoke(AssetObject);
 			}
 		}
 

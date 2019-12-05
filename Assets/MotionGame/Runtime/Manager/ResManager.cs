@@ -43,29 +43,29 @@ namespace MotionGame
 		/// 同步加载接口
 		/// 注意：仅支持特殊的无依赖资源
 		/// </summary>
-		public T SyncLoad<T>(string loadPath) where T : UnityEngine.Object
+		public T SyncLoad<T>(string resName) where T : UnityEngine.Object
 		{
 			UnityEngine.Object result = null;
 
 			if (AssetSystem.AssetLoadMode == EAssetLoadMode.EditorMode)
 			{
 #if UNITY_EDITOR
-				string path = AssetDatabaseLoader.GetDatabaseAssetPath(loadPath);
-				result = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(path);
+				string loadPath = AssetSystem.GetDatabaseAssetPath(resName);
+				result = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(loadPath);
 #else
 				throw new Exception("AssetDatabaseLoader only support unity editor.");
 #endif
 			}
 			else if (AssetSystem.AssetLoadMode == EAssetLoadMode.ResourceMode)
 			{
-				result = Resources.Load<T>(loadPath);
+				result = Resources.Load<T>(resName);
 			}
 			else if (AssetSystem.AssetLoadMode == EAssetLoadMode.BundleMode)
 			{
-				string fileName = System.IO.Path.GetFileNameWithoutExtension(loadPath);
-				string manifestPath = AssetPathHelper.ConvertResourcePathToManifestPath(loadPath);
-				string path = AssetSystem.BundleMethod.GetAssetBundleLoadPath(manifestPath);
-				AssetBundle bundle = AssetBundle.LoadFromFile(path);
+				string fileName = System.IO.Path.GetFileNameWithoutExtension(resName);
+				string manifestPath = AssetPathHelper.ConvertResourcePathToManifestPath(resName);
+				string loadPath = AssetSystem.BundleMethod.GetAssetBundleLoadPath(manifestPath);
+				AssetBundle bundle = AssetBundle.LoadFromFile(loadPath);
 				result = bundle.LoadAsset<T>(fileName);
 				bundle.Unload(false);
 			}
