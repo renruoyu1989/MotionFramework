@@ -9,11 +9,11 @@ using System.Reflection;
 
 namespace MotionEngine.Utility
 {
-	public static class UtilAssembly
+	public static class AssemblyUtility
 	{
 		private static readonly List<Type> _cacheTypes = new List<Type>();
 
-		static UtilAssembly()
+		static AssemblyUtility()
 		{
 			_cacheTypes.Clear();
 

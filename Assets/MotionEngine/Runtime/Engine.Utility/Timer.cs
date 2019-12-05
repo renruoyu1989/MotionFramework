@@ -8,7 +8,7 @@ namespace MotionEngine.Utility
 	/// <summary>
 	/// 计时器基类
 	/// </summary>
-	public abstract class BaseTimer
+	public abstract class TimerBase
 	{
 		protected readonly float _delay;
 		
@@ -24,7 +24,7 @@ namespace MotionEngine.Utility
 		/// 计时器
 		/// </summary>
 		/// <param name="delay">延迟计时时间</param>
-		public BaseTimer(float delay)
+		public TimerBase(float delay)
 		{
 			_delay = delay;
 		}
@@ -78,7 +78,7 @@ namespace MotionEngine.Utility
 	/// <summary>
 	/// 延迟后，执行一次
 	/// </summary>
-	public class OnceTimer : BaseTimer
+	public class OnceTimer : TimerBase
 	{
 		public OnceTimer(float delay) : base(delay)
 		{
@@ -110,7 +110,7 @@ namespace MotionEngine.Utility
 	/// <summary>
 	/// 延迟后，间隔执行
 	/// </summary>
-	public class RepeatTimer : BaseTimer
+	public class RepeatTimer : TimerBase
 	{
 		private readonly float _repeat;
 
@@ -157,7 +157,7 @@ namespace MotionEngine.Utility
 	/// <summary>
 	/// 延迟后，执行一段时间
 	/// </summary>
-	public class DurationTimer : BaseTimer
+	public class DurationTimer : TimerBase
 	{
 		private readonly float _duration;
 
@@ -204,7 +204,7 @@ namespace MotionEngine.Utility
 	/// <summary>
 	/// 延迟后，永久执行
 	/// </summary>
-	public class ForeverTimer : BaseTimer
+	public class ForeverTimer : TimerBase
 	{
 		public ForeverTimer(float delay) : base(delay)
 		{

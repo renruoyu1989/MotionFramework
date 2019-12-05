@@ -9,7 +9,7 @@ using System.Security.Cryptography;
 
 namespace MotionEngine.Utility
 {
-	public static class UtilHash
+	public static class HashUtility
 	{
 		private static string ToString(byte[] hashBytes)
 		{
