@@ -12,7 +12,7 @@ public class AssetBuilderWindow : EditorWindow
 {
 	static AssetBuilderWindow _thisInstance;
 
-	[MenuItem("MotionTools/Asset Builder", false, 102)]
+	[MenuItem("MotionTools/Asset Builder", false, 104)]
 	static void ShowWindow()
 	{
 		if (_thisInstance == null)

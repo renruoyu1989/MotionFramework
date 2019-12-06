@@ -12,7 +12,7 @@ public class AssetSearchWindow : EditorWindow
 {
 	static AssetSearchWindow _thisInstance;
 
-	[MenuItem("MotionTools/Asset Search", false, 104)]
+	[MenuItem("MotionTools/Asset Search", false, 103)]
 	static void Init()
 	{
 		if (_thisInstance == null)
