@@ -6,9 +6,14 @@
 public class EditorDefine
 {
 	/// <summary>
-	/// 导入器的配置文件存储路径
+	/// 资源导入器的配置文件存储路径
 	/// </summary>
 	public const string ImporterSettingFilePath = "Assets/MotionSetting/ImportSetting.asset";
+
+	/// <summary>
+	/// 资源构建器的配置文件存储路径
+	/// </summary>
+	public const string BuilderSettingFilePath = "Assets/MotionSetting/BuildSetting.asset";
 }
 
 /// <summary>
