@@ -8,7 +8,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 
-public class ParticleTester
+public class ParticleProfiler
 {
 	private MethodInfo _calculateEffectUIDataMethod = null;
 
@@ -94,16 +94,16 @@ public class ParticleTester
 	}
 
 
-	public ParticleTester()
+	public ParticleProfiler()
 	{
 		_calculateEffectUIDataMethod = typeof(ParticleSystem).GetMethod("CalculateEffectUIData", BindingFlags.Instance | BindingFlags.NonPublic);
 	}
 
 	/// <summary>
-	/// 开始测试特效
+	/// 开始分析特效
 	/// </summary>
 	/// <param name="prefab">特效预制体</param>
-	public void Test(UnityEngine.Object prefab)
+	public void Analyze(UnityEngine.Object prefab)
 	{
 		if (prefab == null)
 			return;
