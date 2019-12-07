@@ -18,7 +18,7 @@ public class AssetSearchWindow : EditorWindow
 		if (_thisInstance == null)
 		{
 			_thisInstance = EditorWindow.GetWindow(typeof(AssetSearchWindow), false, "资源引用搜索工具", true) as AssetSearchWindow;
-			_thisInstance.minSize = new Vector2(350, 600);
+			_thisInstance.minSize = new Vector2(400, 600);
 		}
 
 		_thisInstance.Show();

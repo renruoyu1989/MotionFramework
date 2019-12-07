@@ -20,7 +20,7 @@ public class AssetImporterWindow : EditorWindow
 		if (_thisInstance == null)
 		{
 			_thisInstance = EditorWindow.GetWindow(typeof(AssetImporterWindow), false, "资源导入工具", true) as AssetImporterWindow;
-			_thisInstance.minSize = new Vector2(600, 600);
+			_thisInstance.minSize = new Vector2(800, 600);
 		}
 
 		_thisInstance.Show();
@@ -76,6 +76,7 @@ public class AssetImporterWindow : EditorWindow
 		}
 
 		// 列表显示
+		EditorGUILayout.Space();
 		for (int i = 0; i < ImportSettingData.Setting.Elements.Count; i++)
 		{
 			string folderPath = ImportSettingData.Setting.Elements[i].FolderPath;
@@ -93,7 +94,7 @@ public class AssetImporterWindow : EditorWindow
 					ImportSettingData.ModifyElement(folderPath, processClassName);
 				}
 
-				if (GUILayout.Button("-", GUILayout.MaxWidth(80)))
+				if (GUILayout.Button("-", GUILayout.MaxWidth(40)))
 				{
 					ImportSettingData.RemoveElement(folderPath);
 					break;

@@ -18,7 +18,7 @@ public class AssetBuilderWindow : EditorWindow
 		if (_thisInstance == null)
 		{
 			_thisInstance = EditorWindow.GetWindow(typeof(AssetBuilderWindow), false, "资源打包工具", true) as AssetBuilderWindow;
-			_thisInstance.minSize = new Vector2(600, 600);
+			_thisInstance.minSize = new Vector2(800, 600);
 		}
 		_thisInstance.Show();
 	}

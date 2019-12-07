@@ -22,7 +22,7 @@ public class AssetBrowserWindow : EditorWindow
 		if (_thisInstance == null)
 		{
 			_thisInstance = EditorWindow.GetWindow(typeof(AssetBrowserWindow), false, "资源浏览工具", true) as AssetBrowserWindow;
-			_thisInstance.minSize = new Vector2(600, 600);
+			_thisInstance.minSize = new Vector2(800, 600);
 		}
 
 		_thisInstance.Show();
