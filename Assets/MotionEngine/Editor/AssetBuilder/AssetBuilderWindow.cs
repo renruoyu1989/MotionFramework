@@ -4,9 +4,9 @@
 //--------------------------------------------------
 using System;
 using System.IO;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using MotionEngine.Patch;
 
 public class AssetBuilderWindow : EditorWindow
 {
@@ -45,13 +45,11 @@ public class AssetBuilderWindow : EditorWindow
 		_leftStyle = new GUIStyle(GUI.skin.GetStyle("Label"));
 		_leftStyle.alignment = TextAnchor.MiddleLeft;
 
-		// 创建构建器类
+		// 创建AssetBuilder
 		Version appVersion = new Version(Application.version);
 		int buildVersion = appVersion.Revision;
 		BuildTarget buildTarget = EditorUserBuildSettings.activeBuildTarget;
-		string packPath = EditorPrefs.GetString(StrEditorPackingPath, PatchDefine.StrMyPackRootPath);
-		_assetBuilder = new AssetBuilder();
-		_assetBuilder.InitAssetBuilder(buildTarget, buildVersion, packPath);
+		_assetBuilder = new AssetBuilder(buildTarget, buildVersion);
 
 		// 读取配置
 		LoadSettingsFromPlayerPrefs(_assetBuilder);
@@ -67,9 +65,6 @@ public class AssetBuilderWindow : EditorWindow
 
 		// 构建版本
 		_assetBuilder.BuildVersion = EditorGUILayout.IntField("Build Version", _assetBuilder.BuildVersion, GUILayout.MaxWidth(250));
-
-		// 打包路径
-		EditorGUILayout.LabelField("Build Pack Path", _assetBuilder.PackPath);
 
 		// 输出路径
 		EditorGUILayout.LabelField("Build Output Path", _assetBuilder.OutputPath);
@@ -145,17 +140,6 @@ public class AssetBuilderWindow : EditorWindow
 					EditorApplication.delayCall += CheckAllPrefabValid;
 				}
 
-				if (GUILayout.Button("设置打包路径", GUILayout.MaxWidth(120), GUILayout.MaxHeight(40)))
-				{
-					string resultPath = EditorTools.OpenFolderPanel("Open Folder Dialog", _assetBuilder.PackPath);
-					if (resultPath != null)
-					{
-						string newPackPath = EditorTools.AbsolutePathToAssetPath(resultPath);
-						_assetBuilder.PackPath = newPackPath;
-						EditorPrefs.SetString(StrEditorPackingPath, _assetBuilder.PackPath);
-					}
-				}
-
 				if (GUILayout.Button("刷新流目录（清空后拷贝所有补丁包到流目录）", GUILayout.MaxWidth(300), GUILayout.MaxHeight(40)))
 				{
 					EditorApplication.delayCall += RefreshStreammingFolder;
@@ -183,20 +167,18 @@ public class AssetBuilderWindow : EditorWindow
 	/// </summary>
 	private void CheckAllPrefabValid()
 	{
-		// 获取打包目录下所有文件
-		string packPath = _assetBuilder.PackPath;
-		DirectoryInfo dirInfo = new DirectoryInfo(packPath);
-		FileInfo[] files = dirInfo.GetFiles("*.*", SearchOption.AllDirectories);
-
-		// 进度条相关
-		int checkCount = 0;
-		int invalidCount = 0;
-		EditorUtility.DisplayProgressBar("进度", $"检测预制件文件是否损坏：{checkCount}/{files.Length}", (float)checkCount / files.Length);
+		// 获取所有的打包路径
+		List<string> packPathList = BuildSettingData.GetAllCollectPath();
+		if (packPathList.Count == 0)
+			throw new Exception("[BuildPackage] 打包路径列表不能为空");
 
 		// 获取所有资源列表
-		foreach (FileInfo fileInfo in files)
+		int checkCount = 0;
+		int invalidCount = 0;
+		string[] guids = AssetDatabase.FindAssets(string.Empty, packPathList.ToArray());
+		foreach (string guid in guids)
 		{
-			string assetPath = EditorTools.AbsolutePathToAssetPath(fileInfo.FullName);
+			string assetPath = AssetDatabase.GUIDToAssetPath(guid);
 			string ext = System.IO.Path.GetExtension(assetPath);
 			if (ext == ".prefab")
 			{
@@ -210,12 +192,12 @@ public class AssetBuilderWindow : EditorWindow
 
 			// 进度条相关
 			checkCount++;
-			EditorUtility.DisplayProgressBar("进度", $"检测预制件文件是否损坏：{checkCount}/{files.Length}", (float)checkCount / files.Length);
+			EditorUtility.DisplayProgressBar("进度", $"检测预制件文件是否损坏：{checkCount}/{guids.Length}", (float)checkCount / guids.Length);
 		}
 
 		EditorUtility.ClearProgressBar();
 		if (invalidCount == 0)
-			UnityEngine.Debug.Log($"没有发现损坏预制件");
+			Debug.Log($"没有发现损坏预制件");
 	}
 
 	/// <summary>
@@ -243,7 +225,6 @@ public class AssetBuilderWindow : EditorWindow
 	}
 
 	#region 设置相关
-	private const string StrEditorPackingPath = "StrEditorPackingPath";
 	private const string StrEditorCompressOption = "StrEditorCompressOption";
 	private const string StrEditorIsForceRebuild = "StrEditorIsForceRebuild";
 	private const string StrEditorIsAppendHash = "StrEditorIsAppendHash";

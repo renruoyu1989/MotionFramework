@@ -34,45 +34,14 @@ public class BuildSettingWindow : EditorWindow
 	private GUIStyle _titleStyle;
 	private void OnGUI()
 	{
-		// 根路径
-		EditorGUILayout.Space();
-		EditorGUILayout.LabelField($"Pack Root Path");
-		EditorGUILayout.BeginHorizontal();
-		{
-			string folderPath = BuildSettingData.Setting.RootPath.FolderPath;
-			BuildSetting.EFolderPackRule packRule = BuildSettingData.Setting.RootPath.PackRule;
-			BuildSetting.EBundleNameRule nameRule = BuildSettingData.Setting.RootPath.NameRule;
-
-			EditorGUILayout.LabelField(folderPath);
-
-			BuildSetting.EFolderPackRule newPackRule = (BuildSetting.EFolderPackRule)EditorGUILayout.EnumPopup(packRule, GUILayout.MaxWidth(150));
-			if (newPackRule != packRule)
-				BuildSettingData.ModifyRootPath(folderPath, newPackRule, nameRule);
-
-			BuildSetting.EBundleNameRule newNameRule = (BuildSetting.EBundleNameRule)EditorGUILayout.EnumPopup(nameRule, GUILayout.MaxWidth(150));
-			if (newNameRule != nameRule)
-				BuildSettingData.ModifyRootPath(folderPath, packRule, newNameRule);
-
-			if (GUILayout.Button("Set", GUILayout.MaxWidth(40)))
-			{
-				string resultPath = EditorTools.OpenFolderPanel("+", folderPath);
-				if (resultPath != null)
-				{
-					folderPath = EditorTools.AbsolutePathToAssetPath(resultPath);
-					BuildSettingData.ModifyRootPath(folderPath, packRule, nameRule);
-				}
-			}
-		}
-		EditorGUILayout.EndHorizontal();
-
 		// 列表显示
 		EditorGUILayout.Space();
-		EditorGUILayout.LabelField($"Pack Addtion Path List");
-		for (int i = 0; i < BuildSettingData.Setting.AddtionPaths.Count; i++)
+		EditorGUILayout.LabelField($"Pack Path List");
+		for (int i = 0; i < BuildSettingData.Setting.Elements.Count; i++)
 		{
-			string folderPath = BuildSettingData.Setting.AddtionPaths[i].FolderPath;
-			BuildSetting.EFolderPackRule packRule = BuildSettingData.Setting.AddtionPaths[i].PackRule;
-			BuildSetting.EBundleNameRule nameRule = BuildSettingData.Setting.AddtionPaths[i].NameRule;
+			string folderPath = BuildSettingData.Setting.Elements[i].FolderPath;
+			BuildSetting.EFolderPackRule packRule = BuildSettingData.Setting.Elements[i].PackRule;
+			BuildSetting.EBundleNameRule nameRule = BuildSettingData.Setting.Elements[i].NameRule;
 
 			EditorGUILayout.BeginHorizontal();
 			{
@@ -80,11 +49,17 @@ public class BuildSettingWindow : EditorWindow
 
 				BuildSetting.EFolderPackRule newPackRule = (BuildSetting.EFolderPackRule)EditorGUILayout.EnumPopup(packRule, GUILayout.MaxWidth(150));
 				if (newPackRule != packRule)
-					BuildSettingData.ModifyElement(folderPath, newPackRule);
+				{
+					packRule = newPackRule;
+					BuildSettingData.ModifyElement(folderPath, packRule, nameRule);
+				}
 
 				BuildSetting.EBundleNameRule newNameRule = (BuildSetting.EBundleNameRule)EditorGUILayout.EnumPopup(nameRule, GUILayout.MaxWidth(150));
 				if (newNameRule != nameRule)
-					BuildSettingData.ModifyElement(folderPath, newNameRule);
+				{
+					nameRule = newNameRule;
+					BuildSettingData.ModifyElement(folderPath, packRule, nameRule);
+				}
 
 				if (GUILayout.Button("-", GUILayout.MaxWidth(40)))
 				{

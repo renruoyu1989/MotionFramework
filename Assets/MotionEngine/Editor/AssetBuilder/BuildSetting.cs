@@ -33,25 +33,27 @@ public class BuildSetting : ScriptableObject
 	[Serializable]
 	public enum EBundleNameRule
 	{
+		None,
+
 		/// <summary>
 		/// 以文件路径命名
 		/// </summary>
-		ByFilePath,
+		TagByFilePath,
 
 		/// <summary>
 		/// 以文件夹路径命名（该文件夹下所有文件被打到一个Bundle文件里）
 		/// </summary>
-		ByFolderPath,
+		TagByFolderPath,
 
 		/// <summary>
 		/// 以文件名称命名
 		/// </summary>
-		ByFileName,
+		TagByFileName,
 
 		/// <summary>
 		/// 以文件夹名称命名（该文件夹下所有文件被打到一个Bundle文件里）
 		/// </summary>
-		ByFolderName,
+		TagByFolderName,
 	}
 
 	[Serializable]
@@ -59,18 +61,12 @@ public class BuildSetting : ScriptableObject
 	{
 		public string FolderPath = string.Empty;
 		public EFolderPackRule PackRule = EFolderPackRule.Collect;
-		public EBundleNameRule NameRule = EBundleNameRule.ByFilePath;
+		public EBundleNameRule NameRule = EBundleNameRule.TagByFilePath;
 	}
-
-	/// <summary>
-	/// 打包的根路径
-	/// </summary>
-	[SerializeField]
-	public Wrapper RootPath = new Wrapper();
 	
 	/// <summary>
-	/// 附加的打包路径列表
+	/// 打包路径列表
 	/// </summary>
 	[SerializeField]
-	public List<Wrapper> AddtionPaths = new List<Wrapper>();
+	public List<Wrapper> Elements = new List<Wrapper>();
 }

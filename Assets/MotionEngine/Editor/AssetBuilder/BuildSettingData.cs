@@ -53,7 +53,7 @@ public static class BuildSettingData
 		{
 			BuildSetting.Wrapper element = new BuildSetting.Wrapper();
 			element.FolderPath = folderPath;
-			Setting.AddtionPaths.Add(element);
+			Setting.Elements.Add(element);
 			SaveFile();
 		}
 	}
@@ -63,11 +63,11 @@ public static class BuildSettingData
 	/// </summary>
 	public static void RemoveElement(string folderPath)
 	{
-		for (int i = 0; i < Setting.AddtionPaths.Count; i++)
+		for (int i = 0; i < Setting.Elements.Count; i++)
 		{
-			if (Setting.AddtionPaths[i].FolderPath == folderPath)
+			if (Setting.Elements[i].FolderPath == folderPath)
 			{
-				Setting.AddtionPaths.RemoveAt(i);
+				Setting.Elements.RemoveAt(i);
 				break;
 			}
 		}
@@ -75,41 +75,27 @@ public static class BuildSettingData
 	}
 
 	/// <summary>
-	/// 编译根路径
+	/// 编辑元素
 	/// </summary>
-	public static void ModifyRootPath(string folderPath, BuildSetting.EFolderPackRule packRule, BuildSetting.EBundleNameRule nameRule)
+	public static void ModifyElement(string folderPath, BuildSetting.EFolderPackRule packRule, BuildSetting.EBundleNameRule nameRule)
 	{
-		Setting.RootPath.FolderPath = folderPath;
-		Setting.RootPath.PackRule = packRule;
-		Setting.RootPath.NameRule = nameRule;
-	}
-
-	/// <summary>
-	/// 编译元素
-	/// </summary>
-	public static void ModifyElement(string folderPath, BuildSetting.EFolderPackRule packRule)
-	{
-		for (int i = 0; i < Setting.AddtionPaths.Count; i++)
+		// 注意：这里强制修改忽略文件夹的命名规则为None
+		if (packRule == BuildSetting.EFolderPackRule.Ignore)
 		{
-			if (Setting.AddtionPaths[i].FolderPath == folderPath)
-			{
-				Setting.AddtionPaths[i].PackRule = packRule;
-				break;
-			}
+			nameRule = BuildSetting.EBundleNameRule.None;
 		}
-		SaveFile();
-	}
-
-	/// <summary>
-	/// 编译元素
-	/// </summary>
-	public static void ModifyElement(string folderPath, BuildSetting.EBundleNameRule nameRule)
-	{
-		for (int i = 0; i < Setting.AddtionPaths.Count; i++)
+		else
 		{
-			if (Setting.AddtionPaths[i].FolderPath == folderPath)
+			if (nameRule == BuildSetting.EBundleNameRule.None)
+				nameRule = BuildSetting.EBundleNameRule.TagByFilePath;
+		}
+
+		for (int i = 0; i < Setting.Elements.Count; i++)
+		{
+			if (Setting.Elements[i].FolderPath == folderPath)
 			{
-				Setting.AddtionPaths[i].NameRule = nameRule;
+				Setting.Elements[i].PackRule = packRule;
+				Setting.Elements[i].NameRule = nameRule;
 				break;
 			}
 		}
@@ -121,11 +107,103 @@ public static class BuildSettingData
 	/// </summary>
 	public static bool IsContainsElement(string folderPath)
 	{
-		for (int i = 0; i < Setting.AddtionPaths.Count; i++)
+		for (int i = 0; i < Setting.Elements.Count; i++)
 		{
-			if (Setting.AddtionPaths[i].FolderPath == folderPath)
+			if (Setting.Elements[i].FolderPath == folderPath)
 				return true;
 		}
 		return false;
+	}
+
+	/// <summary>
+	/// 获取所有的打包路径
+	/// </summary>
+	public static List<string> GetAllCollectPath()
+	{
+		List<string> result = new List<string>();
+		for (int i = 0; i < Setting.Elements.Count; i++)
+		{
+			BuildSetting.Wrapper wrapper = Setting.Elements[i];
+			if (wrapper.PackRule == BuildSetting.EFolderPackRule.Collect)
+				result.Add(wrapper.FolderPath);
+		}
+		return result;
+	}
+
+	/// <summary>
+	/// 是否收集该资源
+	/// </summary>
+	public static bool IsCollectAsset(string assetPath)
+	{
+		for (int i = 0; i < Setting.Elements.Count; i++)
+		{
+			BuildSetting.Wrapper wrapper = Setting.Elements[i];
+			if (wrapper.PackRule == BuildSetting.EFolderPackRule.Collect)
+			{
+				if (assetPath.StartsWith(wrapper.FolderPath))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	/// <summary>
+	/// 是否忽略该资源
+	/// </summary>
+	public static bool IsIgnoreAsset(string assetPath)
+	{
+		for (int i = 0; i < Setting.Elements.Count; i++)
+		{
+			BuildSetting.Wrapper wrapper = Setting.Elements[i];
+			if (wrapper.PackRule == BuildSetting.EFolderPackRule.Ignore)
+			{
+				if (assetPath.StartsWith(wrapper.FolderPath))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	/// <summary>
+	/// 获取资源的打包标签名称
+	/// </summary>
+	public static string GetAssetTagName(string assetPath)
+	{
+		for (int i = 0; i < Setting.Elements.Count; i++)
+		{
+			BuildSetting.Wrapper wrapper = Setting.Elements[i];
+			if (assetPath.StartsWith(wrapper.FolderPath))
+			{
+				if (wrapper.NameRule == BuildSetting.EBundleNameRule.None)
+				{
+					// 注意：如果依赖资源来自于忽略文件夹，那么会触发这个异常
+					throw new Exception($"BuildSetting has depend asset in ignore folder : {wrapper.FolderPath}");
+				}
+				else if (wrapper.NameRule == BuildSetting.EBundleNameRule.TagByFileName)
+				{
+					return Path.GetFileNameWithoutExtension(assetPath);
+				}
+				else if (wrapper.NameRule == BuildSetting.EBundleNameRule.TagByFilePath)
+				{
+					return assetPath.Remove(assetPath.LastIndexOf("."));
+				}
+				else if (wrapper.NameRule == BuildSetting.EBundleNameRule.TagByFolderName)
+				{
+					string temp = Path.GetDirectoryName(assetPath);
+					return Path.GetFileName(temp);
+				}
+				else if (wrapper.NameRule == BuildSetting.EBundleNameRule.TagByFolderPath)
+				{
+					return Path.GetDirectoryName(assetPath);
+				}
+				else
+				{
+					throw new NotImplementedException($"{wrapper.NameRule}");
+				}
+			}
+		}
+
+		// 如果没有找到命名规则
+		return assetPath.Remove(assetPath.LastIndexOf("."));
 	}
 }

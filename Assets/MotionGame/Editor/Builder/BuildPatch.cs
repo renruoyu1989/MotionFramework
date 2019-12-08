@@ -21,15 +21,12 @@ public class BuildPatch
 
 		// 打印命令行参数
 		int buildVersion = GetBuildVersion();
-		string packPath = GetPackPath();
 		bool isForceBuild = IsForceBuild();
 		Debug.Log($"[Build] Version : {buildVersion}");
-		Debug.Log($"[Build] 打包目录 : {packPath}");
 		Debug.Log($"[Build] 强制重建 : {isForceBuild}");
 
-		// 初始化Builder
-		AssetBuilder builder = new AssetBuilder();
-		builder.InitAssetBuilder(buildTarget, buildVersion, packPath);
+		// 创建AssetBuilder
+		AssetBuilder builder = new AssetBuilder(buildTarget, buildVersion);
 
 		// 设置配置
 		builder.CompressOption = AssetBuilder.ECompressOption.ChunkBasedCompressionLZ4;
@@ -55,15 +52,6 @@ public class BuildPatch
 				return int.Parse(arg.Split("="[0])[1]);
 		}
 		return -1;
-	}
-	private static string GetPackPath()
-	{
-		foreach (string arg in System.Environment.GetCommandLineArgs())
-		{
-			if (arg.StartsWith("packPath"))
-				return (arg.Split("="[0])[1]);
-		}
-		return string.Empty;
 	}
 	private static bool IsForceBuild()
 	{
