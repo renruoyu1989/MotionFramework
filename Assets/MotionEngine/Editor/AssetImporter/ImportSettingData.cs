@@ -104,7 +104,7 @@ public static class ImportSettingData
 	}
 
 	/// <summary>
-	/// 编译元素
+	/// 编辑元素
 	/// </summary>
 	public static void ModifyElement(string folderPath, string processorName)
 	{
