@@ -85,6 +85,9 @@ public class AssetBuilder
 		if (Directory.Exists(packagePath))
 			throw new Exception($"[BuildPackage] 补丁包已经存在：{packagePath}");
 
+		// 检测标签是否有冲突
+		CheckTagNameConflict();
+
 		// 如果是强制重建
 		if (IsForceRebuild)
 		{
@@ -192,6 +195,54 @@ public class AssetBuilder
 		Debug.Log($"[BuildPackage] {log}");
 	}
 
+	/// <summary>
+	/// 检测标签名是否有冲突
+	/// 注意：因为AssetBundle文件后缀格式为统一格式。在同一目录下，相同名字的不同类型的文件会发生冲突。
+	/// </summary>
+	private void CheckTagNameConflict()
+	{
+		int progressBarCount = 0;
+		Dictionary<string, string> allElements = new Dictionary<string, string>();
+
+		// 获取所有的打包路径
+		List<string> collectPathList = BuildSettingData.GetAllCollectPath();
+		if (collectPathList.Count == 0)
+			return;
+
+		// 获取所有资源
+		string[] guids = AssetDatabase.FindAssets(string.Empty, collectPathList.ToArray());
+		foreach (string guid in guids)
+		{
+			string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+			if (ValidateAsset(assetPath) == false)
+				continue;
+
+			string[] dependArray = AssetDatabase.GetDependencies(assetPath, true);
+			foreach (string dependPath in dependArray)
+			{
+				if (ValidateAsset(dependPath) == false)
+					continue;
+
+				string extension = Path.GetExtension(dependPath);
+				string tagName = dependPath.Remove(dependPath.LastIndexOf(".")); // 注意：去掉文件格式
+				if (allElements.ContainsKey(tagName))
+				{
+					if (allElements[tagName] != extension)
+						throw new Exception($"发现重复的标签在同一个目录下：{tagName} {allElements[tagName]} {extension}");
+				}
+				else
+				{
+					allElements.Add(tagName, extension);
+				}
+			}
+
+			// 进度条
+			progressBarCount++;
+			EditorUtility.DisplayProgressBar("进度", $"重名文件检测：{progressBarCount}/{guids.Length}", (float)progressBarCount / guids.Length);
+		}
+		EditorUtility.ClearProgressBar();
+		progressBarCount = 0;
+	}
 
 	#region 准备工作
 	/// <summary>
@@ -203,35 +254,35 @@ public class AssetBuilder
 		Dictionary<string, AssetInfo> allAsset = new Dictionary<string, AssetInfo>();
 
 		// 获取所有的打包路径
-		List<string> packPathList = BuildSettingData.GetAllCollectPath();
-		if (packPathList.Count == 0)
+		List<string> collectPathList = BuildSettingData.GetAllCollectPath();
+		if (collectPathList.Count == 0)
 			throw new Exception("[BuildPackage] 配置的打包路径列表为空");
 
-		// 获取所有资源列表
-		string[] guids = AssetDatabase.FindAssets(string.Empty, packPathList.ToArray());
+		// 获取所有资源
+		string[] guids = AssetDatabase.FindAssets(string.Empty, collectPathList.ToArray());
 		foreach (string guid in guids)
 		{
 			string assetPath = AssetDatabase.GUIDToAssetPath(guid);
 			if (BuildSettingData.IsIgnoreAsset(assetPath))
 				continue;
+			if (ValidateAsset(assetPath) == false)
+				continue;
 
-			if (ValidateAsset(assetPath))
+			List<AssetInfo> depends = GetDependencies(assetPath);
+			for (int i = 0; i < depends.Count; i++)
 			{
-				List<AssetInfo> depends = GetDependencies(assetPath);
-				for (int i = 0; i < depends.Count; i++)
+				AssetInfo assetInfo = depends[i];
+				if (allAsset.ContainsKey(assetInfo.AssetPath))
 				{
-					AssetInfo assetInfo = depends[i];
-					if (allAsset.ContainsKey(assetInfo.AssetPath))
-					{
-						AssetInfo cacheInfo = allAsset[assetInfo.AssetPath];
-						cacheInfo.DependCount++;
-					}
-					else
-					{
-						allAsset.Add(assetInfo.AssetPath, assetInfo);
-					}
+					AssetInfo cacheInfo = allAsset[assetInfo.AssetPath];
+					cacheInfo.DependCount++;
+				}
+				else
+				{
+					allAsset.Add(assetInfo.AssetPath, assetInfo);
 				}
 			}
+
 			// 进度条
 			progressBarCount++;
 			EditorUtility.DisplayProgressBar("进度", $"依赖文件分析：{progressBarCount}/{guids.Length}", (float)progressBarCount / guids.Length);
@@ -276,6 +327,7 @@ public class AssetBuilder
 
 	/// <summary>
 	/// 获取依赖列表
+	/// 注意：返回列表里已经包括主资源自己
 	/// </summary>
 	private List<AssetInfo> GetDependencies(string assetPath)
 	{
@@ -616,30 +668,3 @@ public class AssetBuilder
 	}
 	#endregion
 }
-
-/*
-/// <summary>
-/// 资源加密器
-/// </summary>
-public static class AssetEncrypter
-{
-	private const string StrEncryptFolderName = "/Assembly/";
-
-	/// <summary>
-	/// 检测文件是否需要加密
-	/// </summary>
-	public static bool Check(string path)
-	{
-		return path.Contains(StrEncryptFolderName);
-	}
-
-	/// <summary>
-	/// 对数据进行加密，并返回加密后的数据
-	/// </summary>
-	public static byte[] Encrypt(byte[] data)
-	{
-		// 这里使用你的加密算法
-		return data;
-	}
-}
-*/
