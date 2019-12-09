@@ -14,6 +14,21 @@ Disable Write Type Tree : 禁止写入TypeTree，建议不勾选
 Ignore Type Tree Chanages : 忽略TypeTree变化，建议勾选
 ```
 
+**打包规则设置界面**  
+
+![image](https://github.com/gmhevinci/MotionFramework/raw/master/Docs/Image/img101_2.png)
+
+不同项目对资源的处理及打包规则都有所不同，我们可以通过以下几项设置来定制化自己的打包规则。  
+1. Collect : 收集文件夹内资源进行打包（包括所有子文件夹）
+2. Ignore : 忽略文件夹内资源不参与打包（包括所有子文件夹）
+3. TagByFilePath : AssetBundle标签按照文件路径设置
+4. TagByFolderPath : AssetBundle标签按照文件所在的文件夹路径设置
+5. TagByFileName : AssetBundle标签按照文件名字设置
+6. TagByFolderName : AssetBundle标签按照文件所在的文件夹名字设置  
+
+注意：TagByFolder会将文件夹内所有资源打在一个AssetBundle文件里。
+
+
 **加密方式**  
 要实现Bundle文件加密，只需要实现下面代码
 ```C#

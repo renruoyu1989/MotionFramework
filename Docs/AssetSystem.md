@@ -6,9 +6,6 @@ Editor Mode : 使用UnityEditor.AssetDatabase加载资源，该模式只支持�
 Resource Mode : 使用UnityEngine.Resources加载资源。  
 Bundle Mode : 使用UnityEngine.AssetBundle加载资源。  
 
-在GameLauncher预制体里提供了快速设置方式
-![image](https://github.com/gmhevinci/MotionFramework/raw/master/Docs/Image/img3.png)  
-
 **资源系统根路径**  
 所有通过代码加载的资源文件都需要放在资源系统根路径下，在加载这些资源的时候只需要提供相对路径即可。  
 
