@@ -6,11 +6,6 @@
 
 namespace MotionFramework.Resource
 {
-	public class ResourceDefine
-	{
-		public const int WebRequestTimeout = 30; //网络请求的超时时间（单位：秒）
-	}
-
 	/// <summary>
 	/// 资源加载模式
 	/// </summary>
@@ -67,16 +62,5 @@ namespace MotionFramework.Resource
 		CheckAssetObject,
 		LoadAssetObjectOK,
 		LoadAssetObjectFailed,
-	}
-
-	/// <summary>
-	/// 网络加载状态
-	/// </summary>
-	public enum EWebLoadState
-	{
-		None = 0,
-		Loading, //加载中
-		LoadSucceed, //加载成功
-		LoadFailed, //加载失败
 	}
 }

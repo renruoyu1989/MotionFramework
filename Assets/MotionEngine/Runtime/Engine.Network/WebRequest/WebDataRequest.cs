@@ -8,36 +8,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
 
-namespace MotionFramework.Resource
+namespace MotionFramework.Network
 {
-	public class WebFileDownload : WebDownload
+	public class WebDataRequest : WebRequest
 	{
-		/// <summary>
-		/// 文件存储路径
-		/// </summary>
-		public string SavePath = string.Empty;
-
 		public override IEnumerator DownLoad()
 		{
 			// Check fatal
 			if (LoadState != EWebLoadState.None)
-				throw new Exception($"Web file download state is not none state. {URL}");
+				throw new Exception($"Web data download state is not none state. {URL}");
 
 			LoadState = EWebLoadState.Loading;
 
 			// 下载文件
 			CacheRequest = new UnityWebRequest(URL, UnityWebRequest.kHttpVerbGET);
-			DownloadHandlerFile handler = new DownloadHandlerFile(SavePath);
-			handler.removeFileOnAbort = true;
+			DownloadHandlerBuffer handler = new DownloadHandlerBuffer();
 			CacheRequest.downloadHandler = handler;
 			CacheRequest.disposeDownloadHandlerOnDispose = true;
-			CacheRequest.timeout = ResourceDefine.WebRequestTimeout;
+			CacheRequest.timeout = NetworkDefine.WebRequestTimeout;
 			yield return CacheRequest.SendWebRequest();
 
 			// Check error
 			if (CacheRequest.isNetworkError || CacheRequest.isHttpError)
 			{
-				LogSystem.Log(ELogType.Warning, $"Failed to download web file : {URL} Error : {CacheRequest.error}");
+				LogSystem.Log(ELogType.Warning, $"Failed to download web data : {URL} Error : {CacheRequest.error}");
 				LoadState = EWebLoadState.LoadFailed;
 			}
 			else
@@ -47,6 +41,21 @@ namespace MotionFramework.Resource
 
 			// Invoke callback
 			LoadCallback?.Invoke(this);
+		}
+
+		public byte[] GetData()
+		{
+			if (LoadState == EWebLoadState.LoadSucceed)
+				return CacheRequest.downloadHandler.data;
+			else
+				return null;
+		}
+		public string GetText()
+		{
+			if (LoadState == EWebLoadState.LoadSucceed)
+				return CacheRequest.downloadHandler.text;
+			else
+				return null;
 		}
 	}
 }

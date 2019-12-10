@@ -4,34 +4,46 @@
 // Licensed under the MIT license
 //--------------------------------------------------
 using System;
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
 
-namespace MotionFramework.Resource
+namespace MotionFramework.Network
 {
-	public class WebDataDownload : WebDownload
+	public class WebPostRequest : WebRequest
 	{
+		public string PostContent = null;
+
 		public override IEnumerator DownLoad()
 		{
 			// Check fatal
+			if (string.IsNullOrEmpty(PostContent))
+				throw new Exception($"Web post content is null or empty. {URL}");
+
+			// Check fatal
 			if (LoadState != EWebLoadState.None)
-				throw new Exception($"Web data download state is not none state. {URL}");
+				throw new Exception($"Web post download state is not none state. {URL}");
 
 			LoadState = EWebLoadState.Loading;
 
+			// 投递数据
+			byte[] bodyRaw = Encoding.UTF8.GetBytes(PostContent);
+
 			// 下载文件
-			CacheRequest = new UnityWebRequest(URL, UnityWebRequest.kHttpVerbGET);
-			DownloadHandlerBuffer handler = new DownloadHandlerBuffer();
-			CacheRequest.downloadHandler = handler;
+			CacheRequest =  new UnityWebRequest(URL, UnityWebRequest.kHttpVerbPOST);
+			UploadHandlerRaw uploadHandler = new UploadHandlerRaw(bodyRaw);
+			DownloadHandlerBuffer downloadhandler = new DownloadHandlerBuffer();
+			CacheRequest.uploadHandler = uploadHandler;
+			CacheRequest.downloadHandler = downloadhandler;
 			CacheRequest.disposeDownloadHandlerOnDispose = true;
-			CacheRequest.timeout = ResourceDefine.WebRequestTimeout;
+			CacheRequest.timeout = NetworkDefine.WebRequestTimeout;
 			yield return CacheRequest.SendWebRequest();
 
 			// Check error
 			if (CacheRequest.isNetworkError || CacheRequest.isHttpError)
 			{
-				LogSystem.Log(ELogType.Warning, $"Failed to download web data : {URL} Error : {CacheRequest.error}");
+				LogSystem.Log(ELogType.Warning, $"Failed to request web post : {URL} Error : {CacheRequest.error}");
 				LoadState = EWebLoadState.LoadFailed;
 			}
 			else
@@ -43,14 +55,7 @@ namespace MotionFramework.Resource
 			LoadCallback?.Invoke(this);
 		}
 
-		public byte[] GetData()
-		{
-			if (LoadState == EWebLoadState.LoadSucceed)
-				return CacheRequest.downloadHandler.data;
-			else
-				return null;
-		}
-		public string GetText()
+		public string GetResponse()
 		{
 			if (LoadState == EWebLoadState.LoadSucceed)
 				return CacheRequest.downloadHandler.text;

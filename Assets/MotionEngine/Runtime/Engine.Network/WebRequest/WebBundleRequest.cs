@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace MotionFramework.Resource
+namespace MotionFramework.Network
 {
-	public class WebBundleDownload : WebDownload
+	public class WebBundleRequest : WebRequest
 	{
 		/// <summary>
 		/// 缓存的AssetBundle
@@ -34,7 +34,7 @@ namespace MotionFramework.Resource
 			CacheRequest = UnityWebRequestAssetBundle.GetAssetBundle(URL);
 #endif
 			CacheRequest.disposeDownloadHandlerOnDispose = true;
-			CacheRequest.timeout = ResourceDefine.WebRequestTimeout;
+			CacheRequest.timeout = NetworkDefine.WebRequestTimeout;
 			yield return CacheRequest.SendWebRequest();
 
 			// Check error

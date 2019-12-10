@@ -7,13 +7,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
 
-namespace MotionFramework.Resource
+namespace MotionFramework.Network
 {
 	/// <summary>
 	/// 下载器基类
 	/// 说明：UnityWebRequest(UWR) supports reading streaming assets since 2017.1
 	/// </summary>
-	public abstract class WebDownload
+	public abstract class WebRequest
 	{
 		/// <summary>
 		/// 下载路径
@@ -23,7 +23,7 @@ namespace MotionFramework.Resource
 		/// <summary>
 		/// 下载完成回调
 		/// </summary>
-		public System.Action<WebDownload> LoadCallback;
+		public System.Action<WebRequest> LoadCallback;
 
 		/// <summary>
 		/// 下载进度（0-100）
@@ -62,7 +62,7 @@ namespace MotionFramework.Resource
 		protected UnityWebRequest CacheRequest;
 
 
-		public WebDownload()
+		public WebRequest()
 		{
 			LoadState = EWebLoadState.None;
 		}
