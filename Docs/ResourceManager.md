@@ -1,8 +1,8 @@
-### 资源管理器 (ResManager)
+### 资源管理器 (ResourceManager)
 
 资源使用范例
 ```C#
-using MotionEngine.Res;
+using MotionFramework.Resource;
 
 public class Test
 {
@@ -38,4 +38,4 @@ public class Test
 ```
 
 更详细的教程请参考示例代码
-1. [MotionEngine/Runtime/Engine.Res/Asset](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionEngine/Runtime/Engine.Res/Asset)
+1. [MotionEngine/Runtime/Engine.Res/Asset](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionEngine/Runtime/Engine.Resource/Asset)

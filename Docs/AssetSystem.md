@@ -7,7 +7,7 @@
 3. Bundle Mode : 使用UnityEngine.AssetBundle加载资源。
 
 ```C#
-using MotionEngine.Res;
+using MotionFramework.Resource;
 
 public class Test
 {
@@ -59,7 +59,7 @@ assetPackage.GetAsset("deadSound", typeof(AudioClip), (UnityEngine.Object asset)
 所有通过代码加载的资源文件都需要放在资源系统根路径下，在加载这些资源的时候只需要提供相对路径即可。  
 
 ```C#
-using MotionEngine.Res;
+using MotionFramework.Resource;
 
 public class Test
 {
@@ -76,7 +76,7 @@ public class Test
 
 定义Bundle接口
 ```C#
-using MotionEngine.Res;
+using MotionFramework.Resource;
 using UnityEngine;
 
 public class PatchBundleMethod : IBundleMethod
@@ -116,7 +116,7 @@ public class PatchBundleMethod : IBundleMethod
 
 设置Bundle接口
 ```C#
-using MotionEngine.Res;
+using MotionFramework.Resource;
 
 public class Test
 {

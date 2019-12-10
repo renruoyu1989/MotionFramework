@@ -2,8 +2,7 @@
 
 定义状态类
 ```C#
-using MotionEngine.AI;
-using MotionGame;
+using MotionFramework.AI;
 
 public enum EFsmStateType
 {
@@ -48,9 +47,7 @@ public class FsmRunning : FsmState
 
 创建状态类并设置状态机
 ```C#
-using MotionEngine;
-using MotionEngine.AI;
-using MotionGame;
+using MotionFramework.AI;
 
 public class Test
 {
@@ -72,4 +69,4 @@ public class Test
 ```
 
 更详细的教程请参考示例代码
-1. [MotionGame/Runtime/Manager/FsmManager.cs](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionGame/Runtime/Manager/FsmManager.cs)
+1. [MotionGame/Runtime/Manager/FsmManager.cs](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionGame/Runtime/Game.AI)

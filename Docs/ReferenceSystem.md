@@ -2,7 +2,7 @@
 
 定义引用类
 ```C#
-using MotionEngine.Reference;
+using MotionFramework.Reference;
 
 public class ReferClass : IReference
 {
@@ -18,7 +18,7 @@ public class ReferClass : IReference
 
 单个回收范例
 ```C#
-using MotionEngine.Reference;
+using MotionFramework.Reference;
 
 public class Test
 {
@@ -42,7 +42,7 @@ public class Test
 批量回收范例
 ```C#
 using System.Collections.Generic;
-using MotionEngine.Reference;
+using MotionFramework.Reference;
 
 public class Test
 {

@@ -1,7 +1,7 @@
-### 网络管理器 (NetManager)
+### 网络管理器 (NetworkManager)
 
 ```C#
-using MotionEngine.Net;
+using MotionFramework.Network;
 
 public class Test
 {
@@ -40,4 +40,4 @@ public class Test
 ```
 
 更详细的教程请参考示例代码
-1. [MotionGame/Runtime/Manager/NetManager.cs](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionGame/Runtime/Manager/NetManager.cs)
+1. [MotionGame/Runtime/Game.Network](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionGame/Runtime/Game.Network)

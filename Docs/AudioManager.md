@@ -2,7 +2,7 @@
 
 音频管理器使用范例
 ```C#
-using MotionGame;
+using MotionFramework.Audio;
 
 public class Test
 {
@@ -28,4 +28,4 @@ public class Test
 ```
 
 更详细的教程请参考示例代码
-1. [MotionGame/Runtime/Manager/AudioManager.cs](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionGame/Runtime/Manager/AudioManager.cs)
+1. [MotionGame/Runtime/Game.Audio](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionGame/Runtime/Game.Audio)

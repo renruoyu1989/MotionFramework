@@ -66,9 +66,9 @@ public static class AssetEncrypter
 //读取package.bytes文件
 using System;
 using System.Collections;
-using MotionEngine;
-using MotionEngine.Res;
-using MotionEngine.Patch;
+using MotionFramework;
+using MotionFramework.Resource;
+using MotionFramework.Patch;
 
 public class Test
 {

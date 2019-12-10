@@ -32,13 +32,13 @@ C# && .Net4.x
 
 1. [事件管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/EventManager.md) **(EventManager)**
 
-2. [网络管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/NetManager.md) **(NetManager)**
+2. [网络管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/NetworkManager.md) **(NetworkManager)**
 
-3. [资源管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/ResManager.md) **(ResManager)**
+3. [资源管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/ResourceManager.md) **(ResourceManager)**
 
 4. [音频管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/AudioManager.md) **(AudioManager)**
 
-5. [配表管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/ConfigManager.md) **(CfgManager)**
+5. [配表管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/ConfigManager.md) **(ConfigManager)**
 
 6. [状态机管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/FsmManager.md) **(FsmManager)**
 
