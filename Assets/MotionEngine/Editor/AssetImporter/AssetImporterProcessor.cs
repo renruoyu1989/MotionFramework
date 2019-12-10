@@ -1,4 +1,5 @@
 ﻿//--------------------------------------------------
+// Motion Framework
 // Copyright©2018-2020 何冠峰
 // Licensed under the MIT license
 //--------------------------------------------------
@@ -6,7 +7,6 @@ using System.IO;
 using System;
 using UnityEngine;
 using UnityEditor;
-
 
 /// <summary>
 /// 资源导入管理类

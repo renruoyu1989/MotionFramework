@@ -6,8 +6,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using MotionFramework.Utility;
+using UnityEngine;
 
 namespace MotionFramework.Debug
 {

@@ -1,11 +1,12 @@
 ﻿//--------------------------------------------------
+// Motion Framework
 // Copyright©2019-2020 何冠峰
 // Licensed under the MIT license
 //--------------------------------------------------
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+using UnityEditor;
 
 /// <summary>
 /// 资源打包规则设置窗口

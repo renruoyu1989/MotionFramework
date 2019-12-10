@@ -4,9 +4,9 @@
 // Licensed under the MIT license
 //--------------------------------------------------
 using System.IO;
-using UnityEngine;
 using MotionFramework.Patch;
 using MotionFramework.IO;
+using UnityEngine;
 
 namespace MotionFramework.Resource
 {

@@ -1,4 +1,9 @@
-﻿
+﻿//--------------------------------------------------
+// Motion Framework
+// Copyright©2018-2020 何冠峰
+// Licensed under the MIT license
+//--------------------------------------------------
+
 namespace UnityEngine
 {
 	public static class UnityEngine_RectTransform_Extension
