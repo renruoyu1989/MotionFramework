@@ -1,15 +1,12 @@
 ﻿using System;
 
-namespace MotionGame
+[AttributeUsage(AttributeTargets.Class)]
+public class ConfigAttribute : Attribute
 {
-	[AttributeUsage(AttributeTargets.Class)]
-	public class ConfigAttribute : Attribute
-	{
-		public string CfgType;
+	public string CfgType;
 
-		public ConfigAttribute(string cfgType)
-		{
-			CfgType = cfgType;
-		}
+	public ConfigAttribute(string cfgType)
+	{
+		CfgType = cfgType;
 	}
 }
