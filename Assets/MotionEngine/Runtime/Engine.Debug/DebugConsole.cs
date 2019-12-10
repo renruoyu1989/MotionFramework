@@ -18,7 +18,7 @@ namespace MotionEngine.Debug
 			public Type ClassType;
 			public string Title;
 			public int Priority;
-			public IDebug Instance;
+			public IDebugWindow Instance;
 
 			public int CompareTo(NodeWrapper other)
 			{
@@ -53,7 +53,7 @@ namespace MotionEngine.Debug
 				UnityEngine.Debug.LogWarning("Not found builtin_background texture in Resources folder.");
 
 			// 获取所有调试类
-			List<Type> allTypes = AssemblyUtility.GetAssignableAttributeTypes(typeof(IDebug), typeof(DebugAttribute));
+			List<Type> allTypes = AssemblyUtility.GetAssignableAttributeTypes(typeof(IDebugWindow), typeof(DebugAttribute));
 			for (int i = 0; i < allTypes.Count; i++)
 			{
 				DebugAttribute attribute = (DebugAttribute)Attribute.GetCustomAttribute(allTypes[i], typeof(DebugAttribute));
@@ -73,7 +73,7 @@ namespace MotionEngine.Debug
 			for (int i = 0; i < _wrappers.Count; i++)
 			{
 				NodeWrapper wrapper = _wrappers[i];
-				wrapper.Instance = (IDebug)Activator.CreateInstance(wrapper.ClassType);
+				wrapper.Instance = (IDebugWindow)Activator.CreateInstance(wrapper.ClassType);
 				wrapper.Instance.OnInit();
 			}
 

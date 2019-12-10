@@ -6,7 +6,7 @@
 
 namespace MotionEngine.Debug
 {
-	public interface IDebug
+	public interface IDebugWindow
 	{
 		void OnInit();
 		void OnGUI();
