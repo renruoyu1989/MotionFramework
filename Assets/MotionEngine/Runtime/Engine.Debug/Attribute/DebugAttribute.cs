@@ -5,7 +5,7 @@
 //--------------------------------------------------
 using System;
 
-namespace MotionEngine.Debug
+namespace MotionFramework.Debug
 {
 	[AttributeUsage(AttributeTargets.Class)]
 	public class DebugAttribute : Attribute

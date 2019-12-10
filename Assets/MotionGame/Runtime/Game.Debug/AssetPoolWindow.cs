@@ -1,32 +1,40 @@
-﻿using System.Collections;
+﻿//--------------------------------------------------
+// Motion Framework
+// Copyright©2018-2020 何冠峰
+// Licensed under the MIT license
+//--------------------------------------------------
+using System.Collections;
 using System.Collections.Generic;
-using MotionEngine;
-using MotionEngine.Debug;
 using UnityEngine;
+using MotionFramework.Pool;
+using MotionFramework.Resource;
 
-[DebugAttribute("实体池", 105)]
-internal class AssetPoolWindow : IDebugWindow
+namespace MotionFramework.Debug
 {
-	// GUI相关
-	private Vector2 _scrollPos = Vector2.zero;
-
-	public void OnInit()
+	[DebugAttribute("实体池", 105)]
+	internal class AssetPoolWindow : IDebugWindow
 	{
-	}
-	public void OnGUI()
-	{
-		var pools = PoolManager.Instance.DebugAllPools;
-		DebugConsole.GUILable($"池总数：{pools.Count}");
+		// GUI相关
+		private Vector2 _scrollPos = Vector2.zero;
 
-		_scrollPos = DebugConsole.GUIBeginScrollView(_scrollPos, 30);
-		foreach (var pair in pools)
+		public void OnInit()
 		{
-			string content = $"[{pair.Value.ResName}] CacheCount = {pair.Value.Count} SpwanCount = {pair.Value.SpawnCount}";
-			if (pair.Value.LoadResult == MotionEngine.Res.EAssetResult.Failed)
-				DebugConsole.GUIRedLable(content);
-			else
-				DebugConsole.GUILable(content);
 		}
-		DebugConsole.GUIEndScrollView();
+		public void OnGUI()
+		{
+			var pools = PoolManager.Instance.DebugAllPools;
+			DebugConsole.GUILable($"池总数：{pools.Count}");
+
+			_scrollPos = DebugConsole.GUIBeginScrollView(_scrollPos, 30);
+			foreach (var pair in pools)
+			{
+				string content = $"[{pair.Value.ResName}] CacheCount = {pair.Value.Count} SpwanCount = {pair.Value.SpawnCount}";
+				if (pair.Value.LoadResult == EAssetResult.Failed)
+					DebugConsole.GUIRedLable(content);
+				else
+					DebugConsole.GUILable(content);
+			}
+			DebugConsole.GUIEndScrollView();
+		}
 	}
 }

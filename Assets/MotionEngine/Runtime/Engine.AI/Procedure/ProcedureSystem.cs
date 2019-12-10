@@ -5,7 +5,7 @@
 //--------------------------------------------------
 using System.Collections.Generic;
 
-namespace MotionEngine.AI
+namespace MotionFramework.AI
 {
 	/// <summary>
 	/// 流程系统

@@ -8,7 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using MotionEngine.Utility;
+using MotionFramework.Utility;
 
 public static class ImportSettingData
 {

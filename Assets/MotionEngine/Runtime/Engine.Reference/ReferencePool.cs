@@ -7,7 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace MotionEngine.Reference
+namespace MotionFramework.Reference
 {
 	public class ReferencePool
 	{

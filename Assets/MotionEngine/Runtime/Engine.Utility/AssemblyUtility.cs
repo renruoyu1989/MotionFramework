@@ -1,4 +1,5 @@
 ﻿//--------------------------------------------------
+// Motion Framework
 // Copyright©2018-2020 何冠峰
 // Licensed under the MIT license
 //--------------------------------------------------
@@ -7,7 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace MotionEngine.Utility
+namespace MotionFramework.Utility
 {
 	public static class AssemblyUtility
 	{

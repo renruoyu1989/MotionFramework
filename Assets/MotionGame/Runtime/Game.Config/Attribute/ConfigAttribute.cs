@@ -1,12 +1,20 @@
-﻿using System;
+﻿//--------------------------------------------------
+// Motion Framework
+// Copyright©2018-2020 何冠峰
+// Licensed under the MIT license
+//--------------------------------------------------
+using System;
 
-[AttributeUsage(AttributeTargets.Class)]
-public class ConfigAttribute : Attribute
+namespace MotionFramework.Config
 {
-	public string CfgType;
-
-	public ConfigAttribute(string cfgType)
+	[AttributeUsage(AttributeTargets.Class)]
+	public class ConfigAttribute : Attribute
 	{
-		CfgType = cfgType;
+		public string CfgType;
+
+		public ConfigAttribute(string cfgType)
+		{
+			CfgType = cfgType;
+		}
 	}
 }

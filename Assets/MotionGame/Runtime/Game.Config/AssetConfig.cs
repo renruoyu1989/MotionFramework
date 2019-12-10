@@ -1,164 +1,171 @@
-﻿using System;
+﻿//--------------------------------------------------
+// Motion Framework
+// Copyright©2018-2020 何冠峰
+// Licensed under the MIT license
+//--------------------------------------------------
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using MotionEngine;
-using MotionEngine.IO;
-using MotionEngine.Res;
 using UnityEngine;
+using MotionFramework.IO;
+using MotionFramework.Resource;
 
-/// <summary>
-/// 配表数据类
-/// </summary>
-public abstract class ConfigTab
-{
-	public int Id { get; protected set; }
-	public abstract void ReadByte(ByteBuffer byteBuf);
-}
-
-/// <summary>
-/// 配表资源类
-/// </summary>
-public abstract class AssetConfig : AssetObject
+namespace MotionFramework.Config
 {
 	/// <summary>
-	/// 配表数据集合
+	/// 配表数据类
 	/// </summary>
-	protected readonly Dictionary<int, ConfigTab> _tabs = new Dictionary<int, ConfigTab>();
-
-
-	protected override bool OnPrepare(UnityEngine.Object mainAsset)
+	public abstract class ConfigTab
 	{
-		if (base.OnPrepare(mainAsset) == false)
-			return false;
-
-		try
-		{
-			TextAsset temp = mainAsset as TextAsset;
-			if (temp == null)
-				return false;
-
-			// 解析数据
-			ParseDataInternal(temp.bytes);
-		}
-		catch (Exception ex)
-		{
-			LogSystem.Log(ELogType.Error, $"Failed to parse config {ResName}. Error : {ex.ToString()}");
-			return false;
-		}
-
-		// 注意：为了节省内存这里立即释放了资源
-		UnLoad();
-
-		return true;
+		public int Id { get; protected set; }
+		public abstract void ReadByte(ByteBuffer byteBuf);
 	}
 
 	/// <summary>
-	/// 序列化表格的接口
+	/// 配表资源类
 	/// </summary>
-	protected abstract ConfigTab ReadTab(ByteBuffer byteBuffer);
-
-	/// <summary>
-	/// 解析数据
-	/// </summary>
-	private void ParseDataInternal(byte[] bytes)
+	public abstract class AssetConfig : AssetObject
 	{
-		ByteBuffer bb = new ByteBuffer(bytes);
+		/// <summary>
+		/// 配表数据集合
+		/// </summary>
+		protected readonly Dictionary<int, ConfigTab> _tabs = new Dictionary<int, ConfigTab>();
 
-		int tabLine = 1;
-		const int headMarkAndSize = 6;
-		while (bb.IsReadable(headMarkAndSize))
+
+		protected override bool OnPrepare(UnityEngine.Object mainAsset)
 		{
-			// 检测行标记
-			short tabHead = bb.ReadShort();
-			if (tabHead != ConfigDefine.TabStreamHead)
-			{
-				throw new Exception($"Table stream head is invalid. File is {ResName} , tab line is {tabLine}");
-			}
+			if (base.OnPrepare(mainAsset) == false)
+				return false;
 
-			// 检测行大小
-			int tabSize = bb.ReadInt();
-			if (!bb.IsReadable(tabSize) || tabSize > ConfigDefine.TabStreamMaxLen)
-			{
-				throw new Exception($"Table stream size is invalid. File is {ResName}, tab line {tabLine}");
-			}
-
-			// 读取行内容
-			ConfigTab tab = null;
 			try
 			{
-				tab = ReadTab(bb);
+				TextAsset temp = mainAsset as TextAsset;
+				if (temp == null)
+					return false;
+
+				// 解析数据
+				ParseDataInternal(temp.bytes);
 			}
 			catch (Exception ex)
 			{
-				throw new Exception($"ReadTab falied. File is {ResName}, tab line {tabLine}. Error : {ex.ToString()}");
+				LogSystem.Log(ELogType.Error, $"Failed to parse config {ResName}. Error : {ex.ToString()}");
+				return false;
 			}
 
-			++tabLine;
+			// 注意：为了节省内存这里立即释放了资源
+			UnLoad();
 
-			// 检测是否重复
-			if (_tabs.ContainsKey(tab.Id))
+			return true;
+		}
+
+		/// <summary>
+		/// 序列化表格的接口
+		/// </summary>
+		protected abstract ConfigTab ReadTab(ByteBuffer byteBuffer);
+
+		/// <summary>
+		/// 解析数据
+		/// </summary>
+		private void ParseDataInternal(byte[] bytes)
+		{
+			ByteBuffer bb = new ByteBuffer(bytes);
+
+			int tabLine = 1;
+			const int headMarkAndSize = 6;
+			while (bb.IsReadable(headMarkAndSize))
 			{
-				throw new Exception($"The tab key is already exist. Type is {this.GetType()}, file is {ResName}, key is { tab.Id}");
+				// 检测行标记
+				short tabHead = bb.ReadShort();
+				if (tabHead != ConfigDefine.TabStreamHead)
+				{
+					throw new Exception($"Table stream head is invalid. File is {ResName} , tab line is {tabLine}");
+				}
+
+				// 检测行大小
+				int tabSize = bb.ReadInt();
+				if (!bb.IsReadable(tabSize) || tabSize > ConfigDefine.TabStreamMaxLen)
+				{
+					throw new Exception($"Table stream size is invalid. File is {ResName}, tab line {tabLine}");
+				}
+
+				// 读取行内容
+				ConfigTab tab = null;
+				try
+				{
+					tab = ReadTab(bb);
+				}
+				catch (Exception ex)
+				{
+					throw new Exception($"ReadTab falied. File is {ResName}, tab line {tabLine}. Error : {ex.ToString()}");
+				}
+
+				++tabLine;
+
+				// 检测是否重复
+				if (_tabs.ContainsKey(tab.Id))
+				{
+					throw new Exception($"The tab key is already exist. Type is {this.GetType()}, file is {ResName}, key is { tab.Id}");
+				}
+				else
+				{
+					_tabs.Add(tab.Id, tab);
+				}
+			}
+		}
+
+		/// <summary>
+		/// 通过外部传进的数据来组织表
+		/// </summary>
+		public void ParseDataFromCustomData(byte[] bytes)
+		{
+			_tabs.Clear();
+			ParseDataInternal(bytes);
+		}
+
+
+		/// <summary>
+		/// 获取数据，如果不存在报警告
+		/// </summary>
+		public ConfigTab GetTab(int key)
+		{
+			if (_tabs.ContainsKey(key))
+			{
+				return _tabs[key];
 			}
 			else
 			{
-				_tabs.Add(tab.Id, tab);
+				LogSystem.Log(ELogType.Warning, $"Faild to get tab. File is {ResName}, key is {key}");
+				return null;
 			}
 		}
-	}
 
-	/// <summary>
-	/// 通过外部传进的数据来组织表
-	/// </summary>
-	public void ParseDataFromCustomData(byte[] bytes)
-	{
-		_tabs.Clear();
-		ParseDataInternal(bytes);
-	}
-
-
-	/// <summary>
-	/// 获取数据，如果不存在报警告
-	/// </summary>
-	public ConfigTab GetTab(int key)
-	{
-		if (_tabs.ContainsKey(key))
+		/// <summary>
+		/// 获取数据，如果不存在不会报警告
+		/// </summary>
+		public bool TryGetTab(int key, out ConfigTab tab)
 		{
-			return _tabs[key];
+			return _tabs.TryGetValue(key, out tab);
 		}
-		else
+
+		/// <summary>
+		/// 是否包含Key
+		/// </summary>
+		public bool ContainsKey(int key)
 		{
-			LogSystem.Log(ELogType.Warning, $"Faild to get tab. File is {ResName}, key is {key}");
-			return null;
+			return _tabs.ContainsKey(key);
 		}
-	}
 
-	/// <summary>
-	/// 获取数据，如果不存在不会报警告
-	/// </summary>
-	public bool TryGetTab(int key, out ConfigTab tab)
-	{
-		return _tabs.TryGetValue(key, out tab);
-	}
-
-	/// <summary>
-	/// 是否包含Key
-	/// </summary>
-	public bool ContainsKey(int key)
-	{
-		return _tabs.ContainsKey(key);
-	}
-
-	/// <summary>
-	/// 获取所有Key
-	/// </summary>
-	public List<int> GetKeys()
-	{
-		List<int> keys = new List<int>();
-		foreach (var tab in _tabs)
+		/// <summary>
+		/// 获取所有Key
+		/// </summary>
+		public List<int> GetKeys()
 		{
-			keys.Add(tab.Key);
+			List<int> keys = new List<int>();
+			foreach (var tab in _tabs)
+			{
+				keys.Add(tab.Key);
+			}
+			return keys;
 		}
-		return keys;
 	}
 }

@@ -4,7 +4,7 @@
 // Licensed under the MIT license
 //--------------------------------------------------
 
-namespace MotionEngine.Debug
+namespace MotionFramework.Debug
 {
 	public interface IDebugWindow
 	{

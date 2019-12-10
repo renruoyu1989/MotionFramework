@@ -4,7 +4,7 @@
 // Licensed under the MIT license
 //--------------------------------------------------
 
-namespace MotionEngine.Reference
+namespace MotionFramework.Reference
 {
 	public interface IReference
 	{

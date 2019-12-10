@@ -7,9 +7,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MotionEngine.Utility;
+using MotionFramework.Utility;
 
-namespace MotionEngine.Debug
+namespace MotionFramework.Debug
 {
 	public static class DebugConsole
 	{

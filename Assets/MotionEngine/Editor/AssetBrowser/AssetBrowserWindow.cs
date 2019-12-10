@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
-using MotionEngine.Res;
+using MotionFramework.Resource;
 
 /// <summary>
 /// 运行时的资源列表查看器
