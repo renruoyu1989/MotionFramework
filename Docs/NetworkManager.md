@@ -8,20 +8,20 @@ public class Test
 	public void Start()
 	{
 		// 注意：NetProtoPackageParser是我们自定义的网络包解析器
-		NetManager.Instance.ConnectServer("127.0.0.1", 10002, typeof(NetProtoPackageParser));
-		NetManager.Instance.MonoProtoCallback += OnHandleMonoMsg;
+		NetworkManager.Instance.ConnectServer("127.0.0.1", 10002, typeof(NetProtoPackageParser));
+		NetworkManager.Instance.MonoProtoCallback += OnHandleMonoMsg;
 	}
 
 	public void Send()
 	{
 		// 在网络连接成功之后可以发送消息
-		if(NetManager.Instance.State == ENetworkState.Connected)
+		if(NetworkManager.Instance.State == ENetworkState.Connected)
 		{
 			int msgID = 1001;
 			C2R_Login msg = new C2R_Login();
 			msg.Account = "test";
 			msg.Password = "1234567";
-			NetManager.Instance.SendMsg(msgID, msg);
+			NetworkManager.Instance.SendMsg(msgID, msg);
 		}
 	}
 
