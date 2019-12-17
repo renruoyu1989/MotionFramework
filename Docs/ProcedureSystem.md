@@ -2,8 +2,7 @@
 
 定义流程步骤
 ```C#
-using MotionEngine.AI;
-using MotionGame;
+using MotionFramework.AI;
 
 public enum EProcedureType
 {
@@ -77,9 +76,7 @@ public class DownloadPatchFiles : FsmState
 
 创建流程系统
 ```C#
-using MotionEngine;
-using MotionEngine.AI;
-using MotionGame;
+using MotionFramework.AI;
 
 public class Test
 {

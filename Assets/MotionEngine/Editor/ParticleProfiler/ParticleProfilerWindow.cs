@@ -1,4 +1,5 @@
 ﻿//--------------------------------------------------
+// Motion Framework
 // Copyright©2019-2020 何冠峰
 // Licensed under the MIT license
 //--------------------------------------------------
@@ -18,7 +19,7 @@ public class ParticleProfilerWindow : EditorWindow
 		if (_thisInstance == null)
 		{
 			_thisInstance = EditorWindow.GetWindow(typeof(ParticleProfilerWindow), false, "特效分析器", true) as ParticleProfilerWindow;
-			_thisInstance.minSize = new Vector2(600, 600);
+			_thisInstance.minSize = new Vector2(800, 600);
 		}
 
 		_thisInstance.Show();
@@ -37,7 +38,7 @@ public class ParticleProfilerWindow : EditorWindow
 	/// <summary>
 	/// 粒子测试类
 	/// </summary>
-	private ParticleTester _tester = new ParticleTester();
+	private ParticleProfiler _profiler = new ParticleProfiler();
 
 	// GUI相关
 	private bool _isPause = false;
@@ -104,9 +105,9 @@ public class ParticleProfilerWindow : EditorWindow
 			EditorWindow gameView = EditorWindow.GetWindow(gameViewType);
 			gameView.Focus();
 
-			// 开始测试
+			// 开始分析
 			_isPause = false;
-			_tester.Test(_effectPrefab);
+			_profiler.Analyze(_effectPrefab);
 			Debug.Log($"开始测试特效：{_effectPrefab.name}");
 		}
 
@@ -124,24 +125,24 @@ public class ParticleProfilerWindow : EditorWindow
 
 		// 粒子基本信息
 		EditorGUILayout.Space();
-		EditorGUILayout.LabelField($"材质数量：{_tester.MaterialCount}");
-		EditorGUILayout.LabelField($"纹理数量：{_tester.TextureCount}");
-		EditorGUILayout.LabelField($"纹理内存：{EditorUtility.FormatBytes(_tester.TextureMemory)}");
-		EditorGUILayout.LabelField($"粒子系统组件：{_tester.ParticleSystemComponentCount} 个");
+		EditorGUILayout.LabelField($"材质数量：{_profiler.MaterialCount}");
+		EditorGUILayout.LabelField($"纹理数量：{_profiler.TextureCount}");
+		EditorGUILayout.LabelField($"纹理内存：{EditorUtility.FormatBytes(_profiler.TextureMemory)}");
+		EditorGUILayout.LabelField($"粒子系统组件：{_profiler.ParticleSystemComponentCount} 个");
 
 		// 粒子动态信息
 		EditorGUILayout.Space();
-		EditorGUILayout.LabelField($"DrawCall：{_tester.DrawCallCurrentNum}  最大：{_tester.DrawCallMaxNum}");
-		EditorGUILayout.LabelField($"粒子数量：{_tester.ParticleCurrentCount}  最大：{_tester.ParticleMaxCount}");
-		EditorGUILayout.LabelField($"三角面数：{_tester.TriangleCurrentCount}  最大：{_tester.TriangleMaxCount}");
+		EditorGUILayout.LabelField($"DrawCall：{_profiler.DrawCallCurrentNum}  最大：{_profiler.DrawCallMaxNum}");
+		EditorGUILayout.LabelField($"粒子数量：{_profiler.ParticleCurrentCount}  最大：{_profiler.ParticleMaxCount}");
+		EditorGUILayout.LabelField($"三角面数：{_profiler.TriangleCurrentCount}  最大：{_profiler.TriangleMaxCount}");
 
 		// 错误信息
-		if (_tester.Errors.Count > 0)
+		if (_profiler.Errors.Count > 0)
 		{
 			EditorGUILayout.Space();
 			EditorGUILayout.HelpBox($"请修正以下错误提示", MessageType.Error, true);
 			EditorGUI.indentLevel = 1;
-			foreach (var error in _tester.Errors)
+			foreach (var error in _profiler.Errors)
 			{
 				GUIStyle style = new GUIStyle();
 				style.normal.textColor = new Color(0.8f, 0, 0);
@@ -159,10 +160,10 @@ public class ParticleProfilerWindow : EditorWindow
 			{
 				float curveHeight = 80;
 				EditorGUI.indentLevel = 1;
-				EditorGUILayout.LabelField($"采样时长 {_tester.CurveSampleTime} 秒");
-				EditorGUILayout.CurveField("DrawCall", _tester.DrawCallCurve, GUILayout.Height(curveHeight));
-				EditorGUILayout.CurveField("粒子数量", _tester.ParticleCountCurve, GUILayout.Height(curveHeight));
-				EditorGUILayout.CurveField("三角面数", _tester.TriangleCountCurve, GUILayout.Height(curveHeight));
+				EditorGUILayout.LabelField($"采样时长 {_profiler.CurveSampleTime} 秒");
+				EditorGUILayout.CurveField("DrawCall", _profiler.DrawCallCurve, GUILayout.Height(curveHeight));
+				EditorGUILayout.CurveField("粒子数量", _profiler.ParticleCountCurve, GUILayout.Height(curveHeight));
+				EditorGUILayout.CurveField("三角面数", _profiler.TriangleCountCurve, GUILayout.Height(curveHeight));
 				EditorGUI.indentLevel = 0;
 			}
 		}
@@ -177,10 +178,10 @@ public class ParticleProfilerWindow : EditorWindow
 				EditorGUI.indentLevel = 1;
 				_scrollPos1 = EditorGUILayout.BeginScrollView(_scrollPos1);
 				{
-					List<Texture> textures = _tester.AllTextures;
+					List<Texture> textures = _profiler.AllTextures;
 					foreach (var tex in textures)
 					{
-						EditorGUILayout.LabelField($"{tex.name}  尺寸:{tex.height }*{tex.width}  格式:{ParticleTester.GetTextureFormatString(tex)}");
+						EditorGUILayout.LabelField($"{tex.name}  尺寸:{tex.height }*{tex.width}  格式:{ParticleProfiler.GetTextureFormatString(tex)}");
 						EditorGUILayout.ObjectField("", tex, typeof(Texture), false, GUILayout.Width(80));
 					}
 				}
@@ -199,7 +200,7 @@ public class ParticleProfilerWindow : EditorWindow
 				EditorGUI.indentLevel = 1;
 				_scrollPos2 = EditorGUILayout.BeginScrollView(_scrollPos2);
 				{
-					List<Mesh> meshs = _tester.AllMeshs;
+					List<Mesh> meshs = _profiler.AllMeshs;
 					foreach (var mesh in meshs)
 					{
 						EditorGUILayout.ObjectField($"三角面数 : {mesh.triangles.Length / 3}", mesh, typeof(MeshFilter), false, GUILayout.Width(300));
@@ -223,7 +224,7 @@ public class ParticleProfilerWindow : EditorWindow
 					GUILayout.Button(_texTips); //绘制提示图片
 					EditorGUILayout.HelpBox($"以下粒子系统组件不支持过程化模式！具体原因查看气泡提示", MessageType.Warning, true);
 #if UNITY_2018_4_OR_NEWER
-					List<ParticleSystem> particleList = _tester.AllParticles;
+					List<ParticleSystem> particleList = _profiler.AllParticles;
 					foreach (var ps in particleList)
 					{
 						if (ps.proceduralSimulationSupported == false)
@@ -240,7 +241,7 @@ public class ParticleProfilerWindow : EditorWindow
 	}
 	private void OnDestroy()
 	{
-		_tester.DestroyPrefab();
+		_profiler.DestroyPrefab();
 	}
 	private void Update()
 	{
@@ -249,7 +250,7 @@ public class ParticleProfilerWindow : EditorWindow
 
 		// 更新测试特效
 		if (_isPause == false)
-			_tester.Update(deltaTime);
+			_profiler.Update(deltaTime);
 
 		// 刷新窗口界面
 		this.Repaint();

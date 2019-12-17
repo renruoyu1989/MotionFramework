@@ -7,13 +7,12 @@
 
 定义自己的控制台节点  
 ```C#
-using MotionEngine;
-using MotionEngine.Debug;
+using MotionFramework.Debug;
 
 namespace MotionGame
 {
 	[DebugAttribute("控制台节点显示名称", 201)]
-	public class CustomModule : IDebug
+	public class CustomDebugWindow : IDebugWindow
 	{
 		public void OnInit()
 		{

@@ -1,25 +1,32 @@
-﻿using System;
+﻿//--------------------------------------------------
+// Motion Framework
+// Copyright©2018-2020 何冠峰
+// Licensed under the MIT license
+//--------------------------------------------------
+using System;
 using System.Security;
+using UnityEngine;
 using Mono.Xml;
-using MotionEngine;
-using MotionEngine.Res;
+using MotionFramework.Resource;
 
-namespace MotionGame
+namespace MotionFramework.Config
 {
-	public abstract class AssetXml : AssetText
+	public abstract class AssetXml : AssetObject
 	{
 		protected SecurityElement _xml;
 
-		public AssetXml()
+
+		protected override bool OnPrepare(UnityEngine.Object mainAsset)
 		{
-		}
-		protected override bool OnPrepare(UnityEngine.Object asset, bool result)
-		{
-			if (base.OnPrepare(asset, result) == false)
+			if (base.OnPrepare(mainAsset) == false)
+				return false;
+
+			TextAsset temp = mainAsset as TextAsset;
+			if (temp == null)
 				return false;
 
 			SecurityParser sp = new SecurityParser();
-			sp.LoadXml(Text.text);
+			sp.LoadXml(temp.text);
 			_xml = sp.ToXml();
 
 			if (_xml == null)

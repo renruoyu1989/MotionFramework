@@ -2,7 +2,7 @@
 
 对象池使用异步使用范例
 ```C#
-using MotionEngine.Res;
+using MotionFramework.Pool;
 
 public class Test
 {
@@ -29,7 +29,7 @@ public class Test
 
 对象池使用同步使用范例
 ```C#
-using MotionEngine.Res;
+using MotionFramework.Pool;
 
 public class Test
 {

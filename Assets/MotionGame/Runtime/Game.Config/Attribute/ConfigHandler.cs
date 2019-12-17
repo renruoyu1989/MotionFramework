@@ -1,9 +1,14 @@
-﻿using System;
+﻿//--------------------------------------------------
+// Motion Framework
+// Copyright©2018-2020 何冠峰
+// Licensed under the MIT license
+//--------------------------------------------------
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using MotionEngine.Utility;
+using MotionFramework.Utility;
 
-namespace MotionGame
+namespace MotionFramework.Config
 {
 	internal class ConfigHandler
 	{
@@ -11,7 +16,7 @@ namespace MotionGame
 
 		static ConfigHandler()
 		{
-			List<Type> result = UtilAssembly.GetAssignableAttributeTypes(typeof(AssetConfig), typeof(ConfigAttribute));
+			List<Type> result = AssemblyUtility.GetAssignableAttributeTypes(typeof(AssetConfig), typeof(ConfigAttribute));
 			for (int i = 0; i < result.Count; i++)
 			{
 				Type type = result[i];

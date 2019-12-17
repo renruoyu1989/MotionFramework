@@ -1,15 +1,15 @@
-### 配表管理器 (CfgManager)
+### 配表管理器 (ConfigManager)
 
 [FlashExcel](https://github.com/gmhevinci/FlashExcel)导表工具会自动生成表格相关的CS脚本和二进制数据文件
 ```C#
-using MotionGame;
+using MotionFramework.Config;
 
 // 这里扩展了获取数据的方法
 public partial class CfgHero
 {
 	public static CfgHeroTab GetCfgTab(int key)
 	{
-		CfgHero cfg = CfgManager.Instance.GetConfig(EConfigType.Hero.ToString()) as CfgHero;
+		CfgHero cfg = ConfigManager.Instance.GetConfig(EConfigType.Hero.ToString()) as CfgHero;
 		return cfg.GetTab(key) as CfgHeroTab;
 	}
 }
@@ -17,14 +17,14 @@ public partial class CfgHero
 
 加载表格
 ```C#
-using MotionGame;
+using MotionFramework.Config;
 
 public class Test
 {
 	public void Start()
 	{
 		// 优先加载多语言表
-		CfgManager.Instance.Load("AutoGenerateLanguage", OnLanguagePrepare);	
+		ConfigManager.Instance.Load("AutoGenerateLanguage", OnLanguagePrepare);	
 	}
 
 	private void OnLanguagePrepare(Asset asset, EAssetResult result)
@@ -33,7 +33,7 @@ public class Test
 			return;
 
 		// 多语言表加载完毕后，加载剩余其它表格
-		CfgManager.Instance.Load("Hero", OnConfigPrepare);
+		ConfigManager.Instance.Load("Hero", OnConfigPrepare);
 	}
 	
 	private void OnConfigPrepare(Asset asset, EAssetResult result)

@@ -5,7 +5,6 @@
 **界面说明**  
 ```
 Build Version : 补丁包的版本号
-Build Pack Path : 打包路径，工具会以根路径内的资源为单位进行依赖分析并打包
 Build Output Path : 打包完成后的输出路径（在工程目录下）。该路径无法修改！
 Force Rebuild : 强制重建会删除当前平台下所有的补丁文件，并重新生成补丁文件
 
@@ -14,6 +13,21 @@ Append Hash : 生成的AssetBundle文件名称添加Hash信息
 Disable Write Type Tree : 禁止写入TypeTree，建议不勾选
 Ignore Type Tree Chanages : 忽略TypeTree变化，建议勾选
 ```
+
+**打包规则设置界面**  
+
+![image](https://github.com/gmhevinci/MotionFramework/raw/master/Docs/Image/img101_2.png)
+
+不同项目对资源的处理及打包规则都有所不同，我们可以通过以下几项设置来定制化自己的打包规则。  
+1. Collect : 收集文件夹内资源进行打包（包括所有子文件夹）
+2. Ignore : 忽略文件夹内资源不参与打包（包括所有子文件夹）
+3. TagByFilePath : AssetBundle标签按照文件路径设置
+4. TagByFolderPath : AssetBundle标签按照文件所在的文件夹路径设置
+5. TagByFileName : AssetBundle标签按照文件名字设置
+6. TagByFolderName : AssetBundle标签按照文件所在的文件夹名字设置  
+
+注意：TagByFolder会将文件夹内所有资源打在一个AssetBundle文件里。
+
 
 **加密方式**  
 要实现Bundle文件加密，只需要实现下面代码
@@ -52,9 +66,9 @@ public static class AssetEncrypter
 //读取package.bytes文件
 using System;
 using System.Collections;
-using MotionEngine;
-using MotionEngine.Res;
-using MotionEngine.Patch;
+using MotionFramework;
+using MotionFramework.Resource;
+using MotionFramework.Patch;
 
 public class Test
 {
@@ -95,7 +109,6 @@ public class Test
 苹果打包调用静态方法：BuildPackage.BuildIOS
 
 命令行参数
-"packPath=Assets/Works/MyResource"
 "forceBuild=false"
 "buildVersion=100"
 ```

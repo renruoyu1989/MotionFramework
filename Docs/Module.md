@@ -2,7 +2,7 @@
 
 创建自定义模块代码示例
 ```C#
-using MotionEngine;
+using MotionFramework;
 
 public class CustomModule : IModule
 {
@@ -37,7 +37,7 @@ public class CustomModule : IModule
 
 在合适的地方注册我们的模块
 ```C#
-using MotionEngine;
+using MotionFramework;
 
 public class Test
 {

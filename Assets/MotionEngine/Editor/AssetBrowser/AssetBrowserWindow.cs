@@ -1,4 +1,5 @@
 ﻿//--------------------------------------------------
+// Motion Framework
 // Copyright©2018-2020 何冠峰
 // Licensed under the MIT license
 //--------------------------------------------------
@@ -7,7 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
-using MotionEngine.Res;
+using MotionFramework.Resource;
 
 /// <summary>
 /// 运行时的资源列表查看器
@@ -22,7 +23,7 @@ public class AssetBrowserWindow : EditorWindow
 		if (_thisInstance == null)
 		{
 			_thisInstance = EditorWindow.GetWindow(typeof(AssetBrowserWindow), false, "资源浏览工具", true) as AssetBrowserWindow;
-			_thisInstance.minSize = new Vector2(600, 600);
+			_thisInstance.minSize = new Vector2(800, 600);
 		}
 
 		_thisInstance.Show();

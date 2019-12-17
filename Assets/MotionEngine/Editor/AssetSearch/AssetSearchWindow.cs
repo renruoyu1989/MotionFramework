@@ -1,4 +1,5 @@
 ﻿//--------------------------------------------------
+// Motion Framework
 // Copyright©2018-2020 何冠峰
 // Licensed under the MIT license
 //--------------------------------------------------
@@ -12,13 +13,13 @@ public class AssetSearchWindow : EditorWindow
 {
 	static AssetSearchWindow _thisInstance;
 
-	[MenuItem("MotionTools/Asset Search", false, 104)]
+	[MenuItem("MotionTools/Asset Search", false, 103)]
 	static void Init()
 	{
 		if (_thisInstance == null)
 		{
 			_thisInstance = EditorWindow.GetWindow(typeof(AssetSearchWindow), false, "资源引用搜索工具", true) as AssetSearchWindow;
-			_thisInstance.minSize = new Vector2(350, 600);
+			_thisInstance.minSize = new Vector2(400, 600);
 		}
 
 		_thisInstance.Show();

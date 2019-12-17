@@ -3,7 +3,7 @@
 MotionFramework内部使用了一套统一的日志系统。开发者需要注册才会显示内部的日志。
 
 ```C#
-using MotionEngine;
+using MotionFramework;
 
 public class Test
 {

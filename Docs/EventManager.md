@@ -2,7 +2,7 @@
 
 定义事件类
 ```C#
-using MotionEngine.Event;
+using MotionFramework.Event;
 
 public class TestEventMsg : IEventMessage
 {
@@ -13,8 +13,7 @@ public class TestEventMsg : IEventMessage
 监听事件
 ```C#
 using UnityEngine;
-using MotionEngine.Event;
-using MotionGame;
+using MotionFramework.Event;
 
 public class Test
 {
@@ -37,8 +36,7 @@ public class Test
 发送事件
 ```C#
 using UnityEngine;
-using MotionEngine.Event;
-using MotionGame;
+using MotionFramework.Event;
 
 public class Test
 {

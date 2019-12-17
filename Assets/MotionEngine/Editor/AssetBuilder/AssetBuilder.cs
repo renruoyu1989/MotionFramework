@@ -1,4 +1,5 @@
 ﻿//--------------------------------------------------
+// Motion Framework
 // Copyright©2018-2020 何冠峰
 // Licensed under the MIT license
 //--------------------------------------------------
@@ -9,10 +10,10 @@ using System.Text;
 using System;
 using UnityEngine;
 using UnityEditor;
-using MotionEngine.Patch;
-using MotionEngine.Utility;
+using MotionFramework.Patch;
+using MotionFramework.Utility;
 
-public class AssetBuilder 
+public class AssetBuilder
 {
 	/// <summary>
 	/// AssetBundle压缩选项
@@ -27,13 +28,12 @@ public class AssetBuilder
 	/// <summary>
 	/// 输出的根目录
 	/// </summary>
-	private string _outputRoot = string.Empty;
+	private readonly string _outputRoot;
 
 	// 构建相关
 	public BuildTarget BuildTarget { private set; get; } = BuildTarget.NoTarget; //构建平台
 	public int BuildVersion { set; get; } = -1; //构建版本
-	public string PackPath { set; get; } = string.Empty; //打包目录
-	public string OutputPath { private set; get; }  = string.Empty; //输出目录
+	public string OutputPath { private set; get; } = string.Empty; //输出目录
 
 	// 构建选项
 	public ECompressOption CompressOption = ECompressOption.Uncompressed;
@@ -44,12 +44,11 @@ public class AssetBuilder
 
 
 	/// <summary>
-	/// 初始化
+	/// AssetBuilder
 	/// </summary>
 	/// <param name="buildTarget">构建平台</param>
 	/// <param name="buildVersion">构建版本</param>
-	/// <param name="packPath">构建路径</param>
-	public void InitAssetBuilder(BuildTarget buildTarget, int buildVersion, string packPath)
+	public AssetBuilder(BuildTarget buildTarget, int buildVersion)
 	{
 		_outputRoot = AssetHelper.MakeDefaultOutputRootPath();
 
@@ -57,8 +56,6 @@ public class AssetBuilder
 		BuildTarget = buildTarget;
 		// 构建版本
 		BuildVersion = buildVersion;
-		// 构建路径
-		PackPath = packPath;
 		// 输出路径
 		OutputPath = $"{_outputRoot}/{buildTarget}/{PatchDefine.StrBuildManifestFileName}";
 	}
@@ -80,10 +77,6 @@ public class AssetBuilder
 		if (BuildVersion < 0)
 			throw new Exception("[BuildPackage] 请先设置版本号");
 
-		// 检测打包目录是否为空
-		if (string.IsNullOrEmpty(PackPath))
-			throw new Exception("[BuildPackage] 打包目录不能为空");
-
 		// 检测输出目录是否为空
 		if (string.IsNullOrEmpty(OutputPath))
 			throw new Exception("[BuildPackage] 输出目录不能为空");
@@ -92,6 +85,9 @@ public class AssetBuilder
 		string packagePath = GetPackagePath();
 		if (Directory.Exists(packagePath))
 			throw new Exception($"[BuildPackage] 补丁包已经存在：{packagePath}");
+
+		// 检测标签是否有冲突
+		CheckTagNameConflict();
 
 		// 如果是强制重建
 		if (IsForceRebuild)
@@ -152,7 +148,7 @@ public class AssetBuilder
 		PackageVideo(assetInfoList);
 		// 加密资源文件
 		EncryptFiles(allAssetBundles);
-		
+
 		// 创建补丁文件
 		CreatePackageFile(allAssetBundles);
 		// 创建说明文件
@@ -200,49 +196,56 @@ public class AssetBuilder
 		Debug.Log($"[BuildPackage] {log}");
 	}
 
-
-	#region 准备工作
 	/// <summary>
-	/// 资源信息类
+	/// 检测标签名是否有冲突
+	/// 注意：因为AssetBundle文件后缀格式为统一格式。在同一目录下，相同名字的不同类型的文件会发生冲突。
 	/// </summary>
-	private class AssetInfo
+	private void CheckTagNameConflict()
 	{
-		public string AssetPath { private set; get; }
-		public bool IsPackAsset { private set; get; }
-		public bool IsAtalsSpriteAsset { private set; get; }
-		public bool IsSceneAsset { private set; get; }
-		public bool IsVideoAsset { private set; get; }
+		int progressBarCount = 0;
+		Dictionary<string, string> allElements = new Dictionary<string, string>();
 
-		public int DependCount = 0; //被依赖次数
-		public string AssetBundleName = null;
-		public string AssetBundleVariant = null;
+		// 获取所有的打包路径
+		List<string> collectPathList = BuildSettingData.GetAllCollectPath();
+		if (collectPathList.Count == 0)
+			return;
 
-		public AssetInfo(string assetPath)
+		// 获取所有资源
+		string[] guids = AssetDatabase.FindAssets(string.Empty, collectPathList.ToArray());
+		foreach (string guid in guids)
 		{
-			AssetPath = assetPath;
+			string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+			if (ValidateAsset(assetPath) == false)
+				continue;
 
-			if (AssetDatabase.GetMainAssetTypeAtPath(assetPath) == typeof(SceneAsset))
-				IsSceneAsset = true;
-			else
-				IsSceneAsset = false;
+			string[] dependArray = AssetDatabase.GetDependencies(assetPath, true);
+			foreach (string dependPath in dependArray)
+			{
+				if (ValidateAsset(dependPath) == false)
+					continue;
 
-			if (AssetDatabase.GetMainAssetTypeAtPath(assetPath) == typeof(UnityEngine.Video.VideoClip))
-				IsVideoAsset = true;
-			else
-				IsVideoAsset = false;
+				string extension = Path.GetExtension(dependPath);
+				string tagName = dependPath.Remove(dependPath.LastIndexOf(".")); // 注意：去掉文件格式
+				if (allElements.ContainsKey(tagName))
+				{
+					if (allElements[tagName] != extension)
+						throw new Exception($"发现重复的标签在同一个目录下：{tagName} {allElements[tagName]} {extension}");
+				}
+				else
+				{
+					allElements.Add(tagName, extension);
+				}
+			}
 
-			if (assetPath.Contains(PatchDefine.StrMyPackRootPath))
-				IsPackAsset = true;
-			else
-				IsPackAsset = false;
-
-			if (assetPath.Contains(PatchDefine.StrMyUISpriteFolderPath))
-				IsAtalsSpriteAsset = true;
-			else
-				IsAtalsSpriteAsset = false;
+			// 进度条
+			progressBarCount++;
+			EditorUtility.DisplayProgressBar("进度", $"重名文件检测：{progressBarCount}/{guids.Length}", (float)progressBarCount / guids.Length);
 		}
+		EditorUtility.ClearProgressBar();
+		progressBarCount = 0;
 	}
 
+	#region 准备工作
 	/// <summary>
 	/// 准备工作
 	/// </summary>
@@ -251,34 +254,39 @@ public class AssetBuilder
 		int progressBarCount = 0;
 		Dictionary<string, AssetInfo> allAsset = new Dictionary<string, AssetInfo>();
 
-		// 获取打包目录下所有文件
-		DirectoryInfo dirInfo = new DirectoryInfo(PackPath);
-		FileInfo[] files = dirInfo.GetFiles("*.*", SearchOption.AllDirectories);
+		// 获取所有的打包路径
+		List<string> collectPathList = BuildSettingData.GetAllCollectPath();
+		if (collectPathList.Count == 0)
+			throw new Exception("[BuildPackage] 配置的打包路径列表为空");
 
-		// 获取所有资源列表
-		foreach (FileInfo fileInfo in files)
+		// 获取所有资源
+		string[] guids = AssetDatabase.FindAssets(string.Empty, collectPathList.ToArray());
+		foreach (string guid in guids)
 		{
-			string assetPath = EditorTools.AbsolutePathToAssetPath(fileInfo.FullName);
-			if (ValidateAsset(assetPath))
+			string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+			if (BuildSettingData.IsIgnoreAsset(assetPath))
+				continue;
+			if (ValidateAsset(assetPath) == false)
+				continue;
+
+			List<AssetInfo> depends = GetDependencies(assetPath);
+			for (int i = 0; i < depends.Count; i++)
 			{
-				List<AssetInfo> depends = GetDependencies(assetPath);
-				for (int i = 0; i < depends.Count; i++)
+				AssetInfo assetInfo = depends[i];
+				if (allAsset.ContainsKey(assetInfo.AssetPath))
 				{
-					AssetInfo assetInfo = depends[i];
-					if (allAsset.ContainsKey(assetInfo.AssetPath))
-					{
-						AssetInfo cacheInfo = allAsset[assetInfo.AssetPath];
-						cacheInfo.DependCount++;
-					}
-					else
-					{
-						allAsset.Add(assetInfo.AssetPath, assetInfo);
-					}
+					AssetInfo cacheInfo = allAsset[assetInfo.AssetPath];
+					cacheInfo.DependCount++;
+				}
+				else
+				{
+					allAsset.Add(assetInfo.AssetPath, assetInfo);
 				}
 			}
+
 			// 进度条
 			progressBarCount++;
-			EditorUtility.DisplayProgressBar("进度", $"依赖文件分析：{progressBarCount}/{files.Length}", (float)progressBarCount / files.Length);
+			EditorUtility.DisplayProgressBar("进度", $"依赖文件分析：{progressBarCount}/{guids.Length}", (float)progressBarCount / guids.Length);
 		}
 		EditorUtility.ClearProgressBar();
 		progressBarCount = 0;
@@ -287,9 +295,7 @@ public class AssetBuilder
 		List<string> removeList = new List<string>();
 		foreach (KeyValuePair<string, AssetInfo> pair in allAsset)
 		{
-			if (pair.Value.IsPackAsset)
-				continue;
-			if (pair.Value.IsAtalsSpriteAsset)
+			if (pair.Value.IsCollectAsset)
 				continue;
 			if (pair.Value.DependCount == 0)
 				removeList.Add(pair.Value.AssetPath);
@@ -319,9 +325,10 @@ public class AssetBuilder
 
 		return result;
 	}
-	
+
 	/// <summary>
 	/// 获取依赖列表
+	/// 注意：返回列表里已经包括主资源自己
 	/// </summary>
 	private List<AssetInfo> GetDependencies(string assetPath)
 	{
@@ -352,26 +359,14 @@ public class AssetBuilder
 
 		return true;
 	}
-	
+
 	/// <summary>
 	/// 设置资源的打包标签
 	/// </summary>
 	private void SetAssetPackingTag(AssetInfo assetInfo)
 	{
-		string suffixName = PatchDefine.StrBundleSuffixName;
-		if (assetInfo.IsAtalsSpriteAsset)
-		{
-			string tagName = assetInfo.AssetPath.Remove(assetInfo.AssetPath.LastIndexOf("."));
-			tagName = tagName.Remove(assetInfo.AssetPath.LastIndexOf("/"));
-			//tagName = tagName.Replace("/Resources/", $"/res/");
-			assetInfo.AssetBundleName = $"{tagName}{suffixName}";
-		}
-		else
-		{
-			string tagName = assetInfo.AssetPath.Remove(assetInfo.AssetPath.LastIndexOf("."));
-			//tagName = tagName.Replace("/Resources/", $"/res/");
-			assetInfo.AssetBundleName = $"{tagName}{suffixName}";
-		}
+		string tagName = BuildSettingData.GetAssetTagName(assetInfo.AssetPath);
+		assetInfo.AssetBundleName = $"{tagName}{PatchDefine.StrBundleSuffixName}";
 	}
 	#endregion
 
@@ -414,7 +409,7 @@ public class AssetBuilder
 		foreach (string assetName in allAssetBundles)
 		{
 			string path = $"{OutputPath}/{assetName}";
-			if(AssetEncrypterCheck(path))
+			if (AssetEncrypterCheck(path))
 			{
 				byte[] fileData = File.ReadAllBytes(path);
 
@@ -497,7 +492,7 @@ public class AssetBuilder
 			{
 				string assetName = PatchDefine.StrBuildManifestFileName;
 				string path = $"{OutputPath}/{assetName}";
-				string md5 = UtilHash.FileMD5(path);
+				string md5 = HashUtility.FileMD5(path);
 				long sizeKB = EditorTools.GetFileSize(path) / 1024;
 				int version = BuildVersion;
 
@@ -510,7 +505,7 @@ public class AssetBuilder
 			foreach (string assetName in allAssetBundles)
 			{
 				string path = $"{OutputPath}/{assetName}";
-				string md5 = UtilHash.FileMD5(path);
+				string md5 = HashUtility.FileMD5(path);
 				long sizeKB = EditorTools.GetFileSize(path) / 1024;
 				int version = BuildVersion;
 
@@ -548,8 +543,15 @@ public class AssetBuilder
 		StringBuilder content = new StringBuilder();
 		AppendData(content, $"构建平台：{BuildTarget}");
 		AppendData(content, $"构建版本：{BuildVersion}");
-		AppendData(content, $"构建目录：{PackPath}");
 		AppendData(content, $"构建时间：{DateTime.Now}");
+
+		AppendData(content, "");
+		AppendData(content, $"--配置信息--");
+		for (int i = 0; i < BuildSettingData.Setting.Elements.Count; i++)
+		{
+			BuildSetting.Wrapper wrapper = BuildSettingData.Setting.Elements[i];
+			AppendData(content, $"FolderPath : {wrapper.FolderPath} || PackRule : {wrapper.PackRule} || NameRule : {wrapper.NameRule}");
+		}
 
 		AppendData(content, "");
 		AppendData(content, $"--构建参数--");
@@ -667,31 +669,3 @@ public class AssetBuilder
 	}
 	#endregion
 }
-
-/*
-/// <summary>
-/// 资源加密器
-/// </summary>
-public static class AssetEncrypter
-{
-	private const string StrEncryptFolderName = "/Assembly/";
-
-	/// <summary>
-	/// 检测文件是否需要加密
-	/// </summary>
-	public static bool Check(string path)
-	{
-		return path.Contains(StrEncryptFolderName);
-	}
-
-	/// <summary>
-	/// 对数据进行加密，并返回加密后的数据
-	/// </summary>
-	public static byte[] Encrypt(byte[] data)
-	{
-		// 这里使用你的加密算法
-		return data;
-	}
-}
-*/
- 
