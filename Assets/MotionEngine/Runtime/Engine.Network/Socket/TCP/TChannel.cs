@@ -152,7 +152,7 @@ namespace MotionFramework.Network
 
 					// 如果已经超过一个最大包体尺寸
 					// 注意：发送的数据理论最大值为俩个最大包体大小
-					if (_packageParser.GetSendBufferWriterIndex() >= NetworkDefine.PackageMaxSize)
+					if (_packageParser.GetSendBufferWriterIndex() >= NetworkDefine.PackageBodyMaxSize)
 						break;
 				}
 
