@@ -29,7 +29,7 @@ namespace MotionFramework.Network
 
 
 	/// <summary>
-	/// Protobuf网络消息解析器
+	/// 默认自带的网络消息解析器
 	/// </summary>
 	public abstract class DefaultPackageParser : NetPackageParser
 	{
