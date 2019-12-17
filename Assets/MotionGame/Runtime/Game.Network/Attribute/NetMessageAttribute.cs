@@ -10,9 +10,9 @@ namespace MotionFramework.Network
 	[AttributeUsage(AttributeTargets.Class)]
 	public class NetMessageAttribute : Attribute
 	{
-		public ushort MsgType;
+		public int MsgType;
 
-		public NetMessageAttribute(ushort msgType)
+		public NetMessageAttribute(int msgType)
 		{
 			MsgType = msgType;
 		}
