@@ -38,4 +38,4 @@ public class Test
 ```
 
 更详细的教程请参考示例代码
-1. [MotionEngine/Runtime/Engine.Res/Asset](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionEngine/Runtime/Engine.Resource/Asset)
+1. [MotionGame/Runtime/Game.Resource/ResourceManager.cs](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionGame/Runtime/Game.Resource/ResourceManager.cs)

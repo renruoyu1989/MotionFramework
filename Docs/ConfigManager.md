@@ -52,3 +52,5 @@ public class Test
 	}
 }
 ```
+
+1. [MotionGame/Runtime/Game.Config/ConfigManager.cs](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionGame/Runtime/Game.Config/ConfigManager.cs)
