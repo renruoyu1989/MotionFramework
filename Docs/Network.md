@@ -3,17 +3,33 @@
 定义网络包解析器
 ```C#
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using MotionFramework.Network;
 
-public class CustomPackageParser : NetPackageParser
+/// <summary>
+/// Protobuf网络消息解析器
+/// </summary>
+public class ProtoPackageParser : DefaultPackageParser
 {
-  public override void Encode(System.Object msg)
-  {
-    //网络消息编码
-  }
-  public override void Decode(List<System.Object> msgList)
-  {
-    //网络消息解码
-  }
+	public ProtoPackageParser()
+	{
+		// 设置字段类型
+		PackageSizeFieldType = EPackageSizeFieldType.UShort;
+		MessageIDFieldType = EMessageIDFieldType.UShort;
+	}
+
+	protected override byte[] EncodeInternal(object msgObj)
+	{
+		return ProtobufHelper.Encode(msgObj);
+	}
+
+	protected override object DecodeInternal(Type classType, byte[] bodyBytes)
+	{
+		return ProtobufHelper.Decode(classType, bodyBytes);
+	}
 }
 ```
+
+更详细的教程请参考示例代码
+1. [MotionGame/Runtime/PackageParser/DefaultPackageParser.cs](https://github.com/gmhevinci/MotionFramework/blob/master/Assets/MotionGame/Runtime/Game.Network/PackageParser/DefaultPackageParser.cs)
