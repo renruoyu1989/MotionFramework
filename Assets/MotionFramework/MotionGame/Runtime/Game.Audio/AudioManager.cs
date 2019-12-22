@@ -310,7 +310,7 @@ namespace MotionFramework.Audio
 		}
 
 		/// <summary>
-		/// 设置静音
+		/// 设置所有频道静音
 		/// </summary>
 		public void Mute(bool isMute)
 		{
@@ -321,7 +321,7 @@ namespace MotionFramework.Audio
 		}
 
 		/// <summary>
-		/// 设置静音
+		/// 设置频道静音
 		/// </summary>
 		public void Mute(EAudioLayer layer, bool isMute)
 		{
@@ -329,7 +329,7 @@ namespace MotionFramework.Audio
 		}
 
 		/// <summary>
-		/// 查询是否静音
+		/// 查询频道是否静音
 		/// </summary>
 		public bool IsMute(EAudioLayer layer)
 		{
@@ -337,7 +337,18 @@ namespace MotionFramework.Audio
 		}
 
 		/// <summary>
-		/// 设置音量
+		/// 设置所有频道音量
+		/// </summary>
+		public void Volume(float volume)
+		{
+			foreach (KeyValuePair<EAudioLayer, AudioSourceWrapper> pair in _audioSourceWrappers)
+			{
+				pair.Value.Source.volume = volume;
+			}
+		}
+
+		/// <summary>
+		/// 设置频道音量
 		/// </summary>
 		public void Volume(EAudioLayer layer, float volume)
 		{
@@ -345,6 +356,13 @@ namespace MotionFramework.Audio
 			_audioSourceWrappers[layer].Source.volume = volume;
 		}
 
+		/// <summary>
+		/// 查询频道音量
+		/// </summary>
+		public float GetVolume(EAudioLayer layer)
+		{
+			return _audioSourceWrappers[layer].Source.volume;
+		}
 
 		private void PlayAudioClipInternal(EAudioLayer layer, AudioClip clip, bool isLoop)
 		{
