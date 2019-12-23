@@ -61,7 +61,6 @@ namespace MotionFramework.Resource
 		public void UnLoad()
 		{
 			Result = EAssetResult.None;
-			_userCallback = null;
 			if (_cacheLoader != null)
 			{
 				_cacheLoader.Release();
