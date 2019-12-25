@@ -93,10 +93,10 @@ namespace MotionFramework.Network
 				INetPackage package = (INetPackage)_channel.PickMsg();
 				if (package != null)
 				{
-					if (package.IsMonoPackage)
-						MonoPackageCallback.Invoke(package);
-					else
+					if (package.IsHotfixPackage)
 						HotfixPackageCallback.Invoke(package);
+					else
+						MonoPackageCallback.Invoke(package);		
 				}
 			}
 		}

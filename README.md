@@ -11,7 +11,7 @@ C# && .Net4.x
 
 ## 核心系统
 
-1. [游戏模块](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/Module.md) **(IModule)** - 游戏模块通过注册机制来统一被管理。基于框架的核心系统，内置了游戏开发过程中常用的管理器，例如：事件管理器，网络管理器，资源管理器，音频管理器，配表管理器，状态机管理器，对象池管理器等。
+1. [游戏模块](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/Module.md) **(IModule)** - 游戏模块通过注册机制来统一被管理。基于框架的核心系统，内置了游戏开发过程中常用的管理器，例如：事件管理器，网络管理器，资源管理器，音频管理器，配表管理器，场景管理器，状态机管理器，对象池管理器等。
 
 2. [日志系统](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/LogSystem.md) **(LogSystem)** - 框架内部使用统一的日志系统，外部业务逻辑需要注册才可以接收到框架生成的日志信息。
 
@@ -40,6 +40,8 @@ C# && .Net4.x
 
 5. [配表管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/ConfigManager.md) **(ConfigManager)**
 
+5. [场景管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/SceneManager.md) **(SceneManager)**
+
 6. [状态机管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/FsmManager.md) **(FsmManager)**
 
 7. [对象池管理器](https://github.com/gmhevinci/MotionFramework/blob/master/Docs/PoolManager.md) **(PoolManager)**
@@ -58,7 +60,7 @@ C# && .Net4.x
 ## DEMO
 1. [Demo1](https://github.com/gmhevinci/Demo1) 使用ILRuntime热更新方案的演示例子。
 
-2. Demo2 使用XLua热更新方案的演示例子。
+2. [Demo2](https://github.com/gmhevinci/Demo2) 使用XLua热更新方案的演示例子。
 
 ## 声明
 作者本人将会一直维护该框架，提交的Issue会在48小时内解决，欢迎加入社区QQ群：654986302

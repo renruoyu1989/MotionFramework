@@ -43,14 +43,14 @@ namespace MotionFramework.Network
 		/// <summary>
 		/// 消息编码
 		/// </summary>
-		/// <param name="msg">需要编码的消息对象</param>
-		public abstract void Encode(System.Object msg);
+		/// <param name="packageObj">需要编码的包裹对象</param>
+		public abstract void Encode(System.Object packageObj);
 
 		/// <summary>
 		/// 消息解码
 		/// </summary>
-		/// <param name="msgList">解码成功后的消息对象列表</param>
-		public abstract void Decode(List<System.Object> msgList);
+		/// <param name="packageObjList">解码成功后的包裹对象列表</param>
+		public abstract void Decode(List<System.Object> packageObjList);
 
 
 		#region 字节缓冲区处理接口

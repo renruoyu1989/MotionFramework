@@ -81,8 +81,6 @@ namespace MotionFramework.Audio
 		}
 		public void Update()
 		{
-			// 背景音乐的淡入淡出
-			UpdateFadeEffect(Time.deltaTime);
 		}
 		public void LateUpdate()
 		{
@@ -90,6 +88,15 @@ namespace MotionFramework.Audio
 		public void OnGUI()
 		{
 			DebugConsole.GUILable($"[{nameof(AudioManager)}] Audio total count : {_assets.Count}");
+		}
+
+
+		/// <summary>
+		/// 获取音频源
+		/// </summary>
+		public AudioSource GetAudioSource(EAudioLayer layer)
+		{
+			return _audioSourceWrappers[layer].Source;
 		}
 
 		/// <summary>
@@ -151,10 +158,7 @@ namespace MotionFramework.Audio
 			if (_assets.ContainsKey(name))
 			{
 				if (_assets[name].Result == EAssetResult.OK)
-				{
 					PlayAudioClipInternal(EAudioLayer.Music, _assets[name].Clip, loop);
-					PlayFadeEffect(EFadeMode.FadeIn);
-				}
 			}
 			else
 			{
@@ -164,10 +168,7 @@ namespace MotionFramework.Audio
 				assetAudio.Load(BaseFolderPath + name, (Asset asset) =>
 				{
 					if (asset.Result == EAssetResult.OK)
-					{
 						PlayAudioClipInternal(EAudioLayer.Music, _assets[name].Clip, loop);
-						PlayFadeEffect(EFadeMode.FadeIn);
-					}
 				});
 			}
 		}
@@ -310,7 +311,7 @@ namespace MotionFramework.Audio
 		}
 
 		/// <summary>
-		/// 设置静音
+		/// 设置所有频道静音
 		/// </summary>
 		public void Mute(bool isMute)
 		{
@@ -321,7 +322,7 @@ namespace MotionFramework.Audio
 		}
 
 		/// <summary>
-		/// 设置静音
+		/// 设置频道静音
 		/// </summary>
 		public void Mute(EAudioLayer layer, bool isMute)
 		{
@@ -329,7 +330,7 @@ namespace MotionFramework.Audio
 		}
 
 		/// <summary>
-		/// 查询是否静音
+		/// 查询频道是否静音
 		/// </summary>
 		public bool IsMute(EAudioLayer layer)
 		{
@@ -337,7 +338,18 @@ namespace MotionFramework.Audio
 		}
 
 		/// <summary>
-		/// 设置音量
+		/// 设置所有频道音量
+		/// </summary>
+		public void Volume(float volume)
+		{
+			foreach (KeyValuePair<EAudioLayer, AudioSourceWrapper> pair in _audioSourceWrappers)
+			{
+				pair.Value.Source.volume = volume;
+			}
+		}
+
+		/// <summary>
+		/// 设置频道音量
 		/// </summary>
 		public void Volume(EAudioLayer layer, float volume)
 		{
@@ -345,6 +357,13 @@ namespace MotionFramework.Audio
 			_audioSourceWrappers[layer].Source.volume = volume;
 		}
 
+		/// <summary>
+		/// 查询频道音量
+		/// </summary>
+		public float GetVolume(EAudioLayer layer)
+		{
+			return _audioSourceWrappers[layer].Source.volume;
+		}
 
 		private void PlayAudioClipInternal(EAudioLayer layer, AudioClip clip, bool isLoop)
 		{
@@ -366,52 +385,5 @@ namespace MotionFramework.Audio
 				throw new NotImplementedException($"{layer}");
 			}
 		}
-
-		#region 背景音乐淡入淡出相关
-		private enum EFadeMode
-		{
-			None,
-			FadeIn,
-			FadeOut,
-		}
-		private const float FADE_IN_TIME = 6f;
-		private const int FADE_OUT_FRAME = 60;
-
-		private EFadeMode _fadeMode = EFadeMode.None;
-		private float _fadeTimer = 0f;
-		private int _fadeFrame = 0;
-
-		private void PlayFadeEffect(EFadeMode fadeMode)
-		{
-			_fadeTimer = 0f;
-			_fadeFrame = 0;
-			_fadeMode = fadeMode;
-		}
-		private void UpdateFadeEffect(float deltaTime)
-		{
-			if (_fadeMode == EFadeMode.None)
-				return;
-
-			AudioSource audioSource = _audioSourceWrappers[EAudioLayer.Music].Source;
-			if (audioSource == null) return;
-
-			if (_fadeMode == EFadeMode.FadeIn)
-			{
-				_fadeTimer += deltaTime;
-				if (_fadeTimer < FADE_IN_TIME + 0.5f)
-					audioSource.volume = _fadeTimer / FADE_IN_TIME;
-				else
-					_fadeMode = EFadeMode.None;
-			}
-			else if (_fadeMode == EFadeMode.FadeOut)
-			{
-				_fadeFrame++;
-				if (_fadeFrame <= FADE_OUT_FRAME)
-					audioSource.volume = 1f - (float)_fadeFrame / FADE_OUT_FRAME;
-				else
-					_fadeMode = EFadeMode.None;
-			}
-		}
-		#endregion
 	}
 }
